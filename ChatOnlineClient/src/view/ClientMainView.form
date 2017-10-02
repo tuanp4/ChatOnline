@@ -16,42 +16,57 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="mn_StatusOnline">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="new javax.swing.ImageIcon(file_path + &quot;online-icon.png&quot;)" type="code"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Online"/>
                   </Properties>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="mn_StatusAway">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="new javax.swing.ImageIcon(file_path + &quot;away-icon.png&quot;)" type="code"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Away"/>
                   </Properties>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="mn_StatusDoNotDisturb">
+                <MenuItem class="javax.swing.JMenuItem" name="mn_StatusBusy">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Do Not Disturb"/>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="new javax.swing.ImageIcon(file_path + &quot;busy-icon.png&quot;)" type="code"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Busy"/>
                   </Properties>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="mn_StatusInvisble">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="new javax.swing.ImageIcon(file_path + &quot;invisible-icon.png&quot;)" type="code"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Invisible"/>
                   </Properties>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="mn_StatusOffline">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="new javax.swing.ImageIcon(file_path + &quot;offline-icon.png&quot;)" type="code"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Offline"/>
                   </Properties>
                 </MenuItem>
               </SubComponents>
             </Menu>
-            <MenuItem class="javax.swing.JMenuItem" name="mn_MyContactDetails">
+            <MenuItem class="javax.swing.JMenuItem" name="mn_ChangeContactDetails">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Change Contact Details..."/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mn_MyAccountInfo">
+            <MenuItem class="javax.swing.JMenuItem" name="mn_ChangeAccountInfo">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Change Account Info..."/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mn_MyAvatar">
+            <MenuItem class="javax.swing.JMenuItem" name="mn_ChangeAvatar">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Change Avatar..."/>
               </Properties>
@@ -84,7 +99,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mn_Version">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Version 1.01"/>
+                <Property name="text" type="java.lang.String" value="Version 1.01..."/>
               </Properties>
             </MenuItem>
           </SubComponents>
@@ -116,49 +131,76 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="JP_Info" alignment="0" max="32767" attributes="0"/>
+          <Component id="JP_Main" alignment="1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="JP_Info" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="607" max="32767" attributes="0"/>
-          </Group>
+          <Component id="JP_Main" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="JP_Info">
+    <Container class="javax.swing.JPanel" name="JP_Main">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="6f" green="24" red="78" type="rgb"/>
+        </Property>
+      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="lbl_Avatar" min="-2" pref="78" max="-2" attributes="0"/>
-                  <EmptySpace pref="312" max="32767" attributes="0"/>
-              </Group>
+              <Component id="JP_Info" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="lbl_Avatar" pref="78" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="JP_Info" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="605" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="lbl_Avatar">
+        <Container class="javax.swing.JPanel" name="JP_Info">
           <Properties>
-            <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
-            <Property name="requestFocusEnabled" type="boolean" value="false"/>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection component="JP_Main" name="background" type="property"/>
+            </Property>
           </Properties>
-        </Component>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lbl_Avatar" min="-2" pref="78" max="-2" attributes="0"/>
+                      <EmptySpace pref="312" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lbl_Avatar" pref="89" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="lbl_Avatar">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+                <Property name="requestFocusEnabled" type="boolean" value="false"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
       </SubComponents>
     </Container>
   </SubComponents>

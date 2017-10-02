@@ -26,6 +26,8 @@ import model.User;
  */
 public class ClientMainView extends javax.swing.JFrame {
 
+    private final String file_path = "file/default/";
+
     /**
      * Creates new form JF_Main
      */
@@ -36,9 +38,16 @@ public class ClientMainView extends javax.swing.JFrame {
         this.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this.getWidth(), 0);
     }
 
+//    public ClientMainView() {
+//        User user = new User();
+//        initComponents();
+//        displayAvatar(user);
+//        this.setSize(400, GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
+//        this.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this.getWidth(), 0);
+//    }
     public void displayAvatar(User user) {
         try {
-            String avatar_path = "src/default_avatar.jpg";
+            String avatar_path = file_path + "default_avatar.jpg";
             if (user.getAvatar_path() != null) {
                 avatar_path = user.getAvatar_path();
             }
@@ -59,6 +68,7 @@ public class ClientMainView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        JP_Main = new javax.swing.JPanel();
         JP_Info = new javax.swing.JPanel();
         lbl_Avatar = new javax.swing.JLabel();
         JMenu = new javax.swing.JMenuBar();
@@ -66,12 +76,12 @@ public class ClientMainView extends javax.swing.JFrame {
         mn_Status = new javax.swing.JMenu();
         mn_StatusOnline = new javax.swing.JMenuItem();
         mn_StatusAway = new javax.swing.JMenuItem();
-        mn_StatusDoNotDisturb = new javax.swing.JMenuItem();
+        mn_StatusBusy = new javax.swing.JMenuItem();
         mn_StatusInvisble = new javax.swing.JMenuItem();
         mn_StatusOffline = new javax.swing.JMenuItem();
-        mn_MyContactDetails = new javax.swing.JMenuItem();
-        mn_MyAccountInfo = new javax.swing.JMenuItem();
-        mn_MyAvatar = new javax.swing.JMenuItem();
+        mn_ChangeContactDetails = new javax.swing.JMenuItem();
+        mn_ChangeAccountInfo = new javax.swing.JMenuItem();
+        mn_ChangeAvatar = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem1 = new javax.swing.JMenuItem();
         mn_Exit = new javax.swing.JMenuItem();
@@ -82,6 +92,10 @@ public class ClientMainView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ChatOnline");
+
+        JP_Main.setBackground(new java.awt.Color(120, 36, 111));
+
+        JP_Info.setBackground(JP_Main.getBackground());
 
         lbl_Avatar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_Avatar.setToolTipText("");
@@ -100,39 +114,57 @@ public class ClientMainView extends javax.swing.JFrame {
             JP_InfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_InfoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbl_Avatar, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                .addComponent(lbl_Avatar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                 .addContainerGap())
+        );
+
+        javax.swing.GroupLayout JP_MainLayout = new javax.swing.GroupLayout(JP_Main);
+        JP_Main.setLayout(JP_MainLayout);
+        JP_MainLayout.setHorizontalGroup(
+            JP_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(JP_Info, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        JP_MainLayout.setVerticalGroup(
+            JP_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JP_MainLayout.createSequentialGroup()
+                .addComponent(JP_Info, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 605, Short.MAX_VALUE))
         );
 
         mn_MyProfile.setText("My Profile");
 
         mn_Status.setText("Status");
 
+        mn_StatusOnline.setIcon(new javax.swing.ImageIcon(file_path + "online-icon.png"));
         mn_StatusOnline.setText("Online");
         mn_Status.add(mn_StatusOnline);
 
+        mn_StatusAway.setIcon(new javax.swing.ImageIcon(file_path + "away-icon.png"));
         mn_StatusAway.setText("Away");
         mn_Status.add(mn_StatusAway);
 
-        mn_StatusDoNotDisturb.setText("Do Not Disturb");
-        mn_Status.add(mn_StatusDoNotDisturb);
+        mn_StatusBusy.setIcon(new javax.swing.ImageIcon(file_path + "busy-icon.png"));
+        mn_StatusBusy.setText("Busy");
+        mn_Status.add(mn_StatusBusy);
 
+        mn_StatusInvisble.setIcon(new javax.swing.ImageIcon(file_path + "invisible-icon.png"));
         mn_StatusInvisble.setText("Invisible");
         mn_Status.add(mn_StatusInvisble);
 
+        mn_StatusOffline.setIcon(new javax.swing.ImageIcon(file_path + "offline-icon.png"));
         mn_StatusOffline.setText("Offline");
         mn_Status.add(mn_StatusOffline);
 
         mn_MyProfile.add(mn_Status);
 
-        mn_MyContactDetails.setText("Change Contact Details...");
-        mn_MyProfile.add(mn_MyContactDetails);
+        mn_ChangeContactDetails.setText("Change Contact Details...");
+        mn_MyProfile.add(mn_ChangeContactDetails);
 
-        mn_MyAccountInfo.setText("Change Account Info...");
-        mn_MyProfile.add(mn_MyAccountInfo);
+        mn_ChangeAccountInfo.setText("Change Account Info...");
+        mn_MyProfile.add(mn_ChangeAccountInfo);
 
-        mn_MyAvatar.setText("Change Avatar...");
-        mn_MyProfile.add(mn_MyAvatar);
+        mn_ChangeAvatar.setText("Change Avatar...");
+        mn_MyProfile.add(mn_ChangeAvatar);
         mn_MyProfile.add(jSeparator1);
 
         jMenuItem1.setText("Sign out...");
@@ -149,7 +181,7 @@ public class ClientMainView extends javax.swing.JFrame {
         mn_Help.add(mn_About);
         mn_Help.add(jSeparator2);
 
-        mn_Version.setText("Version 1.01");
+        mn_Version.setText("Version 1.01...");
         mn_Help.add(mn_Version);
 
         JMenu.add(mn_Help);
@@ -160,13 +192,11 @@ public class ClientMainView extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(JP_Info, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(JP_Main, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(JP_Info, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 607, Short.MAX_VALUE))
+            .addComponent(JP_Main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -211,20 +241,21 @@ public class ClientMainView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar JMenu;
     private javax.swing.JPanel JP_Info;
+    private javax.swing.JPanel JP_Main;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel lbl_Avatar;
     private javax.swing.JMenuItem mn_About;
+    private javax.swing.JMenuItem mn_ChangeAccountInfo;
+    private javax.swing.JMenuItem mn_ChangeAvatar;
+    private javax.swing.JMenuItem mn_ChangeContactDetails;
     private javax.swing.JMenuItem mn_Exit;
     private javax.swing.JMenu mn_Help;
-    private javax.swing.JMenuItem mn_MyAccountInfo;
-    private javax.swing.JMenuItem mn_MyAvatar;
-    private javax.swing.JMenuItem mn_MyContactDetails;
     private javax.swing.JMenu mn_MyProfile;
     private javax.swing.JMenu mn_Status;
     private javax.swing.JMenuItem mn_StatusAway;
-    private javax.swing.JMenuItem mn_StatusDoNotDisturb;
+    private javax.swing.JMenuItem mn_StatusBusy;
     private javax.swing.JMenuItem mn_StatusInvisble;
     private javax.swing.JMenuItem mn_StatusOffline;
     private javax.swing.JMenuItem mn_StatusOnline;

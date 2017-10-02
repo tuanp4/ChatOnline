@@ -162,16 +162,17 @@ public class ClientStartView extends javax.swing.JFrame {
         setAutoRequestFocus(false);
         setResizable(false);
 
+        JP_Main.setBackground(new java.awt.Color(38, 40, 55));
         JP_Main.setLayout(new java.awt.CardLayout());
 
-        JP_Login.setBackground(new java.awt.Color(38, 40, 55));
+        JP_Login.setBackground(JP_Main.getBackground());
 
         lbl_SignIn.setFont(new java.awt.Font("Ravie", 0, 36)); // NOI18N
         lbl_SignIn.setForeground(new java.awt.Color(255, 255, 255));
         lbl_SignIn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_SignIn.setText("Sign in");
 
-        txt_UsernameSI.setBackground(JP_Login.getBackground());
+        txt_UsernameSI.setBackground(JP_Main.getBackground());
         txt_UsernameSI.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_UsernameSI.setForeground(java.awt.Color.lightGray);
         txt_UsernameSI.setText("Username");
@@ -185,7 +186,7 @@ public class ClientStartView extends javax.swing.JFrame {
             }
         });
 
-        txt_PasswordSI.setBackground(JP_Login.getBackground());
+        txt_PasswordSI.setBackground(JP_Main.getBackground());
         txt_PasswordSI.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_PasswordSI.setForeground(java.awt.Color.lightGray);
         txt_PasswordSI.setText("Password");
@@ -301,14 +302,14 @@ public class ClientStartView extends javax.swing.JFrame {
 
         JP_Main.add(JP_Login, "card2");
 
-        JP_SignUp.setBackground(new java.awt.Color(38, 40, 55));
+        JP_SignUp.setBackground(JP_Main.getBackground());
 
         lbl_JoinUs.setFont(new java.awt.Font("Ravie", 0, 36)); // NOI18N
         lbl_JoinUs.setForeground(new java.awt.Color(255, 255, 255));
         lbl_JoinUs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_JoinUs.setText("Join us");
 
-        txt_UsernameJU.setBackground(JP_Login.getBackground());
+        txt_UsernameJU.setBackground(JP_Main.getBackground());
         txt_UsernameJU.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_UsernameJU.setForeground(java.awt.Color.lightGray);
         txt_UsernameJU.setText("Username");
@@ -322,7 +323,7 @@ public class ClientStartView extends javax.swing.JFrame {
             }
         });
 
-        txt_EmailJU.setBackground(JP_Login.getBackground());
+        txt_EmailJU.setBackground(JP_Main.getBackground());
         txt_EmailJU.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_EmailJU.setForeground(java.awt.Color.lightGray);
         txt_EmailJU.setText("Email");
@@ -336,7 +337,7 @@ public class ClientStartView extends javax.swing.JFrame {
             }
         });
 
-        txt_PasswordJU.setBackground(JP_Login.getBackground());
+        txt_PasswordJU.setBackground(JP_Main.getBackground());
         txt_PasswordJU.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_PasswordJU.setForeground(java.awt.Color.lightGray);
         txt_PasswordJU.setText("Password");

@@ -13,10 +13,12 @@
 
 
 -- Dumping database structure for chat_online
+DROP DATABASE IF EXISTS `chat_online`;
 CREATE DATABASE IF NOT EXISTS `chat_online` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `chat_online`;
 
 -- Dumping structure for table chat_online.conversation
+DROP TABLE IF EXISTS `conversation`;
 CREATE TABLE IF NOT EXISTS `conversation` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'mã hội thoại',
   `name` varchar(250) DEFAULT NULL COMMENT 'tên hội thoại',
@@ -32,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `conversation` (
 /*!40000 ALTER TABLE `conversation` ENABLE KEYS */;
 
 -- Dumping structure for table chat_online.friendship
+DROP TABLE IF EXISTS `friendship`;
 CREATE TABLE IF NOT EXISTS `friendship` (
   `sender_id` int(11) NOT NULL COMMENT 'mã người gửi',
   `receiver_id` int(11) NOT NULL COMMENT 'mã người nhận',
@@ -48,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `friendship` (
 /*!40000 ALTER TABLE `friendship` ENABLE KEYS */;
 
 -- Dumping structure for table chat_online.group
+DROP TABLE IF EXISTS `group`;
 CREATE TABLE IF NOT EXISTS `group` (
   `conversation_id` int(11) NOT NULL COMMENT 'mã hội thoại',
   `user_id` int(11) NOT NULL COMMENT 'mã người dùng',
@@ -65,6 +69,7 @@ CREATE TABLE IF NOT EXISTS `group` (
 /*!40000 ALTER TABLE `group` ENABLE KEYS */;
 
 -- Dumping structure for table chat_online.message
+DROP TABLE IF EXISTS `message`;
 CREATE TABLE IF NOT EXISTS `message` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'mã tin nhắn',
   `conversation_id` int(11) NOT NULL COMMENT 'mã hội thoại',
@@ -85,6 +90,7 @@ CREATE TABLE IF NOT EXISTS `message` (
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 
 -- Dumping structure for table chat_online.user
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'mã người dùng',
   `username` varchar(50) NOT NULL COMMENT 'tên đăng nhập',
@@ -98,12 +104,12 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='người dùng';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='người dùng';
 
--- Dumping data for table chat_online.user: ~4 rows (approximately)
+-- Dumping data for table chat_online.user: ~3 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 REPLACE INTO `user` (`id`, `username`, `password_hash`, `display_name`, `avatar_path`, `email`, `phone_number`, `description`, `status`) VALUES
-	(1, 'tuanpham', '7c4a8d09ca3762af61e59520943dc26494f8941b', NULL, NULL, 'tuanpham@gmail.com', NULL, NULL, NULL),
+	(1, 'tuanpham', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Phạm Mạnh Tuấn', 'D:/My Pictures/Anh de thiet ke/The fiery English alphabet, numbers and pictures/dreamstime_3538334.jpg', 'tuanpham@gmail.com', '0962627547', 'who?', 0),
 	(2, 'thangbui', '7c4a8d09ca3762af61e59520943dc26494f8941b', NULL, NULL, 'thangbui@gmail.com', NULL, NULL, NULL),
 	(3, 'hangnguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', NULL, NULL, 'hangnguyen@gmail.com', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
