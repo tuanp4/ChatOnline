@@ -6,6 +6,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -36,8 +37,10 @@ public class ClientMainView extends javax.swing.JFrame {
         initComponents();
         displayAvatar(user);
         displayName(user);
+        displayDescription(user);
         this.setSize(400, GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
         this.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this.getWidth(), 0);
+        lbl_Avatar.requestFocusInWindow();
     }
 
     public void displayAvatar(User user) {
@@ -88,6 +91,14 @@ public class ClientMainView extends javax.swing.JFrame {
         }
     }
 
+    public void displayDescription(User user) {
+        if (user.getDescription() != null) {
+            txt_Description.setText(user.getDescription());
+        } else {
+            txt_Description.setText("Hey, tell every one what do you think... ?");
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -112,6 +123,7 @@ public class ClientMainView extends javax.swing.JFrame {
         };
         lbl_Avatar = new javax.swing.JLabel();
         lbl_DisplayName = new javax.swing.JLabel();
+        txt_Description = new javax.swing.JTextField();
         JP_ChatList = new javax.swing.JPanel() {
             @Override
             protected void paintComponent(Graphics grphcs) {
@@ -134,7 +146,7 @@ public class ClientMainView extends javax.swing.JFrame {
         mn_StatusOffline = new javax.swing.JMenuItem();
         mn_ChangeContactDetails = new javax.swing.JMenuItem();
         mn_ChangeAccountInfo = new javax.swing.JMenuItem();
-        mn_ChangeAvatar = new javax.swing.JMenuItem();
+        mn_ChangePassword = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem1 = new javax.swing.JMenuItem();
         mn_Exit = new javax.swing.JMenuItem();
@@ -150,7 +162,7 @@ public class ClientMainView extends javax.swing.JFrame {
         JP_Main.setBackground((new java.awt.Color(120, 36, 111)).brighter());
 
         lbl_Avatar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_Avatar.setText("lbl_avatar");
+        lbl_Avatar.setText("Avatar");
         lbl_Avatar.setToolTipText("");
         lbl_Avatar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
         lbl_Avatar.setMaximumSize(new java.awt.Dimension(78, 78));
@@ -160,7 +172,13 @@ public class ClientMainView extends javax.swing.JFrame {
 
         lbl_DisplayName.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lbl_DisplayName.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_DisplayName.setText("lbl_displayname");
+        lbl_DisplayName.setText("Name");
+
+        txt_Description.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
+        txt_Description.setForeground(new java.awt.Color(153, 153, 153));
+        txt_Description.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txt_Description.setText("Hey, tell every one what do you think... ?");
+        txt_Description.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 255), 2, true));
 
         javax.swing.GroupLayout JP_InfoLayout = new javax.swing.GroupLayout(JP_Info);
         JP_Info.setLayout(JP_InfoLayout);
@@ -170,8 +188,12 @@ public class ClientMainView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lbl_Avatar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lbl_DisplayName, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addGroup(JP_InfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(JP_InfoLayout.createSequentialGroup()
+                        .addComponent(lbl_DisplayName, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 117, Short.MAX_VALUE))
+                    .addComponent(txt_Description))
+                .addContainerGap())
         );
         JP_InfoLayout.setVerticalGroup(
             JP_InfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,6 +203,8 @@ public class ClientMainView extends javax.swing.JFrame {
                     .addComponent(lbl_Avatar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(JP_InfoLayout.createSequentialGroup()
                         .addComponent(lbl_DisplayName, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txt_Description, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -243,8 +267,8 @@ public class ClientMainView extends javax.swing.JFrame {
         mn_ChangeAccountInfo.setText("Change Account Info...");
         mn_MyProfile.add(mn_ChangeAccountInfo);
 
-        mn_ChangeAvatar.setText("Change Avatar...");
-        mn_MyProfile.add(mn_ChangeAvatar);
+        mn_ChangePassword.setText("Change Password...");
+        mn_MyProfile.add(mn_ChangePassword);
         mn_MyProfile.add(jSeparator1);
 
         jMenuItem1.setText("Sign out...");
@@ -331,8 +355,8 @@ public class ClientMainView extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_DisplayName;
     private javax.swing.JMenuItem mn_About;
     private javax.swing.JMenuItem mn_ChangeAccountInfo;
-    private javax.swing.JMenuItem mn_ChangeAvatar;
     private javax.swing.JMenuItem mn_ChangeContactDetails;
+    private javax.swing.JMenuItem mn_ChangePassword;
     private javax.swing.JMenuItem mn_Exit;
     private javax.swing.JMenu mn_Help;
     private javax.swing.JMenu mn_MyProfile;
@@ -343,5 +367,6 @@ public class ClientMainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem mn_StatusOffline;
     private javax.swing.JMenuItem mn_StatusOnline;
     private javax.swing.JMenuItem mn_Version;
+    private javax.swing.JTextField txt_Description;
     // End of variables declaration//GEN-END:variables
 }
