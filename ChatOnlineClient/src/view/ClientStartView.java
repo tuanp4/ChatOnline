@@ -30,6 +30,7 @@ public class ClientStartView extends javax.swing.JFrame {
     public ClientStartView() {
         initComponents();
         this.setLocationRelativeTo(null);
+        lbl_SignIn.requestFocusInWindow();
     }
 
     private String SHA_1(String input) {
@@ -159,7 +160,6 @@ public class ClientStartView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sign in");
-        setAutoRequestFocus(false);
         setResizable(false);
 
         JP_Main.setBackground(new java.awt.Color(38, 40, 55));
