@@ -100,18 +100,18 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(50) DEFAULT NULL COMMENT 'địa chỉ mail',
   `phone_number` varchar(50) DEFAULT NULL COMMENT 'số điện thoại',
   `description` varchar(1000) DEFAULT NULL COMMENT 'mô tả. VD: vui/buồn/chán/...',
-  `status` int(11) DEFAULT NULL COMMENT 'trạng thái. VD: 0 - offline; 1 - online; 2 - away;...',
+  `status` int(11) DEFAULT '0' COMMENT 'trạng thái. VD: 0 - offline; 1 - online; 2 - away;...',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='người dùng';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='người dùng';
 
 -- Dumping data for table chat_online.user: ~3 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 REPLACE INTO `user` (`id`, `username`, `password_hash`, `display_name`, `avatar_path`, `email`, `phone_number`, `description`, `status`) VALUES
-	(1, 'tuanpham', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Phạm Mạnh Tuấn', 'D:/My Pictures/Anh de thiet ke/The fiery English alphabet, numbers and pictures/dreamstime_3538334.jpg', 'tuanpham@gmail.com', '0962627547', 'who?', 0),
-	(2, 'thangbui', '7c4a8d09ca3762af61e59520943dc26494f8941b', NULL, NULL, 'thangbui@gmail.com', NULL, NULL, NULL),
-	(3, 'hangnguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', NULL, NULL, 'hangnguyen@gmail.com', NULL, NULL, NULL);
+	(1, 'tuanpham', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Phạm Mạnh Tuấn', 'D:/My Pictures/Anh de thiet ke/The fiery English alphabet, numbers and pictures/dreamstime_3538334.jpg', 'tuanpham@gmail.com', '0962627547', 'who?', 1),
+	(2, 'thangbui', '7c4a8d09ca3762af61e59520943dc26494f8941b', NULL, NULL, 'thangbui@gmail.com', NULL, NULL, 0),
+	(3, 'hangnguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', NULL, NULL, 'hangnguyen@gmail.com', NULL, NULL, 0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
