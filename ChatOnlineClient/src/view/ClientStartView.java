@@ -175,7 +175,7 @@ public class ClientStartView extends javax.swing.JFrame {
         txt_UsernameSI.setBackground(JP_Main.getBackground());
         txt_UsernameSI.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_UsernameSI.setForeground(java.awt.Color.lightGray);
-        txt_UsernameSI.setText("Username");
+        txt_UsernameSI.setText(" Username");
         txt_UsernameSI.setBorder(null);
         txt_UsernameSI.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -189,7 +189,7 @@ public class ClientStartView extends javax.swing.JFrame {
         txt_PasswordSI.setBackground(JP_Main.getBackground());
         txt_PasswordSI.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_PasswordSI.setForeground(java.awt.Color.lightGray);
-        txt_PasswordSI.setText("Password");
+        txt_PasswordSI.setText(" Password");
         txt_PasswordSI.setBorder(null);
         txt_PasswordSI.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -312,7 +312,7 @@ public class ClientStartView extends javax.swing.JFrame {
         txt_UsernameJU.setBackground(JP_Main.getBackground());
         txt_UsernameJU.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_UsernameJU.setForeground(java.awt.Color.lightGray);
-        txt_UsernameJU.setText("Username");
+        txt_UsernameJU.setText(" Username");
         txt_UsernameJU.setBorder(null);
         txt_UsernameJU.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -326,7 +326,7 @@ public class ClientStartView extends javax.swing.JFrame {
         txt_EmailJU.setBackground(JP_Main.getBackground());
         txt_EmailJU.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_EmailJU.setForeground(java.awt.Color.lightGray);
-        txt_EmailJU.setText("Email");
+        txt_EmailJU.setText(" Email");
         txt_EmailJU.setBorder(null);
         txt_EmailJU.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -340,7 +340,7 @@ public class ClientStartView extends javax.swing.JFrame {
         txt_PasswordJU.setBackground(JP_Main.getBackground());
         txt_PasswordJU.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_PasswordJU.setForeground(java.awt.Color.lightGray);
-        txt_PasswordJU.setText("Password");
+        txt_PasswordJU.setText(" Password");
         txt_PasswordJU.setBorder(null);
         txt_PasswordJU.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -472,7 +472,7 @@ public class ClientStartView extends javax.swing.JFrame {
 
     private void txt_UsernameSIFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_UsernameSIFocusGained
         // TODO add your handling code here:
-        if (txt_UsernameSI.getText().equals("Username")) {
+        if (txt_UsernameSI.getText().equals(" Username")) {
             txt_UsernameSI.setText("");
             txt_UsernameSI.setForeground(Color.WHITE);
             txt_UsernameSI.setCaretColor(Color.WHITE);
@@ -482,7 +482,7 @@ public class ClientStartView extends javax.swing.JFrame {
     private void txt_UsernameSIFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_UsernameSIFocusLost
         // TODO add your handling code here:
         if (txt_UsernameSI.getText().isEmpty()) {
-            txt_UsernameSI.setText("Username");
+            txt_UsernameSI.setText(" Username");
             txt_UsernameSI.setForeground(Color.LIGHT_GRAY);
         }
     }//GEN-LAST:event_txt_UsernameSIFocusLost
@@ -509,7 +509,7 @@ public class ClientStartView extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (pwd_PasswordSI.getPassword().length == 0) {
             JP_Login.add(txt_PasswordSI);
-            txt_PasswordSI.setText("Password");
+            txt_PasswordSI.setText(" Password");
             txt_PasswordSI.setBounds(txt_PasswordSI.getBounds());
             JP_Login.remove(pwd_PasswordSI);
             Rectangle temp1 = undl_PasswordSI.getBounds();
@@ -555,7 +555,7 @@ public class ClientStartView extends javax.swing.JFrame {
 
     private void txt_UsernameJUFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_UsernameJUFocusGained
         // TODO add your handling code here:
-        if (txt_UsernameJU.getText().equals("Username")) {
+        if (txt_UsernameJU.getText().equals(" Username")) {
             txt_UsernameJU.setText("");
             txt_UsernameJU.setForeground(Color.WHITE);
             txt_UsernameJU.setCaretColor(Color.WHITE);
@@ -565,14 +565,14 @@ public class ClientStartView extends javax.swing.JFrame {
     private void txt_UsernameJUFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_UsernameJUFocusLost
         // TODO add your handling code here:
         if (txt_UsernameJU.getText().isEmpty()) {
-            txt_UsernameJU.setText("Username");
+            txt_UsernameJU.setText(" Username");
             txt_UsernameJU.setForeground(Color.LIGHT_GRAY);
         }
     }//GEN-LAST:event_txt_UsernameJUFocusLost
 
     private void txt_EmailJUFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_EmailJUFocusGained
         // TODO add your handling code here:
-        if (txt_EmailJU.getText().equals("Email")) {
+        if (txt_EmailJU.getText().equals(" Email")) {
             txt_EmailJU.setText("");
             txt_EmailJU.setForeground(Color.WHITE);
             txt_EmailJU.setCaretColor(Color.WHITE);
@@ -627,7 +627,7 @@ public class ClientStartView extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (pwd_PasswordJU.getPassword().length == 0) {
             JP_SignUp.add(txt_PasswordJU);
-            txt_PasswordJU.setText("Password");
+            txt_PasswordJU.setText(" Password");
             txt_PasswordJU.setBounds(txt_PasswordJU.getBounds());
             JP_SignUp.remove(pwd_PasswordJU);
             Rectangle temp1 = undl_PasswordJU.getBounds();
@@ -661,7 +661,7 @@ public class ClientStartView extends javax.swing.JFrame {
     private void txt_EmailJUFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_EmailJUFocusLost
         // TODO add your handling code here:
         if (txt_EmailJU.getText().isEmpty()) {
-            txt_EmailJU.setText("Email");
+            txt_EmailJU.setText(" Email");
             txt_EmailJU.setForeground(Color.LIGHT_GRAY);
         }
     }//GEN-LAST:event_txt_EmailJUFocusLost

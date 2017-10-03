@@ -5,18 +5,18 @@
  */
 package view;
 
-import java.awt.FlowLayout;
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import model.User;
 
@@ -34,17 +34,11 @@ public class ClientMainView extends javax.swing.JFrame {
     public ClientMainView(User user) {
         initComponents();
         displayAvatar(user);
+        displayStatus(user);
         this.setSize(400, GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
         this.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this.getWidth(), 0);
     }
 
-//    public ClientMainView() {
-//        User user = new User();
-//        initComponents();
-//        displayAvatar(user);
-//        this.setSize(400, GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
-//        this.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this.getWidth(), 0);
-//    }
     public void displayAvatar(User user) {
         try {
             String avatar_path = file_path + "default_avatar.jpg";
@@ -55,6 +49,40 @@ public class ClientMainView extends javax.swing.JFrame {
             Image img_rs = img.getScaledInstance(78, 78, Image.SCALE_DEFAULT);
             ImageIcon icon = new ImageIcon(img_rs);
             lbl_Avatar.setIcon(icon);
+            lbl_Avatar.setText("");
+        } catch (IOException ex) {
+        }
+    }
+
+    public void displayStatus(User user) {
+        try {
+            String status_img = file_path;
+            int status = user.getStatus();
+            switch (status) {
+                case 0:
+                    status_img += "online-icon.png";
+                    break;
+                case 1:
+                    status_img += "away-icon.png";
+                    break;
+                case 2:
+                    status_img += "busy-icon.png";
+                    break;
+                case 3:
+                    status_img += "invisible-icon.png";
+                    break;
+                case 4:
+                    status_img += "offline-icon.png";
+                    break;
+            }
+            BufferedImage img = ImageIO.read(new File(status_img));
+            ImageIcon icon = new ImageIcon(img);
+            lbl_NameStatus.setIcon(icon);
+            if (user.getDisplay_name() != null) {
+                lbl_NameStatus.setText(user.getDisplay_name());
+            } else {
+                lbl_NameStatus.setText(user.getUsername());
+            }
         } catch (IOException ex) {
         }
     }
@@ -69,8 +97,32 @@ public class ClientMainView extends javax.swing.JFrame {
     private void initComponents() {
 
         JP_Main = new javax.swing.JPanel();
-        JP_Info = new javax.swing.JPanel();
+        JP_Info = new javax.swing.JPanel() {
+            @Override
+            protected void paintComponent(Graphics grphcs) {
+                super.paintComponent(grphcs);
+                Graphics2D g2d = (Graphics2D) grphcs;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                Color color = new Color(120, 36, 111);
+                GradientPaint gp = new GradientPaint(0, 0, color.darker(), 0, getHeight(), color.brighter());
+                g2d.setPaint(gp);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
         lbl_Avatar = new javax.swing.JLabel();
+        lbl_NameStatus = new javax.swing.JLabel();
+        JP_ChatList = new javax.swing.JPanel() {
+            @Override
+            protected void paintComponent(Graphics grphcs) {
+                super.paintComponent(grphcs);
+                Graphics2D g2d = (Graphics2D) grphcs;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                Color color = new Color(120, 36, 111);
+                GradientPaint gp = new GradientPaint(0, 0, color.brighter(), 0, getHeight(), color.darker());
+                g2d.setPaint(gp);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
         JMenu = new javax.swing.JMenuBar();
         mn_MyProfile = new javax.swing.JMenu();
         mn_Status = new javax.swing.JMenu();
@@ -93,13 +145,16 @@ public class ClientMainView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ChatOnline");
 
-        JP_Main.setBackground(new java.awt.Color(120, 36, 111));
-
-        JP_Info.setBackground(JP_Main.getBackground());
+        JP_Main.setBackground((new java.awt.Color(120, 36, 111)).brighter());
 
         lbl_Avatar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_Avatar.setText("lbl_avatar");
         lbl_Avatar.setToolTipText("");
         lbl_Avatar.setRequestFocusEnabled(false);
+
+        lbl_NameStatus.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbl_NameStatus.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_NameStatus.setText("lbl_displayname");
 
         javax.swing.GroupLayout JP_InfoLayout = new javax.swing.GroupLayout(JP_Info);
         JP_Info.setLayout(JP_InfoLayout);
@@ -108,14 +163,31 @@ public class ClientMainView extends javax.swing.JFrame {
             .addGroup(JP_InfoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lbl_Avatar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(312, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbl_NameStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(127, Short.MAX_VALUE))
         );
         JP_InfoLayout.setVerticalGroup(
             JP_InfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_InfoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbl_Avatar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
+                .addGroup(JP_InfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_Avatar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
+                    .addGroup(JP_InfoLayout.createSequentialGroup()
+                        .addComponent(lbl_NameStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+        );
+
+        javax.swing.GroupLayout JP_ChatListLayout = new javax.swing.GroupLayout(JP_ChatList);
+        JP_ChatList.setLayout(JP_ChatListLayout);
+        JP_ChatListLayout.setHorizontalGroup(
+            JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        JP_ChatListLayout.setVerticalGroup(
+            JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 590, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout JP_MainLayout = new javax.swing.GroupLayout(JP_Main);
@@ -123,12 +195,14 @@ public class ClientMainView extends javax.swing.JFrame {
         JP_MainLayout.setHorizontalGroup(
             JP_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(JP_Info, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(JP_ChatList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         JP_MainLayout.setVerticalGroup(
             JP_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_MainLayout.createSequentialGroup()
                 .addComponent(JP_Info, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 605, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(JP_ChatList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mn_MyProfile.setText("My Profile");
@@ -240,12 +314,14 @@ public class ClientMainView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar JMenu;
+    private javax.swing.JPanel JP_ChatList;
     private javax.swing.JPanel JP_Info;
     private javax.swing.JPanel JP_Main;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel lbl_Avatar;
+    private javax.swing.JLabel lbl_NameStatus;
     private javax.swing.JMenuItem mn_About;
     private javax.swing.JMenuItem mn_ChangeAccountInfo;
     private javax.swing.JMenuItem mn_ChangeAvatar;
