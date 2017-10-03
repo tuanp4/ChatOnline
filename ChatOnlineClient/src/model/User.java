@@ -19,6 +19,7 @@ public class User implements Serializable {
     private String username;
     private String password_hash;
     private String display_name;
+    private int gender;
     private String avatar_path;
     private String email;
     private String phone_number;
@@ -57,6 +58,14 @@ public class User implements Serializable {
 
     public void setDisplay_name(String display_name) {
         this.display_name = display_name;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 
     public String getAvatar_path() {

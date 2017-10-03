@@ -46,11 +46,12 @@ public class DAOUser extends IDAO {
                 user.setUsername(rs.getString(2));
                 user.setPassword_hash(rs.getString(3));
                 user.setDisplay_name(rs.getString(4));
-                user.setAvatar_path(rs.getString(5));
-                user.setEmail(rs.getString(6));
-                user.setPhone_number(rs.getString(7));
-                user.setDescription(rs.getString(8));
-                user.setStatus(rs.getInt(9));
+                user.setGender(rs.getInt(5));
+                user.setAvatar_path(rs.getString(6));
+                user.setEmail(rs.getString(7));
+                user.setPhone_number(rs.getString(8));
+                user.setDescription(rs.getString(9));
+                user.setStatus(rs.getInt(10));
                 break;
             }
             return user;
@@ -82,11 +83,12 @@ public class DAOUser extends IDAO {
 
     public boolean signUpUser(User user) {
         try {
-            String sql = "INSERT INTO user (username, password_hash, email) VALUES (?,?,?)";
+            String sql = "INSERT INTO user (username, password_hash, email, gender) VALUES (?,?,?,?)";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setString(1, user.getUsername());
             this.preStatement.setString(2, user.getPassword_hash());
             this.preStatement.setString(3, user.getEmail());
+            this.preStatement.setInt(4, user.getGender());
             int check = this.preStatement.executeUpdate();
             return (check != 0);
         } catch (SQLException e) {

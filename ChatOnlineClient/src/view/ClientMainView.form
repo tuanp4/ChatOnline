@@ -9,9 +9,17 @@
             <Property name="text" type="java.lang.String" value="My Profile"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="mn_ChangeAccountInfo">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Account Info"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mn_ChangeAccountInfoActionPerformed"/>
+              </Events>
+            </MenuItem>
             <Menu class="javax.swing.JMenu" name="mn_Status">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Status"/>
+                <Property name="text" type="java.lang.String" value="Change Status"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="mn_StatusOnline">
@@ -56,19 +64,9 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
-            <MenuItem class="javax.swing.JMenuItem" name="mn_ChangeContactDetails">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Change Contact Details..."/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mn_ChangeAccountInfo">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Change Account Info..."/>
-              </Properties>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mn_ChangePassword">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Change Password..."/>
+                <Property name="text" type="java.lang.String" value="Change Password"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
@@ -99,7 +97,8 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mn_Version">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Version 1.01..."/>
+                <Property name="text" type="java.lang.String" value="Version 1.01"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </MenuItem>
           </SubComponents>
@@ -183,11 +182,11 @@
                       <Component id="lbl_Avatar" min="-2" pref="78" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="txt_Description" pref="292" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="lbl_DisplayName" min="-2" pref="175" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="117" max="32767" attributes="0"/>
+                              <Component id="lbl_DisplayName" min="-2" pref="240" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="txt_Description" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -261,10 +260,13 @@
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Hey, tell every one what do you think... ?"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder roundedCorners="true" thickness="2">
-                      <Color PropertyName="color" blue="ff" green="99" red="ff" type="rgb"/>
-                    </LineBorder>
+                  <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+                    <BevelBorder>
+                      <Color PropertyName="highlightOuter" blue="99" green="0" red="99" type="rgb"/>
+                      <Color PropertyName="highlightInner" blue="99" green="0" red="99" type="rgb"/>
+                      <Color PropertyName="shadowOuter" blue="99" green="0" red="99" type="rgb"/>
+                      <Color PropertyName="shadowInner" blue="99" green="0" red="99" type="rgb"/>
+                    </BevelBorder>
                   </Border>
                 </Property>
               </Properties>

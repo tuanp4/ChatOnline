@@ -11,8 +11,6 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.User;
 
@@ -31,6 +29,8 @@ public class ClientStartView extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         lbl_SignIn.requestFocusInWindow();
+        btnGrp_Gender.add(rd_Male);
+        btnGrp_Gender.add(rd_Female);
     }
 
     private String SHA_1(String input) {
@@ -71,6 +71,11 @@ public class ClientStartView extends javax.swing.JFrame {
         model.setUsername(txt_UsernameJU.getText().trim());
         model.setEmail(txt_EmailJU.getText().trim());
         model.setPassword_hash(SHA_1(new String(pwd_PasswordJU.getPassword()).trim()));
+        if (rd_Male.isSelected()) {
+            model.setGender(0);
+        } else if (rd_Female.isSelected()) {
+            model.setGender(1);
+        }
         txt_UsernameJU.requestFocusInWindow();
         return model;
     }
@@ -106,6 +111,7 @@ public class ClientStartView extends javax.swing.JFrame {
 
         pwd_PasswordSI = new javax.swing.JPasswordField();
         pwd_PasswordJU = new javax.swing.JPasswordField();
+        btnGrp_Gender = new javax.swing.ButtonGroup();
         JP_Main = new javax.swing.JPanel();
         JP_Login = new javax.swing.JPanel();
         lbl_SignIn = new javax.swing.JLabel();
@@ -125,6 +131,10 @@ public class ClientStartView extends javax.swing.JFrame {
         undl_EmailJU = new javax.swing.JSeparator();
         txt_PasswordJU = new javax.swing.JTextField();
         undl_PasswordJU = new javax.swing.JSeparator();
+        jp_Gender = new javax.swing.JPanel();
+        Iam = new javax.swing.JLabel();
+        rd_Male = new javax.swing.JRadioButton();
+        rd_Female = new javax.swing.JRadioButton();
         jp_SignUp = new javax.swing.JPanel();
         btn_SignUp = new javax.swing.JLabel();
         jp_ToLogin = new javax.swing.JPanel();
@@ -150,11 +160,6 @@ public class ClientStartView extends javax.swing.JFrame {
         pwd_PasswordJU.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 pwd_PasswordJUFocusLost(evt);
-            }
-        });
-        pwd_PasswordJU.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                pwd_PasswordJUKeyPressed(evt);
             }
         });
 
@@ -296,7 +301,7 @@ public class ClientStartView extends javax.swing.JFrame {
                 .addComponent(undl_PasswordSI, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44)
                 .addComponent(jp_Login, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                 .addComponent(jp_ToSignUp, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -347,6 +352,50 @@ public class ClientStartView extends javax.swing.JFrame {
                 txt_PasswordJUFocusGained(evt);
             }
         });
+
+        jp_Gender.setBackground(JP_Main.getBackground());
+
+        Iam.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        Iam.setForeground(java.awt.Color.lightGray);
+        Iam.setText("I'm a");
+
+        rd_Male.setBackground(JP_Main.getBackground());
+        rd_Male.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        rd_Male.setForeground(java.awt.Color.lightGray);
+        rd_Male.setSelected(true);
+        rd_Male.setText("Male");
+        rd_Male.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
+        rd_Female.setBackground(JP_Main.getBackground());
+        rd_Female.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        rd_Female.setForeground(java.awt.Color.lightGray);
+        rd_Female.setText("Female");
+        rd_Female.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
+        javax.swing.GroupLayout jp_GenderLayout = new javax.swing.GroupLayout(jp_Gender);
+        jp_Gender.setLayout(jp_GenderLayout);
+        jp_GenderLayout.setHorizontalGroup(
+            jp_GenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jp_GenderLayout.createSequentialGroup()
+                .addGap(234, 234, 234)
+                .addComponent(Iam, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(rd_Male)
+                .addGap(21, 21, 21)
+                .addComponent(rd_Female)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jp_GenderLayout.setVerticalGroup(
+            jp_GenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jp_GenderLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jp_GenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Iam, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jp_GenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rd_Male)
+                        .addComponent(rd_Female)))
+                .addContainerGap())
+        );
 
         jp_SignUp.setBackground(new java.awt.Color(58, 56, 77));
         jp_SignUp.setPreferredSize(new java.awt.Dimension(700, 70));
@@ -416,25 +465,26 @@ public class ClientStartView extends javax.swing.JFrame {
             JP_SignUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jp_ToLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lbl_JoinUs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JP_SignUpLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(JP_SignUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(undl_PasswordJU)
-                    .addComponent(undl_EmailJU)
-                    .addComponent(undl_UsernameJU)
-                    .addComponent(txt_UsernameJU, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(txt_EmailJU, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_PasswordJU, javax.swing.GroupLayout.Alignment.LEADING))
-                .addGap(225, 225, 225))
             .addGroup(JP_SignUpLayout.createSequentialGroup()
                 .addGap(300, 300, 300)
                 .addComponent(jp_SignUp, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JP_SignUpLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(JP_SignUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(undl_PasswordJU, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(undl_EmailJU, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(undl_UsernameJU, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txt_UsernameJU, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(txt_EmailJU)
+                    .addComponent(txt_PasswordJU))
+                .addGap(225, 225, 225))
+            .addComponent(jp_Gender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         JP_SignUpLayout.setVerticalGroup(
             JP_SignUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JP_SignUpLayout.createSequentialGroup()
-                .addGap(100, 100, 100)
+                .addGap(60, 60, 60)
                 .addComponent(lbl_JoinUs)
                 .addGap(50, 50, 50)
                 .addComponent(txt_UsernameJU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -449,8 +499,10 @@ public class ClientStartView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(undl_PasswordJU, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(jp_Gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(jp_SignUp, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
                 .addComponent(jp_ToLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -592,10 +644,14 @@ public class ClientStartView extends javax.swing.JFrame {
         JP_SignUp.remove(undl_PasswordJU);
         JP_SignUp.add(undl_PasswordJU);
         undl_PasswordJU.setBounds(temp1);
-        Rectangle temp2 = jp_SignUp.getBounds();
+        Rectangle temp2 = jp_Gender.getBounds();
+        JP_SignUp.remove(jp_Gender);
+        JP_SignUp.add(jp_Gender);
+        jp_Gender.setBounds(temp2);
+        Rectangle temp3 = jp_SignUp.getBounds();
         JP_SignUp.remove(jp_SignUp);
         JP_SignUp.add(jp_SignUp);
-        jp_SignUp.setBounds(temp2);
+        jp_SignUp.setBounds(temp3);
     }//GEN-LAST:event_txt_PasswordJUFocusGained
 
     private void btn_SignUpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SignUpMouseClicked
@@ -634,29 +690,16 @@ public class ClientStartView extends javax.swing.JFrame {
             JP_SignUp.remove(undl_PasswordJU);
             JP_SignUp.add(undl_PasswordJU);
             undl_PasswordJU.setBounds(temp1);
-            Rectangle temp2 = jp_SignUp.getBounds();
+            Rectangle temp2 = jp_Gender.getBounds();
+            JP_SignUp.remove(jp_Gender);
+            JP_SignUp.add(jp_Gender);
+            jp_Gender.setBounds(temp2);
+            Rectangle temp3 = jp_SignUp.getBounds();
             JP_SignUp.remove(jp_SignUp);
             JP_SignUp.add(jp_SignUp);
-            jp_SignUp.setBounds(temp2);
+            jp_SignUp.setBounds(temp3);
         }
     }//GEN-LAST:event_pwd_PasswordJUFocusLost
-
-    private void pwd_PasswordJUKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pwd_PasswordJUKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (txt_UsernameJU.getText().equals("") || txt_EmailJU.getText().equals("") || pwd_PasswordJU.getPassword().length == 0) {
-                showMessage("please fill the required fields (username, email, password).");
-            } else if (!txt_UsernameJU.getText().matches("^[\\w-]{6,15}$")) {
-                showMessage("Username must contain 6 to 15 characters. Only letter, number and underscore are allowed!");
-            } else if (!txt_EmailJU.getText().matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
-                showMessage("Invalid email!");
-            } else if (pwd_PasswordJU.getPassword().length < 6) {
-                showMessage("Password must contain at least 6 characters!");
-            } else {
-                userController.signUp();
-            }
-        }
-    }//GEN-LAST:event_pwd_PasswordJUKeyPressed
 
     private void txt_EmailJUFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_EmailJUFocusLost
         // TODO add your handling code here:
@@ -699,57 +742,60 @@ public class ClientStartView extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(ClientStartView.class
-//                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(ClientStartView.class
-//                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(ClientStartView.class
-//                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(ClientStartView.class
-//                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new ClientStartView().setVisible(true);
-//            }
-//        });
-//    }
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ClientStartView.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ClientStartView.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ClientStartView.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ClientStartView.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new ClientStartView().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Iam;
     private javax.swing.JPanel JP_Login;
     private javax.swing.JPanel JP_Main;
     private javax.swing.JPanel JP_SignUp;
+    private javax.swing.ButtonGroup btnGrp_Gender;
     private javax.swing.JLabel btn_Login;
     private javax.swing.JLabel btn_SignUp;
     private javax.swing.JLabel btn_ToLogin;
     private javax.swing.JLabel btn_ToSignUp;
+    private javax.swing.JPanel jp_Gender;
     private javax.swing.JPanel jp_Login;
     private javax.swing.JPanel jp_SignUp;
     private javax.swing.JPanel jp_ToLogin;
@@ -758,6 +804,8 @@ public class ClientStartView extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_SignIn;
     private javax.swing.JPasswordField pwd_PasswordJU;
     private javax.swing.JPasswordField pwd_PasswordSI;
+    private javax.swing.JRadioButton rd_Female;
+    private javax.swing.JRadioButton rd_Male;
     private javax.swing.JTextField txt_EmailJU;
     private javax.swing.JTextField txt_PasswordJU;
     private javax.swing.JTextField txt_PasswordSI;
