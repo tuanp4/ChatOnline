@@ -40,14 +40,17 @@ public class AccountInfoView extends javax.swing.JFrame {
         this.clientMainView = clientMainView;
         this.setTitle("User account: " + user.getUsername());
         initComponents();
-        displayUserInfo();
+        displayAvatar();
+        displayStaticInfo();
+        displayFormInfo();
     }
 
     public void returnInfo(User user) {
-        this.dispose();
+        this.user = user;
         clientMainView.setUser(user);
-        clientMainView.displayUserInfo(user);
-        clientMainView.showMessage("your information has been updated.");
+        clientMainView.displayName(user);
+        clientMainView.displayDescription(user);
+        showMessage("your information has been updated.");
     }
 
     public User getUserChangedInfo() {
@@ -60,7 +63,16 @@ public class AccountInfoView extends javax.swing.JFrame {
         return model;
     }
 
-    public void displayUserInfo() {
+    public void displayStaticInfo() {
+        txt_Username.setText(user.getUsername());
+        if (user.getGender() == 0) {
+            txt_Gender.setText("Male");
+        } else if (user.getGender() == 1) {
+            txt_Gender.setText("Female");
+        }
+    }
+
+    public void displayAvatar() {
         try {
             String avatar_path = file_path + "default_avatar.jpg";
             if (user.getAvatar_path() != null) {
@@ -71,20 +83,17 @@ public class AccountInfoView extends javax.swing.JFrame {
             ImageIcon icon = new ImageIcon(img_rs);
             lbl_Avatar.setText("");
             lbl_Avatar.setIcon(icon);
-            txt_Username.setText(user.getUsername());
-            if (user.getGender() == 0) {
-                txt_Gender.setText("Male");
-            } else if (user.getGender() == 1) {
-                txt_Gender.setText("Female");
-            }
-            if (user.getDisplay_name() != null && !user.getDisplay_name().equals("")) {
-                txt_Display_name.setText(user.getDisplay_name());
-            }
-            txt_Email.setText(user.getEmail());
-            if (user.getPhone_number() != null && !user.getPhone_number().equals("")) {
-                txt_Phone_number.setText(user.getPhone_number());
-            }
         } catch (IOException ex) {
+        }
+    }
+
+    public void displayFormInfo() {
+        if (user.getDisplay_name() != null && !user.getDisplay_name().equals("")) {
+            txt_Display_name.setText(user.getDisplay_name());
+        }
+        txt_Email.setText(user.getEmail());
+        if (user.getPhone_number() != null && !user.getPhone_number().equals("")) {
+            txt_Phone_number.setText(user.getPhone_number());
         }
     }
 
@@ -120,7 +129,7 @@ public class AccountInfoView extends javax.swing.JFrame {
         lbl_ForGender = new javax.swing.JLabel();
         txt_Gender = new javax.swing.JLabel();
         jp_ChangeAvatar = new javax.swing.JPanel();
-        btn_Cancel1 = new javax.swing.JLabel();
+        btn_ChangeAvatar = new javax.swing.JLabel();
         jp_Form = new javax.swing.JPanel() {
             @Override
             protected void paintComponent(Graphics grphcs) {
@@ -183,23 +192,23 @@ public class AccountInfoView extends javax.swing.JFrame {
         jp_ChangeAvatar.setMaximumSize(new java.awt.Dimension(75, 28));
         jp_ChangeAvatar.setMinimumSize(new java.awt.Dimension(75, 28));
 
-        btn_Cancel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btn_Cancel1.setForeground(new java.awt.Color(255, 255, 255));
-        btn_Cancel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btn_Cancel1.setText("Change Avatar");
-        btn_Cancel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
-        btn_Cancel1.setMaximumSize(new java.awt.Dimension(75, 25));
-        btn_Cancel1.setMinimumSize(new java.awt.Dimension(75, 25));
-        btn_Cancel1.setPreferredSize(new java.awt.Dimension(75, 25));
-        btn_Cancel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn_ChangeAvatar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btn_ChangeAvatar.setForeground(new java.awt.Color(255, 255, 255));
+        btn_ChangeAvatar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_ChangeAvatar.setText("Change Avatar");
+        btn_ChangeAvatar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+        btn_ChangeAvatar.setMaximumSize(new java.awt.Dimension(75, 25));
+        btn_ChangeAvatar.setMinimumSize(new java.awt.Dimension(75, 25));
+        btn_ChangeAvatar.setPreferredSize(new java.awt.Dimension(75, 25));
+        btn_ChangeAvatar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btn_Cancel1MouseClicked(evt);
+                btn_ChangeAvatarMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_Cancel1MouseEntered(evt);
+                btn_ChangeAvatarMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_Cancel1MouseExited(evt);
+                btn_ChangeAvatarMouseExited(evt);
             }
         });
 
@@ -207,11 +216,11 @@ public class AccountInfoView extends javax.swing.JFrame {
         jp_ChangeAvatar.setLayout(jp_ChangeAvatarLayout);
         jp_ChangeAvatarLayout.setHorizontalGroup(
             jp_ChangeAvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btn_Cancel1, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+            .addComponent(btn_ChangeAvatar, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
         );
         jp_ChangeAvatarLayout.setVerticalGroup(
             jp_ChangeAvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btn_Cancel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btn_ChangeAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         javax.swing.GroupLayout jp_BasicLayout = new javax.swing.GroupLayout(jp_Basic);
@@ -255,29 +264,29 @@ public class AccountInfoView extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        lbl_ForDisplay_name.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_ForDisplay_name.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lbl_ForDisplay_name.setForeground(java.awt.Color.yellow);
         lbl_ForDisplay_name.setText("Display name:");
 
-        txt_Display_name.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
-        txt_Display_name.setForeground(new java.awt.Color(153, 153, 153));
-        txt_Display_name.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(153, 0, 153), new java.awt.Color(153, 0, 153), new java.awt.Color(153, 0, 153), new java.awt.Color(153, 0, 153)));
+        txt_Display_name.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txt_Display_name.setForeground(new java.awt.Color(51, 51, 51));
+        txt_Display_name.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
 
-        lbl_ForEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_ForEmail.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lbl_ForEmail.setForeground(java.awt.Color.yellow);
         lbl_ForEmail.setText("Email:");
 
-        txt_Email.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
-        txt_Email.setForeground(new java.awt.Color(153, 153, 153));
-        txt_Email.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(153, 0, 153), new java.awt.Color(153, 0, 153), new java.awt.Color(153, 0, 153), new java.awt.Color(153, 0, 153)));
+        txt_Email.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txt_Email.setForeground(new java.awt.Color(51, 51, 51));
+        txt_Email.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
 
-        lbl_ForPhone_number.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_ForPhone_number.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lbl_ForPhone_number.setForeground(java.awt.Color.yellow);
         lbl_ForPhone_number.setText("Phone:");
 
-        txt_Phone_number.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
-        txt_Phone_number.setForeground(new java.awt.Color(153, 153, 153));
-        txt_Phone_number.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(153, 0, 153), new java.awt.Color(153, 0, 153), new java.awt.Color(153, 0, 153), new java.awt.Color(153, 0, 153)));
+        txt_Phone_number.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txt_Phone_number.setForeground(new java.awt.Color(51, 51, 51));
+        txt_Phone_number.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
 
         jp_Action.setOpaque(false);
 
@@ -371,7 +380,7 @@ public class AccountInfoView extends javax.swing.JFrame {
                 .addComponent(jp_Save, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jp_Cancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jp_FormLayout = new javax.swing.GroupLayout(jp_Form);
@@ -387,7 +396,7 @@ public class AccountInfoView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jp_FormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txt_Phone_number)
-                    .addComponent(txt_Display_name, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                    .addComponent(txt_Display_name, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                     .addComponent(txt_Email))
                 .addGap(22, 22, 22)
                 .addComponent(jp_Action, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -411,7 +420,7 @@ public class AccountInfoView extends javax.swing.JFrame {
                         .addGroup(jp_FormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_ForPhone_number)
                             .addComponent(txt_Phone_number, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 10, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -444,19 +453,19 @@ public class AccountInfoView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_Cancel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_Cancel1MouseClicked
+    private void btn_ChangeAvatarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ChangeAvatarMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_btn_Cancel1MouseClicked
+    }//GEN-LAST:event_btn_ChangeAvatarMouseClicked
 
-    private void btn_Cancel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_Cancel1MouseEntered
+    private void btn_ChangeAvatarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ChangeAvatarMouseEntered
         // TODO add your handling code here:
         jp_ChangeAvatar.setBackground(jp_ChangeAvatar.getBackground().brighter());
-    }//GEN-LAST:event_btn_Cancel1MouseEntered
+    }//GEN-LAST:event_btn_ChangeAvatarMouseEntered
 
-    private void btn_Cancel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_Cancel1MouseExited
+    private void btn_ChangeAvatarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ChangeAvatarMouseExited
         // TODO add your handling code here:
         jp_ChangeAvatar.setBackground(new Color(93, 53, 176));
-    }//GEN-LAST:event_btn_Cancel1MouseExited
+    }//GEN-LAST:event_btn_ChangeAvatarMouseExited
 
     private void btn_SaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SaveMouseClicked
         // TODO add your handling code here:
@@ -483,6 +492,7 @@ public class AccountInfoView extends javax.swing.JFrame {
 
     private void btn_CancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_CancelMouseClicked
         // TODO add your handling code here:
+        displayFormInfo();
     }//GEN-LAST:event_btn_CancelMouseClicked
 
     private void btn_CancelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_CancelMouseEntered
@@ -527,7 +537,8 @@ public class AccountInfoView extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 User user = new User();
-//                new AccountInfoView(user).setVisible(true);
+                ClientMainView clientMainView = new ClientMainView(user);
+                new AccountInfoView(user, clientMainView).setVisible(true);
             }
         });
     }
@@ -535,7 +546,7 @@ public class AccountInfoView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JP_Main;
     private javax.swing.JLabel btn_Cancel;
-    private javax.swing.JLabel btn_Cancel1;
+    private javax.swing.JLabel btn_ChangeAvatar;
     private javax.swing.JLabel btn_Save;
     private javax.swing.JPanel jp_Action;
     private javax.swing.JPanel jp_Basic;

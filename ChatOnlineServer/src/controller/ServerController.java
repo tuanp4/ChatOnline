@@ -40,7 +40,7 @@ public class ServerController {
     }
 
     private void getDBConnection(String dbName, String username, String password) {
-        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
+        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName + "?useUnicode=true&characterEncoding=utf8";
         String dbClass = "com.mysql.jdbc.Driver";
         try {
             Class.forName(dbClass);

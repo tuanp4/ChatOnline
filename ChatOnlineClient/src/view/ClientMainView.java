@@ -46,7 +46,10 @@ public class ClientMainView extends javax.swing.JFrame {
     public ClientMainView(User user) {
         this.user = user;
         initComponents();
-        displayUserInfo(user);
+        displayAvatar(user);
+        displayStatus(user);
+        displayName(user);
+        displayDescription(user);
         this.setSize(400, GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
         this.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this.getWidth(), 0);
         lbl_Avatar.requestFocusInWindow();
@@ -58,7 +61,7 @@ public class ClientMainView extends javax.swing.JFrame {
         myAccountInfo.setVisible(true);
     }
 
-    public void displayUserInfo(User user) {
+    public void displayAvatar(User user) {
         try {
             String avatar_path = file_path + "default_avatar.jpg";
             if (user.getAvatar_path() != null) {
@@ -102,6 +105,50 @@ public class ClientMainView extends javax.swing.JFrame {
                 txt_Description.setText("Hey, tell every one what do you think... ?");
             }
         } catch (IOException ex) {
+        }
+    }
+
+    public void displayStatus(User user) {
+        try {
+            String status_path = file_path;
+            int temp = user.getStatus();
+            switch (temp) {
+                case 0:
+                    status_path += "online-icon.png";
+                    break;
+                case 1:
+                    status_path += "away-icon.png";
+                    break;
+                case 2:
+                    status_path += "busy-icon.png";
+                    break;
+                case 3:
+                    status_path += "invisible-icon.png";
+                    break;
+                case 4:
+                    status_path += "offline-icon.png";
+                    break;
+            }
+            BufferedImage status = ImageIO.read(new File(status_path));
+            ImageIcon status_img = new ImageIcon(status);
+            lbl_DisplayName.setIcon(status_img);
+        } catch (IOException ex) {
+        }
+    }
+
+    public void displayName(User user) {
+        if (user.getDisplay_name() != null && !user.getDisplay_name().equals("")) {
+            lbl_DisplayName.setText(user.getDisplay_name());
+        } else {
+            lbl_DisplayName.setText(user.getUsername());
+        }
+    }
+
+    public void displayDescription(User user) {
+        if (user.getDescription() != null && !user.getDescription().equals("")) {
+            txt_Description.setText(user.getDescription());
+        } else {
+            txt_Description.setText("Hey, tell every one what do you think... ?");
         }
     }
 
@@ -187,7 +234,7 @@ public class ClientMainView extends javax.swing.JFrame {
         txt_Description.setForeground(new java.awt.Color(153, 153, 153));
         txt_Description.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txt_Description.setText("Hey, tell every one what do you think... ?");
-        txt_Description.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(153, 0, 153), new java.awt.Color(153, 0, 153), new java.awt.Color(153, 0, 153), new java.awt.Color(153, 0, 153)));
+        txt_Description.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
 
         javax.swing.GroupLayout JP_InfoLayout = new javax.swing.GroupLayout(JP_Info);
         JP_Info.setLayout(JP_InfoLayout);
