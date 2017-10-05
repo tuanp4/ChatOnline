@@ -87,6 +87,9 @@ public class ServerController {
                 if (user.getAction().equals("signUp")) {
                     oos.writeObject(userController.signUpUser(user));
                 }
+                if (user.getAction().equals("changeInfo")) {
+                    oos.writeObject(userController.changeUserInfo(user));
+                }
             }
         } catch (Exception e) {
             view.showMessage(e.toString());

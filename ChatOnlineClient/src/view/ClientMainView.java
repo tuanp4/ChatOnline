@@ -5,6 +5,7 @@
  */
 package view;
 
+import controller.UserController;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import model.*;
 
 /**
@@ -26,6 +28,8 @@ import model.*;
 public class ClientMainView extends javax.swing.JFrame {
 
     private final String file_path = "file/default/";
+
+    UserController userController = new UserController(this);
     private final User user;
 
     /**
@@ -34,74 +38,67 @@ public class ClientMainView extends javax.swing.JFrame {
     public ClientMainView(User user) {
         this.user = user;
         initComponents();
-        displayAvatar();
-        displayName();
-        displayDescription();
+        displayUserInfo();
         this.setSize(400, GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
         this.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this.getWidth(), 0);
         lbl_Avatar.requestFocusInWindow();
     }
 
     public void openAccountInfo() {
-        AccountInfo accountInfo = new AccountInfo(user);
+        AccountInfoView accountInfo = new AccountInfoView(user);
         accountInfo.setLocationRelativeTo(this);
         accountInfo.setVisible(true);
     }
 
-    public void displayAvatar() {
+    public void displayUserInfo() {
         try {
             String avatar_path = file_path + "default_avatar.jpg";
             if (user.getAvatar_path() != null) {
                 avatar_path = user.getAvatar_path();
             }
-            BufferedImage img = ImageIO.read(new File(avatar_path));
-            Image img_rs = img.getScaledInstance(78, 78, Image.SCALE_SMOOTH);
-            ImageIcon icon = new ImageIcon(img_rs);
+            BufferedImage avatar = ImageIO.read(new File(avatar_path));
+            Image avatar_rs = avatar.getScaledInstance(78, 78, Image.SCALE_SMOOTH);
+            ImageIcon avatar_img = new ImageIcon(avatar_rs);
             lbl_Avatar.setText("");
-            lbl_Avatar.setIcon(icon);
-        } catch (IOException ex) {
-        }
-    }
-
-    public void displayName() {
-        try {
-            String status_img = file_path;
-            int status = user.getStatus();
-            switch (status) {
+            lbl_Avatar.setIcon(avatar_img);
+            String status_path = file_path;
+            int temp = user.getStatus();
+            switch (temp) {
                 case 0:
-                    status_img += "online-icon.png";
+                    status_path += "online-icon.png";
                     break;
                 case 1:
-                    status_img += "away-icon.png";
+                    status_path += "away-icon.png";
                     break;
                 case 2:
-                    status_img += "busy-icon.png";
+                    status_path += "busy-icon.png";
                     break;
                 case 3:
-                    status_img += "invisible-icon.png";
+                    status_path += "invisible-icon.png";
                     break;
                 case 4:
-                    status_img += "offline-icon.png";
+                    status_path += "offline-icon.png";
                     break;
             }
-            BufferedImage img = ImageIO.read(new File(status_img));
-            ImageIcon icon = new ImageIcon(img);
-            lbl_DisplayName.setIcon(icon);
+            BufferedImage status = ImageIO.read(new File(status_path));
+            ImageIcon status_img = new ImageIcon(status);
+            lbl_DisplayName.setIcon(status_img);
             if (user.getDisplay_name() != null && !user.getDisplay_name().equals("")) {
                 lbl_DisplayName.setText(user.getDisplay_name());
             } else {
                 lbl_DisplayName.setText(user.getUsername());
             }
+            if (user.getDescription() != null && !user.getDescription().equals("")) {
+                txt_Description.setText(user.getDescription());
+            } else {
+                txt_Description.setText("Hey, tell every one what do you think... ?");
+            }
         } catch (IOException ex) {
         }
     }
 
-    public void displayDescription() {
-        if (user.getDescription() != null && !user.getDescription().equals("")) {
-            txt_Description.setText(user.getDescription());
-        } else {
-            txt_Description.setText("Hey, tell every one what do you think... ?");
-        }
+    public void showMessage(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
     }
 
     /**

@@ -9,7 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import model.User;
-import view.ClientStartView;
+import view.*;
 
 /**
  *
@@ -17,17 +17,27 @@ import view.ClientStartView;
  */
 public class UserController {
 
-    private ClientStartView view;
+    private ClientStartView clientStartView;
+    private ClientMainView clientMainView;
+    private AccountInfoView accountInfoView;
     private String serverHost = "localhost";
     private int serverPort = 8888;
 
-    public UserController(ClientStartView view) {
-        this.view = view;
+    public UserController(ClientStartView clientStartView) {
+        this.clientStartView = clientStartView;
+    }
+
+    public UserController(ClientMainView clientMainView) {
+        this.clientMainView = clientMainView;
+    }
+
+    public UserController(AccountInfoView accountInfoView) {
+        this.accountInfoView = accountInfoView;
     }
 
     public void login() {
         try {
-            User user = view.getUserLogin();
+            User user = clientStartView.getUserLogin();
             user.setAction("login");
             Socket mySocket = new Socket(serverHost, serverPort);
             ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
@@ -36,19 +46,19 @@ public class UserController {
             Object o = ois.readObject();
             User result = (User) o;
             if (result == null) {
-                view.showMessage("Invalid Username and/or Password!");
+                clientStartView.showMessage("Invalid Username and/or Password!");
             } else {
-                view.toMainView(result);
+                clientStartView.toMainView(result);
             }
             mySocket.close();
         } catch (Exception ex) {
-            view.showMessage(ex.getStackTrace().toString());
+            clientStartView.showMessage(ex.getStackTrace().toString());
         }
     }
 
     public void signUp() {
         try {
-            User user = view.getUserSignUp();
+            User user = clientStartView.getUserSignUp();
             user.setAction("signUp");
             Socket mySocket = new Socket(serverHost, serverPort);
             ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
@@ -56,15 +66,39 @@ public class UserController {
             ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             Boolean result = (Boolean) o;
-            if (result.equals(false)) {
-                view.showMessage("Username and/or Email already exist!");
+            if (!result) {
+                clientStartView.showMessage("Username and/or Email already exist!");
             } else {
-                view.switchToLogin();
-                view.showMessage("Register successfully. Try login now!");
+                clientStartView.switchToLogin();
+                clientStartView.showMessage("Register successfully. Try login now!");
             }
             mySocket.close();
         } catch (Exception ex) {
-            view.showMessage(ex.getStackTrace().toString());
+            clientStartView.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
+    public void changeInfo() {
+        try {
+            User user = accountInfoView.getUserChangedInfo();
+            user.setAction("changeInfo");
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(user);
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            User result = (User) o;
+            if (result == null) {
+                accountInfoView.showMessage("Some error occurred. Please try again!");
+            } else {
+//                accountInfoView.dispose();
+//                clientMainView.showMessage("your information has been updated.");
+                clientMainView.dispose();
+
+            }
+            mySocket.close();
+        } catch (Exception ex) {
+            accountInfoView.showMessage(ex.getStackTrace().toString());
         }
     }
 

@@ -577,7 +577,7 @@ public class ClientStartView extends javax.swing.JFrame {
 
     private void btn_LoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_LoginMouseEntered
         // TODO add your handling code here:
-        jp_Login.setBackground(new Color(100, 100, 135));
+        jp_Login.setBackground(jp_Login.getBackground().brighter());
     }//GEN-LAST:event_btn_LoginMouseEntered
 
     private void btn_LoginMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_LoginMouseExited
@@ -671,7 +671,7 @@ public class ClientStartView extends javax.swing.JFrame {
 
     private void btn_SignUpMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SignUpMouseEntered
         // TODO add your handling code here:
-        jp_SignUp.setBackground(new Color(100, 100, 135));
+        jp_SignUp.setBackground(jp_SignUp.getBackground().brighter());
     }//GEN-LAST:event_btn_SignUpMouseEntered
 
     private void btn_SignUpMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SignUpMouseExited
@@ -716,7 +716,7 @@ public class ClientStartView extends javax.swing.JFrame {
 
     private void btn_ToSignUpMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ToSignUpMouseEntered
         // TODO add your handling code here:
-        jp_ToSignUp.setBackground(new Color(100, 100, 135));
+        jp_ToSignUp.setBackground(jp_ToSignUp.getBackground().brighter());
     }//GEN-LAST:event_btn_ToSignUpMouseEntered
 
     private void btn_ToSignUpMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ToSignUpMouseExited
@@ -731,7 +731,7 @@ public class ClientStartView extends javax.swing.JFrame {
 
     private void btn_ToLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ToLoginMouseEntered
         // TODO add your handling code here:
-        jp_ToLogin.setBackground(new Color(100, 100, 135));
+        jp_ToLogin.setBackground(jp_ToLogin.getBackground().brighter());
     }//GEN-LAST:event_btn_ToLoginMouseEntered
 
     private void btn_ToLoginMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ToLoginMouseExited

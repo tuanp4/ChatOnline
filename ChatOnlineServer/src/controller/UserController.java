@@ -21,7 +21,7 @@ public class UserController {
     }
     
     public User checkUserLogin(User user) {
-        User userDAO = dao.getUserByUsername(user.getUsername());
+        User userDAO = dao.getUserByUsername(user);
         if (userDAO == null) {
             return null;
         }
@@ -33,7 +33,7 @@ public class UserController {
     }
     
     public boolean signUpUser(User user) {
-        User userDAO = dao.getUserByUsernameOrEmail(user.getUsername(), user.getEmail());
+        User userDAO = dao.getUserByUsernameOrEmail(user);
         if (userDAO != null) {
             return false;
         }
@@ -42,4 +42,12 @@ public class UserController {
         }
         return false;
     }
+    
+    public User changeUserInfo(User user) {
+        if (dao.changeUserInfo(user)) {
+            return dao.getUserById(user);
+        }
+        return null;
+    }
+    
 }
