@@ -34,6 +34,7 @@ public class ClientMainView extends javax.swing.JFrame {
 
     private UserController userController = new UserController(this);
     private User user;
+    private int status;
 
     public User getUser() {
         return user;
@@ -62,10 +63,28 @@ public class ClientMainView extends javax.swing.JFrame {
         lbl_Avatar.requestFocusInWindow();
     }
 
-    public void openAccountInfo() {
+    public void returnStatus(User user) {
+        this.user = user;
+        displayStatus(user);
+    }
+
+    public User getUserChangedStatus() {
+        User model = new User();
+        model.setId(this.user.getId());
+        model.setStatus(status);
+        return model;
+    }
+
+    public void openAccountInfoView() {
         AccountInfoView myAccountInfo = new AccountInfoView(user, this);
         myAccountInfo.setLocationRelativeTo(this);
         myAccountInfo.setVisible(true);
+    }
+
+    public void openChangePassWordView() {
+        ChangePasswordView changePasswordView = new ChangePasswordView(user, this);
+        changePasswordView.setLocationRelativeTo(this);
+        changePasswordView.setVisible(true);
     }
 
     public void displayAvatar(User user) {
@@ -241,7 +260,7 @@ public class ClientMainView extends javax.swing.JFrame {
         txt_Description.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
         txt_Description.setForeground(new java.awt.Color(153, 153, 153));
         txt_Description.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txt_Description.setText("Hey, tell every one what do you think... ?");
+        txt_Description.setText(" Hey, tell every one what do you think... ?");
         txt_Description.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
 
         javax.swing.GroupLayout JP_InfoLayout = new javax.swing.GroupLayout(JP_Info);
@@ -313,27 +332,57 @@ public class ClientMainView extends javax.swing.JFrame {
 
         mn_StatusOnline.setIcon(new javax.swing.ImageIcon(file_path + "online-icon.png"));
         mn_StatusOnline.setText("Online");
+        mn_StatusOnline.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_StatusOnlineActionPerformed(evt);
+            }
+        });
         mn_Status.add(mn_StatusOnline);
 
         mn_StatusAway.setIcon(new javax.swing.ImageIcon(file_path + "away-icon.png"));
         mn_StatusAway.setText("Away");
+        mn_StatusAway.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_StatusAwayActionPerformed(evt);
+            }
+        });
         mn_Status.add(mn_StatusAway);
 
         mn_StatusBusy.setIcon(new javax.swing.ImageIcon(file_path + "busy-icon.png"));
         mn_StatusBusy.setText("Busy");
+        mn_StatusBusy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_StatusBusyActionPerformed(evt);
+            }
+        });
         mn_Status.add(mn_StatusBusy);
 
         mn_StatusInvisble.setIcon(new javax.swing.ImageIcon(file_path + "invisible-icon.png"));
         mn_StatusInvisble.setText("Invisible");
+        mn_StatusInvisble.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_StatusInvisbleActionPerformed(evt);
+            }
+        });
         mn_Status.add(mn_StatusInvisble);
 
         mn_StatusOffline.setIcon(new javax.swing.ImageIcon(file_path + "offline-icon.png"));
         mn_StatusOffline.setText("Offline");
+        mn_StatusOffline.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_StatusOfflineActionPerformed(evt);
+            }
+        });
         mn_Status.add(mn_StatusOffline);
 
         mn_MyProfile.add(mn_Status);
 
         mn_ChangePassword.setText("Change Password");
+        mn_ChangePassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_ChangePasswordActionPerformed(evt);
+            }
+        });
         mn_MyProfile.add(mn_ChangePassword);
         mn_MyProfile.add(jSeparator1);
 
@@ -375,8 +424,43 @@ public class ClientMainView extends javax.swing.JFrame {
 
     private void mn_ChangeAccountInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_ChangeAccountInfoActionPerformed
         // TODO add your handling code here:
-        openAccountInfo();
+        openAccountInfoView();
     }//GEN-LAST:event_mn_ChangeAccountInfoActionPerformed
+
+    private void mn_StatusOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_StatusOnlineActionPerformed
+        // TODO add your handling code here:
+        this.status = 0;
+        userController.changeStatus();
+    }//GEN-LAST:event_mn_StatusOnlineActionPerformed
+
+    private void mn_StatusAwayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_StatusAwayActionPerformed
+        // TODO add your handling code here:
+        this.status = 1;
+        userController.changeStatus();
+    }//GEN-LAST:event_mn_StatusAwayActionPerformed
+
+    private void mn_StatusBusyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_StatusBusyActionPerformed
+        // TODO add your handling code here:
+        this.status = 2;
+        userController.changeStatus();
+    }//GEN-LAST:event_mn_StatusBusyActionPerformed
+
+    private void mn_StatusInvisbleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_StatusInvisbleActionPerformed
+        // TODO add your handling code here:
+        this.status = 3;
+        userController.changeStatus();
+    }//GEN-LAST:event_mn_StatusInvisbleActionPerformed
+
+    private void mn_StatusOfflineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_StatusOfflineActionPerformed
+        // TODO add your handling code here:
+        this.status = 4;
+        userController.changeStatus();
+    }//GEN-LAST:event_mn_StatusOfflineActionPerformed
+
+    private void mn_ChangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_ChangePasswordActionPerformed
+        // TODO add your handling code here:
+        openChangePassWordView();
+    }//GEN-LAST:event_mn_ChangePasswordActionPerformed
 
     /**
      * @param args the command line arguments

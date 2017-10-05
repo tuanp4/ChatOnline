@@ -66,7 +66,7 @@ public class ClientStartView extends javax.swing.JFrame {
     public User getUserLogin() {
         User model = new User();
         model.setUsername(txt_UsernameSI.getText().trim());
-        model.setPassword_hash(SHA_1(new String(pwd_PasswordSI.getPassword()).trim()));
+        model.setPassword_hash(SHA_1(new String(pwd_PasswordSI.getPassword())));
         txt_UsernameSI.requestFocusInWindow();
         return model;
     }
@@ -75,7 +75,7 @@ public class ClientStartView extends javax.swing.JFrame {
         User model = new User();
         model.setUsername(txt_UsernameJU.getText().trim());
         model.setEmail(txt_EmailJU.getText().trim());
-        model.setPassword_hash(SHA_1(new String(pwd_PasswordJU.getPassword()).trim()));
+        model.setPassword_hash(SHA_1(new String(pwd_PasswordJU.getPassword())));
         if (rd_Male.isSelected()) {
             model.setGender(0);
         } else if (rd_Female.isSelected()) {
@@ -538,7 +538,7 @@ public class ClientStartView extends javax.swing.JFrame {
 
     private void txt_UsernameSIFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_UsernameSIFocusLost
         // TODO add your handling code here:
-        if (txt_UsernameSI.getText().isEmpty()) {
+        if (txt_UsernameSI.getText().trim().isEmpty()) {
             txt_UsernameSI.setText(" Username");
             txt_UsernameSI.setForeground(Color.LIGHT_GRAY);
         }
@@ -592,7 +592,7 @@ public class ClientStartView extends javax.swing.JFrame {
 
     private void btn_LoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_LoginMouseClicked
         // TODO add your handling code here:
-        if (txt_UsernameSI.getText().equals("") || pwd_PasswordSI.getPassword().length == 0) {
+        if (txt_UsernameSI.getText().trim().equals("") || pwd_PasswordSI.getPassword().length == 0) {
             showMessage("please fill the required fields (username, password).");
         } else {
             userController.login();
@@ -602,7 +602,7 @@ public class ClientStartView extends javax.swing.JFrame {
     private void pwd_PasswordSIKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pwd_PasswordSIKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (txt_UsernameSI.getText().equals("") || pwd_PasswordSI.getPassword().length == 0) {
+            if (txt_UsernameSI.getText().trim().equals("") || pwd_PasswordSI.getPassword().length == 0) {
                 showMessage("please fill the required fields (username, password).");
             } else {
                 userController.login();
@@ -621,7 +621,7 @@ public class ClientStartView extends javax.swing.JFrame {
 
     private void txt_UsernameJUFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_UsernameJUFocusLost
         // TODO add your handling code here:
-        if (txt_UsernameJU.getText().isEmpty()) {
+        if (txt_UsernameJU.getText().trim().isEmpty()) {
             txt_UsernameJU.setText(" Username");
             txt_UsernameJU.setForeground(Color.LIGHT_GRAY);
         }
@@ -661,11 +661,11 @@ public class ClientStartView extends javax.swing.JFrame {
 
     private void btn_SignUpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SignUpMouseClicked
         // TODO add your handling code here:
-        if (txt_UsernameJU.getText().equals("") || txt_EmailJU.getText().equals("") || pwd_PasswordJU.getPassword().length == 0) {
+        if (txt_UsernameJU.getText().trim().equals("") || txt_EmailJU.getText().trim().equals("") || pwd_PasswordJU.getPassword().length == 0) {
             showMessage("please fill the required fields (username, email, password).");
-        } else if (!txt_UsernameJU.getText().matches("^[\\w-]{6,15}$")) {
+        } else if (!txt_UsernameJU.getText().trim().matches("^[\\w-]{6,15}$")) {
             showMessage("Username must contain 6 to 15 characters. Only letter, number and underscore are allowed!");
-        } else if (!txt_EmailJU.getText().matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
+        } else if (!txt_EmailJU.getText().trim().matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
             showMessage("Invalid email!");
         } else if (pwd_PasswordJU.getPassword().length < 6) {
             showMessage("Password must contain at least 6 characters!");
@@ -708,7 +708,7 @@ public class ClientStartView extends javax.swing.JFrame {
 
     private void txt_EmailJUFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_EmailJUFocusLost
         // TODO add your handling code here:
-        if (txt_EmailJU.getText().isEmpty()) {
+        if (txt_EmailJU.getText().trim().isEmpty()) {
             txt_EmailJU.setText(" Email");
             txt_EmailJU.setForeground(Color.LIGHT_GRAY);
         }

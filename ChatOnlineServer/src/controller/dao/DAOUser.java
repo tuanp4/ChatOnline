@@ -155,4 +155,32 @@ public class DAOUser extends IDAO {
         }
     }
 
+    public boolean changeUserStatus(User user) {
+        try {
+            String sql = "UPDATE user SET status = ? WHERE id = ?";
+            this.preStatement = this.conn.prepareStatement(sql);
+            this.preStatement.setInt(1, user.getStatus());
+            this.preStatement.setInt(2, user.getId());
+            int check = this.preStatement.executeUpdate();
+            return (check != 0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean changeUserPassword(User user) {
+        try {
+            String sql = "UPDATE user SET password_hash = ? WHERE id = ?";
+            this.preStatement = this.conn.prepareStatement(sql);
+            this.preStatement.setString(1, user.getPassword_hash());
+            this.preStatement.setInt(2, user.getId());
+            int check = this.preStatement.executeUpdate();
+            return (check != 0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

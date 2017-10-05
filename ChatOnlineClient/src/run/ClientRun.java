@@ -1,6 +1,5 @@
 package run;
 
-
 import controller.UserController;
 import controller.UserController;
 import view.ClientStartView;
@@ -10,16 +9,16 @@ import view.ClientStartView;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Valdez
  */
-public class ClientRun {  
+public class ClientRun {
 
     public static void main(String[] args) {
         ClientStartView clientStartView = new ClientStartView();
         UserController userController = new UserController(clientStartView);
         clientStartView.setVisible(true);
     }
+    
 }

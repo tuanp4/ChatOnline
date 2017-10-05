@@ -13,7 +13,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import javax.imageio.ImageIO;
@@ -36,6 +39,7 @@ public class AccountInfoView extends javax.swing.JFrame {
     private UserController userController = new UserController(this);
     private ClientMainView clientMainView;
     private User user;
+    private String avatar_path;
 
     /**
      * Creates new form AccountInfo
@@ -54,6 +58,14 @@ public class AccountInfoView extends javax.swing.JFrame {
         displayFormInfo();
     }
 
+    public void returnAvatar(User user) {
+        this.user = user;
+        displayAvatar();
+        clientMainView.setUser(user);
+        clientMainView.displayAvatar(user);
+        showMessage("your avatar has been updated.");
+    }
+
     public void returnInfo(User user) {
         this.user = user;
         clientMainView.setUser(user);
@@ -62,12 +74,19 @@ public class AccountInfoView extends javax.swing.JFrame {
         showMessage("your information has been updated.");
     }
 
-    public void returnAvatar(User user) {
-        this.user = user;
-        displayAvatar();
-        clientMainView.setUser(user);
-        clientMainView.displayAvatar(user);
-        showMessage("your avatar has been updated.");
+    public User getUserChangedAvatar() throws FileNotFoundException, IOException {
+        User model = new User();
+        model.setId(this.user.getId());
+        model.setAvatarImageExtenstion(avatar_path.substring(avatar_path.lastIndexOf(".") + 1));
+        File fileSend = new File(avatar_path);
+        byte[] byteSend = new byte[(int) fileSend.length()];
+        FileInputStream fis = new FileInputStream(fileSend);
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        bis.read(byteSend, 0, byteSend.length);
+        model.setAvatarImageByte(byteSend);
+        fis.close();
+        bis.close();
+        return model;
     }
 
     public User getUserChangedInfo() {
@@ -481,7 +500,8 @@ public class AccountInfoView extends javax.swing.JFrame {
             if (fileDailog == JFileChooser.CANCEL_OPTION) {
                 showMessage("No file selected!");
             } else {
-                userController.changeAvatar(avatar_img.getPath(), user);
+                this.avatar_path = avatar_img.getPath();
+                userController.changeAvatar();
             }
         } catch (Exception ex) {
             showMessage("Invalid file format!");
@@ -500,14 +520,15 @@ public class AccountInfoView extends javax.swing.JFrame {
 
     private void btn_SaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SaveMouseClicked
         // TODO add your handling code here:
-        if (txt_Email.getText().equals("")) {
+        if (txt_Email.getText().trim().equals("")) {
             showMessage("please fill the required fields (email).");
-        } else if (!txt_Email.getText().matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
+        } else if (!txt_Email.getText().trim().matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
             showMessage("Invalid email!");
-        } else if (!txt_Phone_number.getText().equals("")) {
-            if (!txt_Phone_number.getText().matches("^\\+?\\d{1,3}?[- .]?\\(?(?:\\d{2,3})\\)?[- .]?\\d\\d\\d[- .]?\\d\\d\\d\\d$")) {
+        } else if (!txt_Phone_number.getText().trim().equals("")) {
+            if (!txt_Phone_number.getText().trim().matches("^\\+?\\d{1,3}?[- .]?\\(?(?:\\d{2,3})\\)?[- .]?\\d\\d\\d[- .]?\\d\\d\\d\\d$")) {
                 showMessage("Invalid phone number!");
             }
+            userController.changeInfo();
         } else {
             userController.changeInfo();
         }

@@ -24,6 +24,7 @@ public class UserController {
     private ClientStartView clientStartView;
     private ClientMainView clientMainView;
     private AccountInfoView accountInfoView;
+    private ChangePasswordView changePasswordView;
     private String serverHost = "localhost";
     private int serverPort = 8888;
 
@@ -37,6 +38,10 @@ public class UserController {
 
     public UserController(AccountInfoView accountInfoView) {
         this.accountInfoView = accountInfoView;
+    }
+
+    public UserController(ChangePasswordView changePasswordView) {
+        this.changePasswordView = changePasswordView;
     }
 
     public void login() {
@@ -103,18 +108,10 @@ public class UserController {
         }
     }
 
-    public void changeAvatar(String filePath, User user) {
+    public void changeAvatar() {
         try {
+            User user = accountInfoView.getUserChangedAvatar();
             user.setAction("changeAvatar");
-            user.setAvatarImageExtenstion(filePath.substring(filePath.lastIndexOf(".") + 1));
-            File fileSend = new File(filePath);
-            byte[] byteSend = new byte[(int) fileSend.length()];
-            FileInputStream fis = new FileInputStream(fileSend);
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            bis.read(byteSend, 0, byteSend.length);
-            user.setAvatarImageByte(byteSend);
-            fis.close();
-            bis.close();
             Socket mySocket = new Socket(serverHost, serverPort);
             ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(user);
@@ -125,6 +122,48 @@ public class UserController {
                 accountInfoView.showMessage("Some error occurred. Please try again!");
             } else {
                 accountInfoView.returnAvatar(result);
+            }
+            mySocket.close();
+        } catch (Exception ex) {
+            accountInfoView.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
+    public void changeStatus() {
+        try {
+            User user = clientMainView.getUserChangedStatus();
+            user.setAction("changeStatus");
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(user);
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            User result = (User) o;
+            if (result == null) {
+                clientMainView.showMessage("Some error occurred. Please try again!");
+            } else {
+                clientMainView.returnStatus(result);
+            }
+            mySocket.close();
+        } catch (Exception ex) {
+            accountInfoView.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
+    public void changePassword() {
+        try {
+            User user = changePasswordView.getUserNewPassword();
+            user.setAction("changePassword");
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(user);
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            User result = (User) o;
+            if (result == null) {
+                changePasswordView.showMessage("Some error occurred. Please try again!");
+            } else {
+                changePasswordView.returnNewPassword(result);
             }
             mySocket.close();
         } catch (Exception ex) {

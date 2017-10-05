@@ -98,4 +98,18 @@ public class UserController {
         }
     }
 
+    public User changeUserStatus(User user) {
+        if (dao.changeUserStatus(user)) {
+            return dao.getUserById(user);
+        }
+        return null;
+    }
+
+    public User changeUserPassword(User user) {
+        if (dao.changeUserPassword(user)) {
+            return dao.getUserById(user);
+        }
+        return null;
+    }
+    
 }
