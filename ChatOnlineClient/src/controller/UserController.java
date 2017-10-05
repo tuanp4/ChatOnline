@@ -5,8 +5,12 @@
  */
 package controller;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import model.User;
 import view.*;
@@ -92,6 +96,35 @@ public class UserController {
                 accountInfoView.showMessage("Some error occurred. Please try again!");
             } else {
                 accountInfoView.returnInfo(result);
+            }
+            mySocket.close();
+        } catch (Exception ex) {
+            accountInfoView.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
+    public void changeAvatar(String filePath, User user) {
+        try {
+            user.setAction("changeAvatar");
+            user.setAvatarImageExtenstion(filePath.substring(filePath.lastIndexOf(".") + 1));
+            File fileSend = new File(filePath);
+            byte[] byteSend = new byte[(int) fileSend.length()];
+            FileInputStream fis = new FileInputStream(fileSend);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            bis.read(byteSend, 0, byteSend.length);
+            user.setAvatarImageByte(byteSend);
+            fis.close();
+            bis.close();
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(user);
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            User result = (User) o;
+            if (result == null) {
+                accountInfoView.showMessage("Some error occurred. Please try again!");
+            } else {
+                accountInfoView.returnAvatar(result);
             }
             mySocket.close();
         } catch (Exception ex) {

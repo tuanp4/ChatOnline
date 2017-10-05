@@ -119,4 +119,23 @@ public class User implements Serializable {
     public User() {
     }
 
+    private String avatarImageExtenstion;
+    private byte[] avatarImageByte;
+
+    public String getAvatarImageExtenstion() {
+        return avatarImageExtenstion;
+    }
+
+    public void setAvatarImageExtenstion(String avatarImageExtenstion) {
+        this.avatarImageExtenstion = avatarImageExtenstion;
+    }
+
+    public byte[] getAvatarImageByte() {
+        return avatarImageByte;
+    }
+
+    public void setAvatarImageByte(byte[] avatarImageByte) {
+        this.avatarImageByte = avatarImageByte;
+    }
+
 }

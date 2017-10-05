@@ -141,4 +141,18 @@ public class DAOUser extends IDAO {
         }
     }
 
+    public boolean changeUserAvatar(User user, String avatar_path) {
+        try {
+            String sql = "UPDATE user SET avatar_path = ? WHERE id = ?";
+            this.preStatement = this.conn.prepareStatement(sql);
+            this.preStatement.setString(1, avatar_path);
+            this.preStatement.setInt(2, user.getId());
+            int check = this.preStatement.executeUpdate();
+            return (check != 0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

@@ -15,9 +15,13 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import model.User;
 
 /**
@@ -27,6 +31,7 @@ import model.User;
 public class AccountInfoView extends javax.swing.JFrame {
 
     private final String file_path = "file/default/";
+    private final String upload_domain = "http://uploads.chatonline.com";
 
     private UserController userController = new UserController(this);
     private ClientMainView clientMainView;
@@ -36,6 +41,10 @@ public class AccountInfoView extends javax.swing.JFrame {
      * Creates new form AccountInfo
      */
     public AccountInfoView(User user, ClientMainView clientMainView) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+        }
         this.user = user;
         this.clientMainView = clientMainView;
         this.setTitle("User account: " + user.getUsername());
@@ -51,6 +60,14 @@ public class AccountInfoView extends javax.swing.JFrame {
         clientMainView.displayName(user);
         clientMainView.displayDescription(user);
         showMessage("your information has been updated.");
+    }
+
+    public void returnAvatar(User user) {
+        this.user = user;
+        displayAvatar();
+        clientMainView.setUser(user);
+        clientMainView.displayAvatar(user);
+        showMessage("your avatar has been updated.");
     }
 
     public User getUserChangedInfo() {
@@ -74,12 +91,12 @@ public class AccountInfoView extends javax.swing.JFrame {
 
     public void displayAvatar() {
         try {
-            String avatar_path = file_path + "default_avatar.jpg";
+            BufferedImage avatar = ImageIO.read(new File(file_path + "default_avatar.jpg"));
             if (user.getAvatar_path() != null) {
-                avatar_path = user.getAvatar_path();
+                URL url = new URL(upload_domain + user.getAvatar_path());
+                avatar = ImageIO.read(url);
             }
-            BufferedImage img = ImageIO.read(new File(avatar_path));
-            Image img_rs = img.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+            Image img_rs = avatar.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
             ImageIcon icon = new ImageIcon(img_rs);
             lbl_Avatar.setText("");
             lbl_Avatar.setIcon(icon);
@@ -110,6 +127,7 @@ public class AccountInfoView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        JFileChooser = new javax.swing.JFileChooser();
         JP_Main = new javax.swing.JPanel();
         jp_Basic = new javax.swing.JPanel() {
             @Override
@@ -455,6 +473,19 @@ public class AccountInfoView extends javax.swing.JFrame {
 
     private void btn_ChangeAvatarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ChangeAvatarMouseClicked
         // TODO add your handling code here:
+        try {
+            int fileDailog = JFileChooser.showOpenDialog(this);
+            FileFilter imageFilter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());
+            JFileChooser.setFileFilter(imageFilter);
+            File avatar_img = JFileChooser.getSelectedFile();
+            if (fileDailog == JFileChooser.CANCEL_OPTION) {
+                showMessage("No file selected!");
+            } else {
+                userController.changeAvatar(avatar_img.getPath(), user);
+            }
+        } catch (Exception ex) {
+            showMessage("Invalid file format!");
+        }
     }//GEN-LAST:event_btn_ChangeAvatarMouseClicked
 
     private void btn_ChangeAvatarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ChangeAvatarMouseEntered
@@ -510,42 +541,42 @@ public class AccountInfoView extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AccountInfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AccountInfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AccountInfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AccountInfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                User user = new User();
-                ClientMainView clientMainView = new ClientMainView(user);
-                new AccountInfoView(user, clientMainView).setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(AccountInfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(AccountInfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(AccountInfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(AccountInfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                User user = new User();
+//                ClientMainView clientMainView = new ClientMainView(user);
+//                new AccountInfoView(user, clientMainView).setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFileChooser JFileChooser;
     private javax.swing.JPanel JP_Main;
     private javax.swing.JLabel btn_Cancel;
     private javax.swing.JLabel btn_ChangeAvatar;

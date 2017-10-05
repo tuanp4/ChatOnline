@@ -6,6 +6,14 @@
 package controller;
 
 import controller.dao.DAOUser;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import model.User;
 
 /**
@@ -18,6 +26,20 @@ public class UserController {
 
     public UserController(DAOUser dao) {
         this.dao = dao;
+    }
+
+    private String MD5(String input) {
+        try {
+            MessageDigest mDigest = MessageDigest.getInstance("MD5");
+            byte[] result = mDigest.digest(input.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < result.length; i++) {
+                sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException ex) {
+        }
+        return null;
     }
 
     public User checkUserLogin(User user) {
@@ -48,6 +70,32 @@ public class UserController {
             return dao.getUserById(user);
         }
         return null;
+    }
+
+    public User changeUserAvatar(User user) {
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH/");
+            String filePath = "/avatar/" + dateFormat.format(new Date());
+            String fileName = (MD5(Math.random() + "")).substring(0, 16) + "." + user.getAvatarImageExtenstion();
+            File fullPathFile = new File("upload" + filePath + fileName);
+            if (fullPathFile.exists()) {
+                fileName = System.currentTimeMillis() + "_" + fileName;
+                fullPathFile = new File("upload" + filePath + fileName);
+            }
+            fullPathFile.getParentFile().mkdirs();
+            byte[] byteReceive = user.getAvatarImageByte();
+            FileOutputStream fos = new FileOutputStream(fullPathFile);
+            BufferedOutputStream bos = new BufferedOutputStream(fos);
+            bos.write(byteReceive, 0, byteReceive.length);
+            fos.close();
+            bos.close();
+            if (dao.changeUserAvatar(user, filePath + fileName)) {
+                return dao.getUserById(user);
+            }
+            return null;
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
 }

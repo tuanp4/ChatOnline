@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `username` varchar(50) NOT NULL COMMENT 'tên đăng nhập',
   `password_hash` varchar(50) NOT NULL COMMENT 'mật khẩu (lưu dưới dạng mã hóa)',
   `display_name` varchar(50) DEFAULT NULL COMMENT 'tên hiển thị',
+  `gender` int(11) NOT NULL COMMENT 'giới tính',
   `avatar_path` varchar(250) DEFAULT NULL COMMENT 'ảnh đại diện',
   `email` varchar(50) DEFAULT NULL COMMENT 'địa chỉ mail',
   `phone_number` varchar(50) DEFAULT NULL COMMENT 'số điện thoại',
@@ -104,14 +105,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='người dùng';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='người dùng';
 
 -- Dumping data for table chat_online.user: ~3 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-REPLACE INTO `user` (`id`, `username`, `password_hash`, `display_name`, `avatar_path`, `email`, `phone_number`, `description`, `status`) VALUES
-	(1, 'tuanpham', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Phạm Mạnh Tuấn', 'D:/My Pictures/Anh de thiet ke/The fiery English alphabet, numbers and pictures/dreamstime_3538334.jpg', 'tuanpham@gmail.com', '0962627547', 'who?', 1),
-	(2, 'thangbui', '7c4a8d09ca3762af61e59520943dc26494f8941b', NULL, NULL, 'thangbui@gmail.com', NULL, NULL, 0),
-	(3, 'hangnguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', NULL, NULL, 'hangnguyen@gmail.com', NULL, NULL, 0);
+REPLACE INTO `user` (`id`, `username`, `password_hash`, `display_name`, `gender`, `avatar_path`, `email`, `phone_number`, `description`, `status`) VALUES
+	(1, 'tuanpham', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Phạm Mạnh Tuấn', 0, NULL, 'tuanpham@gmail.com', '0962627547', 'who?', 0),
+	(2, 'thangbui', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Bùi Đức Thắng', 0, NULL, 'thangbui@gmail.com', '', NULL, 0),
+	(3, 'hangnguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Thị Hằng', 1, NULL, 'hangnguyen@gmail.com', '', NULL, 0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

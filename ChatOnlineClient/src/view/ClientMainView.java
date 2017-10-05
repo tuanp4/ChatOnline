@@ -16,9 +16,11 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import model.*;
 
 /**
@@ -28,6 +30,7 @@ import model.*;
 public class ClientMainView extends javax.swing.JFrame {
 
     private final String file_path = "file/default/";
+    private final String upload_domain = "http://uploads.chatonline.com";
 
     private UserController userController = new UserController(this);
     private User user;
@@ -44,6 +47,10 @@ public class ClientMainView extends javax.swing.JFrame {
      * Creates new form JF_Main
      */
     public ClientMainView(User user) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+        }
         this.user = user;
         initComponents();
         displayAvatar(user);
@@ -63,11 +70,11 @@ public class ClientMainView extends javax.swing.JFrame {
 
     public void displayAvatar(User user) {
         try {
-            String avatar_path = file_path + "default_avatar.jpg";
+            BufferedImage avatar = ImageIO.read(new File(file_path + "default_avatar.jpg"));
             if (user.getAvatar_path() != null) {
-                avatar_path = user.getAvatar_path();
+                URL url = new URL(upload_domain + user.getAvatar_path());
+                avatar = ImageIO.read(url);
             }
-            BufferedImage avatar = ImageIO.read(new File(avatar_path));
             Image avatar_rs = avatar.getScaledInstance(78, 78, Image.SCALE_SMOOTH);
             ImageIcon avatar_img = new ImageIcon(avatar_rs);
             lbl_Avatar.setText("");
@@ -223,6 +230,7 @@ public class ClientMainView extends javax.swing.JFrame {
         lbl_Avatar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
         lbl_Avatar.setMaximumSize(new java.awt.Dimension(78, 78));
         lbl_Avatar.setMinimumSize(new java.awt.Dimension(78, 78));
+        lbl_Avatar.setOpaque(true);
         lbl_Avatar.setPreferredSize(new java.awt.Dimension(78, 78));
         lbl_Avatar.setRequestFocusEnabled(false);
 
@@ -373,39 +381,38 @@ public class ClientMainView extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ClientMainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ClientMainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ClientMainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ClientMainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                User user = new User();
-                new ClientMainView(user).setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(ClientMainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(ClientMainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(ClientMainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(ClientMainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                User user = new User();
+//                new ClientMainView(user).setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar JMenu;

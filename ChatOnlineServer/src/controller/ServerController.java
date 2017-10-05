@@ -90,6 +90,9 @@ public class ServerController {
                 if (user.getAction().equals("changeInfo")) {
                     oos.writeObject(userController.changeUserInfo(user));
                 }
+                if (user.getAction().equals("changeAvatar")) {
+                    oos.writeObject(userController.changeUserAvatar(user));
+                }
             }
         } catch (Exception e) {
             view.showMessage(e.toString());
