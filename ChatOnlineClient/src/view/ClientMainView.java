@@ -29,8 +29,16 @@ public class ClientMainView extends javax.swing.JFrame {
 
     private final String file_path = "file/default/";
 
-    UserController userController = new UserController(this);
-    private final User user;
+    private UserController userController = new UserController(this);
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     /**
      * Creates new form JF_Main
@@ -38,19 +46,19 @@ public class ClientMainView extends javax.swing.JFrame {
     public ClientMainView(User user) {
         this.user = user;
         initComponents();
-        displayUserInfo();
+        displayUserInfo(user);
         this.setSize(400, GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
         this.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this.getWidth(), 0);
         lbl_Avatar.requestFocusInWindow();
     }
 
     public void openAccountInfo() {
-        AccountInfoView accountInfo = new AccountInfoView(user);
-        accountInfo.setLocationRelativeTo(this);
-        accountInfo.setVisible(true);
+        AccountInfoView myAccountInfo = new AccountInfoView(user, this);
+        myAccountInfo.setLocationRelativeTo(this);
+        myAccountInfo.setVisible(true);
     }
 
-    public void displayUserInfo() {
+    public void displayUserInfo(User user) {
         try {
             String avatar_path = file_path + "default_avatar.jpg";
             if (user.getAvatar_path() != null) {

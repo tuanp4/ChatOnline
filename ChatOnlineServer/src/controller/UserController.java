@@ -13,13 +13,13 @@ import model.User;
  * @author Valdez
  */
 public class UserController {
-    
+
     DAOUser dao;
-    
+
     public UserController(DAOUser dao) {
         this.dao = dao;
     }
-    
+
     public User checkUserLogin(User user) {
         User userDAO = dao.getUserByUsername(user);
         if (userDAO == null) {
@@ -31,7 +31,7 @@ public class UserController {
         }
         return null;
     }
-    
+
     public boolean signUpUser(User user) {
         User userDAO = dao.getUserByUsernameOrEmail(user);
         if (userDAO != null) {
@@ -42,12 +42,12 @@ public class UserController {
         }
         return false;
     }
-    
+
     public User changeUserInfo(User user) {
         if (dao.changeUserInfo(user)) {
             return dao.getUserById(user);
         }
         return null;
     }
-    
+
 }

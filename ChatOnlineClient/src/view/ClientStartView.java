@@ -20,7 +20,7 @@ import model.User;
  */
 public class ClientStartView extends javax.swing.JFrame {
 
-    UserController userController = new UserController(this);
+    private UserController userController = new UserController(this);
 
     /**
      * Creates new form Start

@@ -91,10 +91,7 @@ public class UserController {
             if (result == null) {
                 accountInfoView.showMessage("Some error occurred. Please try again!");
             } else {
-//                accountInfoView.dispose();
-//                clientMainView.showMessage("your information has been updated.");
-                clientMainView.dispose();
-
+                accountInfoView.returnInfo(result);
             }
             mySocket.close();
         } catch (Exception ex) {

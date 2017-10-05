@@ -102,7 +102,7 @@ public class DAOUser extends IDAO {
                 temp.setStatus(rs.getInt(10));
                 break;
             }
-            return user;
+            return temp;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

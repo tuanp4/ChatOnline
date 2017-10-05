@@ -28,17 +28,26 @@ public class AccountInfoView extends javax.swing.JFrame {
 
     private final String file_path = "file/default/";
 
-    UserController userController = new UserController(this);
-    private final User user;
+    private UserController userController = new UserController(this);
+    private ClientMainView clientMainView;
+    private User user;
 
     /**
      * Creates new form AccountInfo
      */
-    public AccountInfoView(User user) {
+    public AccountInfoView(User user, ClientMainView clientMainView) {
         this.user = user;
+        this.clientMainView = clientMainView;
         this.setTitle("User account: " + user.getUsername());
         initComponents();
         displayUserInfo();
+    }
+
+    public void returnInfo(User user) {
+        this.dispose();
+        clientMainView.setUser(user);
+        clientMainView.displayUserInfo(user);
+        clientMainView.showMessage("your information has been updated.");
     }
 
     public User getUserChangedInfo() {
@@ -518,7 +527,7 @@ public class AccountInfoView extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 User user = new User();
-                new AccountInfoView(user).setVisible(true);
+//                new AccountInfoView(user).setVisible(true);
             }
         });
     }
