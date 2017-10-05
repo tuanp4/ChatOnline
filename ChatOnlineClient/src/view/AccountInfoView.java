@@ -473,8 +473,10 @@ public class AccountInfoView extends javax.swing.JFrame {
             showMessage("please fill the required fields (email).");
         } else if (!txt_Email.getText().matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
             showMessage("Invalid email!");
-        } else if (!txt_Phone_number.getText().matches("^\\+?\\d{1,3}?[- .]?\\(?(?:\\d{2,3})\\)?[- .]?\\d\\d\\d[- .]?\\d\\d\\d\\d$")) {
-            showMessage("Invalid phone number!");
+        } else if (!txt_Phone_number.getText().equals("")) {
+            if (!txt_Phone_number.getText().matches("^\\+?\\d{1,3}?[- .]?\\(?(?:\\d{2,3})\\)?[- .]?\\d\\d\\d[- .]?\\d\\d\\d\\d$")) {
+                showMessage("Invalid phone number!");
+            }
         } else {
             userController.changeInfo();
         }
