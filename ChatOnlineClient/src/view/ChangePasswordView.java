@@ -66,8 +66,13 @@ public class ChangePasswordView extends javax.swing.JFrame {
 
     public User getUserNewPassword() {
         User model = new User();
-        model.setId(this.user.getId());
+        model.setId(user.getId());
+        model.setOldPassword(SHA_1(new String(pwd_OldPassword.getPassword())));
         model.setPassword_hash(SHA_1(new String(pwd_NewPassword.getPassword())));
+        pwd_OldPassword.setText("");
+        pwd_NewPassword.setText("");
+        pwd_ConfirmNewPassword.setText("");
+        pwd_OldPassword.requestFocusInWindow();
         return model;
     }
 
@@ -105,7 +110,12 @@ public class ChangePasswordView extends javax.swing.JFrame {
         jp_Save = new javax.swing.JPanel();
         btn_Save = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         lbl_ForOldPassword.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lbl_ForOldPassword.setForeground(java.awt.Color.yellow);
@@ -231,6 +241,8 @@ public class ChangePasswordView extends javax.swing.JFrame {
             showMessage("please fill the required fields (old password, new password, confirm new password).");
         } else if (pwd_NewPassword.getPassword().length < 6) {
             showMessage("Password must contain at least 6 characters!");
+        } else if (Arrays.equals(pwd_OldPassword.getPassword(), pwd_NewPassword.getPassword())) {
+            showMessage("Your old and new password are the same!");
         } else if (!Arrays.equals(pwd_NewPassword.getPassword(), pwd_ConfirmNewPassword.getPassword())) {
             showMessage("Your password and confirmation password do not match!");
         } else {
@@ -247,6 +259,11 @@ public class ChangePasswordView extends javax.swing.JFrame {
         // TODO add your handling code here:
         jp_Save.setBackground(new Color(93, 53, 176));
     }//GEN-LAST:event_btn_SaveMouseExited
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        clientMainView.setCheckMyChangePasswordView(false);
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments

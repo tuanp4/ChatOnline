@@ -106,6 +106,9 @@ public class UserController {
     }
 
     public User changeUserPassword(User user) {
+        if (!user.getOldPassword().equals( dao.getUserById(user).getPassword_hash())) {
+            return null;
+        }
         if (dao.changeUserPassword(user)) {
             return dao.getUserById(user);
         }
@@ -118,5 +121,5 @@ public class UserController {
         }
         return null;
     }
-    
+
 }

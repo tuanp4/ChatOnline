@@ -36,13 +36,21 @@ public class ClientMainView extends javax.swing.JFrame {
     private UserController userController = new UserController(this);
     private User user;
     private int status;
-
-    public User getUser() {
-        return user;
-    }
+    private AccountInfoView myAccountInfoView;
+    private ChangePasswordView myChangePasswordView;
+    private boolean checkMyAccountInfoView = false;
+    private boolean checkMyChangePasswordView = false;
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setCheckMyAccountInfoView(boolean checkMyAccountInfoView) {
+        this.checkMyAccountInfoView = checkMyAccountInfoView;
+    }
+
+    public void setCheckMyChangePasswordView(boolean checkMyChangePasswordView) {
+        this.checkMyChangePasswordView = checkMyChangePasswordView;
     }
 
     /**
@@ -53,7 +61,7 @@ public class ClientMainView extends javax.swing.JFrame {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
         }
-        this.user = user;
+        setUser(user);
         initComponents();
         displayAvatar(user);
         displayStatus(user);
@@ -76,14 +84,14 @@ public class ClientMainView extends javax.swing.JFrame {
 
     public User getUserChangedStatus() {
         User model = new User();
-        model.setId(this.user.getId());
+        model.setId(user.getId());
         model.setStatus(status);
         return model;
     }
 
     public User getUserChangedDescription() {
         User model = new User();
-        model.setId(this.user.getId());
+        model.setId(user.getId());
         if (!txt_Description.getText().equals(" Hey, tell every one what do you think... ?")) {
             model.setDescription(txt_Description.getText());
         }
@@ -92,15 +100,17 @@ public class ClientMainView extends javax.swing.JFrame {
     }
 
     public void openAccountInfoView() {
-        AccountInfoView myAccountInfo = new AccountInfoView(user, this);
-        myAccountInfo.setLocationRelativeTo(this);
-        myAccountInfo.setVisible(true);
+        checkMyAccountInfoView = true;
+        myAccountInfoView = new AccountInfoView(user, this);
+        myAccountInfoView.setLocationRelativeTo(this);
+        myAccountInfoView.setVisible(true);
     }
 
     public void openChangePassWordView() {
-        ChangePasswordView changePasswordView = new ChangePasswordView(user, this);
-        changePasswordView.setLocationRelativeTo(this);
-        changePasswordView.setVisible(true);
+        checkMyChangePasswordView = true;
+        myChangePasswordView = new ChangePasswordView(user, this);
+        myChangePasswordView.setLocationRelativeTo(this);
+        myChangePasswordView.setVisible(true);
     }
 
     public void displayAvatar(User user) {
@@ -465,42 +475,50 @@ public class ClientMainView extends javax.swing.JFrame {
 
     private void mn_ChangeAccountInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_ChangeAccountInfoActionPerformed
         // TODO add your handling code here:
-        openAccountInfoView();
+        if (checkMyAccountInfoView == true) {
+            myAccountInfoView.setVisible(true);
+        } else {
+            openAccountInfoView();
+        }
     }//GEN-LAST:event_mn_ChangeAccountInfoActionPerformed
 
     private void mn_StatusOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_StatusOnlineActionPerformed
         // TODO add your handling code here:
-        this.status = 0;
+        status = 0;
         userController.changeStatus();
     }//GEN-LAST:event_mn_StatusOnlineActionPerformed
 
     private void mn_StatusAwayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_StatusAwayActionPerformed
         // TODO add your handling code here:
-        this.status = 1;
+        status = 1;
         userController.changeStatus();
     }//GEN-LAST:event_mn_StatusAwayActionPerformed
 
     private void mn_StatusBusyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_StatusBusyActionPerformed
         // TODO add your handling code here:
-        this.status = 2;
+        status = 2;
         userController.changeStatus();
     }//GEN-LAST:event_mn_StatusBusyActionPerformed
 
     private void mn_StatusInvisbleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_StatusInvisbleActionPerformed
         // TODO add your handling code here:
-        this.status = 3;
+        status = 3;
         userController.changeStatus();
     }//GEN-LAST:event_mn_StatusInvisbleActionPerformed
 
     private void mn_StatusOfflineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_StatusOfflineActionPerformed
         // TODO add your handling code here:
-        this.status = 4;
+        status = 4;
         userController.changeStatus();
     }//GEN-LAST:event_mn_StatusOfflineActionPerformed
 
     private void mn_ChangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_ChangePasswordActionPerformed
         // TODO add your handling code here:
-        openChangePassWordView();
+        if (checkMyChangePasswordView == true) {
+            myChangePasswordView.setVisible(true);
+        } else {
+            openChangePassWordView();
+        }
     }//GEN-LAST:event_mn_ChangePasswordActionPerformed
 
     private void txt_DescriptionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_DescriptionFocusGained

@@ -161,7 +161,7 @@ public class UserController {
             Object o = ois.readObject();
             User result = (User) o;
             if (result == null) {
-                changePasswordView.showMessage("Some error occurred. Please try again!");
+                changePasswordView.showMessage("Your password is incorrect. Please try again!");
             } else {
                 changePasswordView.returnNewPassword(result);
             }

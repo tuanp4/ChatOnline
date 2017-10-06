@@ -121,6 +121,7 @@ public class User implements Serializable {
 
     private String avatarImageExtenstion;
     private byte[] avatarImageByte;
+    private String oldPassword;
 
     public String getAvatarImageExtenstion() {
         return avatarImageExtenstion;
@@ -136,6 +137,14 @@ public class User implements Serializable {
 
     public void setAvatarImageByte(byte[] avatarImageByte) {
         this.avatarImageByte = avatarImageByte;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
 }

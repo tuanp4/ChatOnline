@@ -76,7 +76,7 @@ public class AccountInfoView extends javax.swing.JFrame {
 
     public User getUserChangedAvatar() throws FileNotFoundException, IOException {
         User model = new User();
-        model.setId(this.user.getId());
+        model.setId(user.getId());
         model.setAvatarImageExtenstion(avatar_path.substring(avatar_path.lastIndexOf(".") + 1));
         File fileSend = new File(avatar_path);
         byte[] byteSend = new byte[(int) fileSend.length()];
@@ -91,7 +91,7 @@ public class AccountInfoView extends javax.swing.JFrame {
 
     public User getUserChangedInfo() {
         User model = new User();
-        model.setId(this.user.getId());
+        model.setId(user.getId());
         model.setDisplay_name(txt_Display_name.getText().trim());
         model.setEmail(txt_Email.getText().trim());
         model.setPhone_number(txt_Phone_number.getText().trim());
@@ -193,6 +193,11 @@ public class AccountInfoView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         JP_Main.setBackground((new java.awt.Color(120, 36, 111)).brighter());
         JP_Main.setMaximumSize(new java.awt.Dimension(500, 300));
@@ -503,7 +508,7 @@ public class AccountInfoView extends javax.swing.JFrame {
             if (fileDailog == JFileChooser.CANCEL_OPTION) {
                 showMessage("No file selected!");
             } else {
-                this.avatar_path = avatar_img.getPath();
+                avatar_path = avatar_img.getPath();
                 userController.changeAvatar();
             }
         } catch (Exception ex) {
@@ -561,6 +566,11 @@ public class AccountInfoView extends javax.swing.JFrame {
         // TODO add your handling code here:
         jp_Cancel.setBackground(new Color(93, 53, 176));
     }//GEN-LAST:event_btn_CancelMouseExited
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        clientMainView.setCheckMyAccountInfoView(false);
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
