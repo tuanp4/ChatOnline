@@ -183,4 +183,18 @@ public class DAOUser extends IDAO {
         }
     }
 
+    public boolean changeUserDescription(User user) {
+        try {
+            String sql = "UPDATE user SET description = ? WHERE id = ?";
+            this.preStatement = this.conn.prepareStatement(sql);
+            this.preStatement.setString(1, user.getDescription());
+            this.preStatement.setInt(2, user.getId());
+            int check = this.preStatement.executeUpdate();
+            return (check != 0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

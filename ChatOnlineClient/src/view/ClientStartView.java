@@ -148,6 +148,7 @@ public class ClientStartView extends javax.swing.JFrame {
         pwd_PasswordSI.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         pwd_PasswordSI.setForeground(new java.awt.Color(255, 255, 255));
         pwd_PasswordSI.setBorder(null);
+        pwd_PasswordSI.setCaretColor(java.awt.Color.white);
         pwd_PasswordSI.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 pwd_PasswordSIFocusLost(evt);
@@ -162,6 +163,7 @@ public class ClientStartView extends javax.swing.JFrame {
         pwd_PasswordJU.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         pwd_PasswordJU.setForeground(new java.awt.Color(255, 255, 255));
         pwd_PasswordJU.setBorder(null);
+        pwd_PasswordJU.setCaretColor(java.awt.Color.white);
         pwd_PasswordJU.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 pwd_PasswordJUFocusLost(evt);
@@ -187,6 +189,7 @@ public class ClientStartView extends javax.swing.JFrame {
         txt_UsernameSI.setForeground(java.awt.Color.lightGray);
         txt_UsernameSI.setText(" Username");
         txt_UsernameSI.setBorder(null);
+        txt_UsernameSI.setCaretColor(java.awt.Color.white);
         txt_UsernameSI.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txt_UsernameSIFocusGained(evt);
@@ -201,6 +204,7 @@ public class ClientStartView extends javax.swing.JFrame {
         txt_PasswordSI.setForeground(java.awt.Color.lightGray);
         txt_PasswordSI.setText(" Password");
         txt_PasswordSI.setBorder(null);
+        txt_PasswordSI.setCaretColor(java.awt.Color.white);
         txt_PasswordSI.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txt_PasswordSIFocusGained(evt);
@@ -324,6 +328,7 @@ public class ClientStartView extends javax.swing.JFrame {
         txt_UsernameJU.setForeground(java.awt.Color.lightGray);
         txt_UsernameJU.setText(" Username");
         txt_UsernameJU.setBorder(null);
+        txt_UsernameJU.setCaretColor(java.awt.Color.white);
         txt_UsernameJU.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txt_UsernameJUFocusGained(evt);
@@ -338,6 +343,7 @@ public class ClientStartView extends javax.swing.JFrame {
         txt_EmailJU.setForeground(java.awt.Color.lightGray);
         txt_EmailJU.setText(" Email");
         txt_EmailJU.setBorder(null);
+        txt_EmailJU.setCaretColor(java.awt.Color.white);
         txt_EmailJU.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txt_EmailJUFocusGained(evt);
@@ -352,6 +358,7 @@ public class ClientStartView extends javax.swing.JFrame {
         txt_PasswordJU.setForeground(java.awt.Color.lightGray);
         txt_PasswordJU.setText(" Password");
         txt_PasswordJU.setBorder(null);
+        txt_PasswordJU.setCaretColor(java.awt.Color.white);
         txt_PasswordJU.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txt_PasswordJUFocusGained(evt);
@@ -532,7 +539,6 @@ public class ClientStartView extends javax.swing.JFrame {
         if (txt_UsernameSI.getText().equals(" Username")) {
             txt_UsernameSI.setText("");
             txt_UsernameSI.setForeground(Color.WHITE);
-            txt_UsernameSI.setCaretColor(Color.WHITE);
         }
     }//GEN-LAST:event_txt_UsernameSIFocusGained
 
@@ -551,7 +557,6 @@ public class ClientStartView extends javax.swing.JFrame {
         JP_Login.remove(txt_PasswordSI);
         pwd_PasswordSI.setBackground(JP_Login.getBackground());
         pwd_PasswordSI.requestFocusInWindow();
-        pwd_PasswordSI.setCaretColor(Color.WHITE);
         Rectangle temp1 = undl_PasswordSI.getBounds();
         JP_Login.remove(undl_PasswordSI);
         JP_Login.add(undl_PasswordSI);
@@ -615,7 +620,6 @@ public class ClientStartView extends javax.swing.JFrame {
         if (txt_UsernameJU.getText().equals(" Username")) {
             txt_UsernameJU.setText("");
             txt_UsernameJU.setForeground(Color.WHITE);
-            txt_UsernameJU.setCaretColor(Color.WHITE);
         }
     }//GEN-LAST:event_txt_UsernameJUFocusGained
 
@@ -632,7 +636,6 @@ public class ClientStartView extends javax.swing.JFrame {
         if (txt_EmailJU.getText().equals(" Email")) {
             txt_EmailJU.setText("");
             txt_EmailJU.setForeground(Color.WHITE);
-            txt_EmailJU.setCaretColor(Color.WHITE);
         }
     }//GEN-LAST:event_txt_EmailJUFocusGained
 
@@ -644,7 +647,6 @@ public class ClientStartView extends javax.swing.JFrame {
         JP_SignUp.remove(txt_PasswordJU);
         pwd_PasswordJU.setBackground(JP_SignUp.getBackground());
         pwd_PasswordJU.requestFocusInWindow();
-        pwd_PasswordJU.setCaretColor(Color.WHITE);
         Rectangle temp1 = undl_PasswordJU.getBounds();
         JP_SignUp.remove(undl_PasswordJU);
         JP_SignUp.add(undl_PasswordJU);

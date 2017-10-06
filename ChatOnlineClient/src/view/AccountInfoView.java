@@ -306,24 +306,27 @@ public class AccountInfoView extends javax.swing.JFrame {
         lbl_ForDisplay_name.setText("Display name:");
 
         txt_Display_name.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txt_Display_name.setForeground(new java.awt.Color(51, 51, 51));
+        txt_Display_name.setForeground(java.awt.Color.darkGray);
         txt_Display_name.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
+        txt_Display_name.setCaretColor(java.awt.Color.darkGray);
 
         lbl_ForEmail.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lbl_ForEmail.setForeground(java.awt.Color.yellow);
         lbl_ForEmail.setText("Email:");
 
         txt_Email.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txt_Email.setForeground(new java.awt.Color(51, 51, 51));
+        txt_Email.setForeground(java.awt.Color.darkGray);
         txt_Email.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
+        txt_Email.setCaretColor(java.awt.Color.darkGray);
 
         lbl_ForPhone_number.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lbl_ForPhone_number.setForeground(java.awt.Color.yellow);
         lbl_ForPhone_number.setText("Phone:");
 
         txt_Phone_number.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txt_Phone_number.setForeground(new java.awt.Color(51, 51, 51));
+        txt_Phone_number.setForeground(java.awt.Color.darkGray);
         txt_Phone_number.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
+        txt_Phone_number.setCaretColor(java.awt.Color.darkGray);
 
         jp_Action.setOpaque(false);
 

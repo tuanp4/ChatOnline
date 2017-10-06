@@ -111,5 +111,12 @@ public class UserController {
         }
         return null;
     }
+
+    public User changeUserDescription(User user) {
+        if (dao.changeUserDescription(user)) {
+            return dao.getUserById(user);
+        }
+        return null;
+    }
     
 }

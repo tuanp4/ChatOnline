@@ -13,6 +13,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -68,10 +69,25 @@ public class ClientMainView extends javax.swing.JFrame {
         displayStatus(user);
     }
 
+    public void returnDescription(User user) {
+        this.user = user;
+        displayDescription(user);
+    }
+
     public User getUserChangedStatus() {
         User model = new User();
         model.setId(this.user.getId());
         model.setStatus(status);
+        return model;
+    }
+
+    public User getUserChangedDescription() {
+        User model = new User();
+        model.setId(this.user.getId());
+        if (!txt_Description.getText().equals(" Hey, tell every one what do you think... ?")) {
+            model.setDescription(txt_Description.getText());
+        }
+        lbl_Avatar.requestFocusInWindow();
         return model;
     }
 
@@ -171,10 +187,11 @@ public class ClientMainView extends javax.swing.JFrame {
     }
 
     public void displayDescription(User user) {
+        txt_Description.setForeground(Color.GRAY);
         if (user.getDescription() != null && !user.getDescription().equals("")) {
             txt_Description.setText(user.getDescription());
         } else {
-            txt_Description.setText("Hey, tell every one what do you think... ?");
+            txt_Description.setText(" Hey, tell every one what do you think... ?");
         }
     }
 
@@ -230,7 +247,7 @@ public class ClientMainView extends javax.swing.JFrame {
         mn_StatusOffline = new javax.swing.JMenuItem();
         mn_ChangePassword = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        mn_SignOut = new javax.swing.JMenuItem();
         mn_Exit = new javax.swing.JMenuItem();
         mn_Help = new javax.swing.JMenu();
         mn_About = new javax.swing.JMenuItem();
@@ -258,10 +275,24 @@ public class ClientMainView extends javax.swing.JFrame {
         lbl_DisplayName.setText("Name");
 
         txt_Description.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
-        txt_Description.setForeground(new java.awt.Color(153, 153, 153));
+        txt_Description.setForeground(java.awt.Color.gray);
         txt_Description.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txt_Description.setText(" Hey, tell every one what do you think... ?");
         txt_Description.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
+        txt_Description.setCaretColor(java.awt.Color.darkGray);
+        txt_Description.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_DescriptionFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_DescriptionFocusLost(evt);
+            }
+        });
+        txt_Description.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_DescriptionKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JP_InfoLayout = new javax.swing.GroupLayout(JP_Info);
         JP_Info.setLayout(JP_InfoLayout);
@@ -386,10 +417,20 @@ public class ClientMainView extends javax.swing.JFrame {
         mn_MyProfile.add(mn_ChangePassword);
         mn_MyProfile.add(jSeparator1);
 
-        jMenuItem1.setText("Sign out...");
-        mn_MyProfile.add(jMenuItem1);
+        mn_SignOut.setText("Sign out...");
+        mn_SignOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_SignOutActionPerformed(evt);
+            }
+        });
+        mn_MyProfile.add(mn_SignOut);
 
         mn_Exit.setText("Exit...");
+        mn_Exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_ExitActionPerformed(evt);
+            }
+        });
         mn_MyProfile.add(mn_Exit);
 
         JMenu.add(mn_MyProfile);
@@ -462,6 +503,48 @@ public class ClientMainView extends javax.swing.JFrame {
         openChangePassWordView();
     }//GEN-LAST:event_mn_ChangePasswordActionPerformed
 
+    private void txt_DescriptionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_DescriptionFocusGained
+        // TODO add your handling code here:
+        if (txt_Description.getText().equals(" Hey, tell every one what do you think... ?")) {
+            txt_Description.setText("");
+            txt_Description.setForeground(Color.DARK_GRAY);
+        }
+    }//GEN-LAST:event_txt_DescriptionFocusGained
+
+    private void txt_DescriptionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_DescriptionFocusLost
+        // TODO add your handling code here:
+        if (txt_Description.getText().trim().isEmpty()) {
+            txt_Description.setText(" Hey, tell every one what do you think... ?");
+            txt_Description.setForeground(Color.GRAY);
+        }
+        userController.changeDescription();
+    }//GEN-LAST:event_txt_DescriptionFocusLost
+
+    private void txt_DescriptionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_DescriptionKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            userController.changeDescription();
+        }
+    }//GEN-LAST:event_txt_DescriptionKeyPressed
+
+    private void mn_SignOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_SignOutActionPerformed
+        // TODO add your handling code here:
+        int output = JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "Sign out", JOptionPane.YES_NO_OPTION);
+        if (output == JOptionPane.YES_OPTION) {
+            ClientStartView clientStartView = new ClientStartView();
+            clientStartView.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_mn_SignOutActionPerformed
+
+    private void mn_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_ExitActionPerformed
+        // TODO add your handling code here:
+        int output = JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "Exit", JOptionPane.YES_NO_OPTION);
+        if (output == JOptionPane.YES_OPTION) {
+            this.dispose();
+        }
+    }//GEN-LAST:event_mn_ExitActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -503,7 +586,6 @@ public class ClientMainView extends javax.swing.JFrame {
     private javax.swing.JPanel JP_ChatList;
     private javax.swing.JPanel JP_Info;
     private javax.swing.JPanel JP_Main;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel lbl_Avatar;
@@ -514,6 +596,7 @@ public class ClientMainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem mn_Exit;
     private javax.swing.JMenu mn_Help;
     private javax.swing.JMenu mn_MyProfile;
+    private javax.swing.JMenuItem mn_SignOut;
     private javax.swing.JMenu mn_Status;
     private javax.swing.JMenuItem mn_StatusAway;
     private javax.swing.JMenuItem mn_StatusBusy;

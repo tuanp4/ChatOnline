@@ -171,4 +171,25 @@ public class UserController {
         }
     }
 
+    public void changeDescription() {
+        try {
+            User user = clientMainView.getUserChangedDescription();
+            user.setAction("changeDescription");
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(user);
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            User result = (User) o;
+            if (result == null) {
+                clientMainView.showMessage("Some error occurred. Please try again!");
+            } else {
+                clientMainView.returnDescription(result);
+            }
+            mySocket.close();
+        } catch (Exception ex) {
+            accountInfoView.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
 }
