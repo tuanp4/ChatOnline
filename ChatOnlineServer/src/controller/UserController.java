@@ -13,6 +13,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import model.User;
 
@@ -106,7 +108,7 @@ public class UserController {
     }
 
     public User changeUserPassword(User user) {
-        if (!user.getOldPassword().equals( dao.getUserById(user).getPassword_hash())) {
+        if (!user.getOldPassword().equals(dao.getUserById(user).getPassword_hash())) {
             return null;
         }
         if (dao.changeUserPassword(user)) {
@@ -120,6 +122,11 @@ public class UserController {
             return dao.getUserById(user);
         }
         return null;
+    }
+
+    public ArrayList<User> returnAvailableFriendList(User user) {
+        ArrayList<User> availableFriendList = new ArrayList<>(Arrays.asList(dao.getAvailableFriendList(user)));
+        return availableFriendList;
     }
 
 }

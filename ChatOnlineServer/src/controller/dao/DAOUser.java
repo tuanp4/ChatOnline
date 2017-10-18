@@ -7,6 +7,7 @@ package controller.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Vector;
 import model.User;
 
 /**
@@ -195,6 +196,44 @@ public class DAOUser extends IDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public User[] getAvailableFriendList(User user) {
+        Vector<User> vector = new Vector<User>();
+        User[] result;
+        try {
+            String sql = "SELECT id, username, display_name, avatar_path, description, status "
+                    + "FROM user INNER JOIN friendship ON user.id = friendship.sender_id "
+                    + "WHERE friendship.receiver_id = ? AND friendship.confirm = 1 AND user.status < 4 "
+                    + "UNION "
+                    + "SELECT id, username, display_name, avatar_path, description, status "
+                    + "FROM user INNER JOIN friendship ON user.id = friendship.receiver_id"
+                    + " WHERE friendship.sender_id = ? AND friendship.confirm = 1 AND user.status < 4";
+            this.preStatement = this.conn.prepareStatement(sql);
+            this.preStatement.setInt(1, user.getId());
+            this.preStatement.setInt(2, user.getId());
+            rs = this.preStatement.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                User temp = new User();
+                temp.setId(rs.getInt(1));
+                temp.setUsername(rs.getString(2));
+                temp.setDisplay_name(rs.getString(3));
+                temp.setGender(rs.getInt(4));
+                temp.setAvatar_path(rs.getString(5));
+                temp.setEmail(rs.getString(6));
+                temp.setPhone_number(rs.getString(7));
+                temp.setDescription(rs.getString(8));
+                temp.setStatus(rs.getInt(9));
+                vector.add(temp);
+                i++;
+            }
+            result = new User[i];
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return vector.toArray(result);
     }
 
 }

@@ -6,6 +6,7 @@
 package view;
 
 import controller.UserController;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -18,10 +19,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import model.*;
 
 /**
@@ -40,9 +47,20 @@ public class ClientMainView extends javax.swing.JFrame {
     private ChangePasswordView myChangePasswordView;
     private boolean checkMyAccountInfoView = false;
     private boolean checkMyChangePasswordView = false;
+    private JList<User> friendList;
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public User getUserID() {
+        User model = new User();
+        model.setId(user.getId());
+        return model;
+    }
+
+    public void setFriendList(JList<User> friendList) {
+        this.friendList = friendList;
     }
 
     public void setCheckMyAccountInfoView(boolean checkMyAccountInfoView) {
@@ -62,14 +80,33 @@ public class ClientMainView extends javax.swing.JFrame {
         } catch (Exception ex) {
         }
         setUser(user);
+        userController.getFriendList();
         initComponents();
+        this.setSize(350, GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
+        this.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this.getWidth(), 0);
         displayAvatar(user);
         displayStatus(user);
         displayName(user);
         displayDescription(user);
-        this.setSize(400, GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
-        this.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this.getWidth(), 0);
+        System.out.println(friendList.getModel().getElementAt(0).getEmail());
+        displayFriendList(friendList);
+
         lbl_Avatar.requestFocusInWindow();
+    }
+
+    public JList<User> returnFriendList(ArrayList<User> users) {
+        DefaultListModel<User> model = new DefaultListModel<>();
+        for (User user : users) {
+            model.addElement(user);
+        }
+        JList<User> list = new JList<User>(model);
+        list.setCellRenderer(new UserRenderer());
+        return list;
+    }
+
+    public void displayFriendList(JList<User> friendList) {
+        JP_FriendList.removeAll();
+        JP_FriendList.add(new JScrollPane(friendList), BorderLayout.CENTER);
     }
 
     public void returnStatus(User user) {
@@ -92,7 +129,7 @@ public class ClientMainView extends javax.swing.JFrame {
     public User getUserChangedDescription() {
         User model = new User();
         model.setId(user.getId());
-        if (!txt_Description.getText().equals(" Hey, tell every one what do you think... ?")) {
+        if (!txt_Description.getText().equals(" Tell everyone what do you think... ?")) {
             model.setDescription(txt_Description.getText());
         }
         lbl_Avatar.requestFocusInWindow();
@@ -124,38 +161,6 @@ public class ClientMainView extends javax.swing.JFrame {
             ImageIcon avatar_img = new ImageIcon(avatar_rs);
             lbl_Avatar.setText("");
             lbl_Avatar.setIcon(avatar_img);
-            String status_path = file_path;
-            int temp = user.getStatus();
-            switch (temp) {
-                case 0:
-                    status_path += "online-icon.png";
-                    break;
-                case 1:
-                    status_path += "away-icon.png";
-                    break;
-                case 2:
-                    status_path += "busy-icon.png";
-                    break;
-                case 3:
-                    status_path += "invisible-icon.png";
-                    break;
-                case 4:
-                    status_path += "offline-icon.png";
-                    break;
-            }
-            BufferedImage status = ImageIO.read(new File(status_path));
-            ImageIcon status_img = new ImageIcon(status);
-            lbl_DisplayName.setIcon(status_img);
-            if (user.getDisplay_name() != null && !user.getDisplay_name().equals("")) {
-                lbl_DisplayName.setText(user.getDisplay_name());
-            } else {
-                lbl_DisplayName.setText(user.getUsername());
-            }
-            if (user.getDescription() != null && !user.getDescription().equals("")) {
-                txt_Description.setText(user.getDescription());
-            } else {
-                txt_Description.setText("Hey, tell every one what do you think... ?");
-            }
         } catch (IOException ex) {
         }
     }
@@ -201,7 +206,7 @@ public class ClientMainView extends javax.swing.JFrame {
         if (user.getDescription() != null && !user.getDescription().equals("")) {
             txt_Description.setText(user.getDescription());
         } else {
-            txt_Description.setText(" Hey, tell every one what do you think... ?");
+            txt_Description.setText(" Tell everyone what do you think... ?");
         }
     }
 
@@ -246,6 +251,7 @@ public class ClientMainView extends javax.swing.JFrame {
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
+        JP_FriendList = new javax.swing.JPanel(new BorderLayout());
         JMenu = new javax.swing.JMenuBar();
         mn_MyProfile = new javax.swing.JMenu();
         mn_ChangeAccountInfo = new javax.swing.JMenuItem();
@@ -287,7 +293,7 @@ public class ClientMainView extends javax.swing.JFrame {
         txt_Description.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
         txt_Description.setForeground(java.awt.Color.gray);
         txt_Description.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txt_Description.setText(" Hey, tell every one what do you think... ?");
+        txt_Description.setText(" Tell everyone what do you think... ?");
         txt_Description.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
         txt_Description.setCaretColor(java.awt.Color.darkGray);
         txt_Description.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -313,10 +319,8 @@ public class ClientMainView extends javax.swing.JFrame {
                 .addComponent(lbl_Avatar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(JP_InfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_Description, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addGroup(JP_InfoLayout.createSequentialGroup()
-                        .addComponent(lbl_DisplayName, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(txt_Description, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                    .addComponent(lbl_DisplayName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         JP_InfoLayout.setVerticalGroup(
@@ -333,15 +337,32 @@ public class ClientMainView extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        javax.swing.GroupLayout JP_FriendListLayout = new javax.swing.GroupLayout(JP_FriendList);
+        JP_FriendList.setLayout(JP_FriendListLayout);
+        JP_FriendListLayout.setHorizontalGroup(
+            JP_FriendListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        JP_FriendListLayout.setVerticalGroup(
+            JP_FriendListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 568, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout JP_ChatListLayout = new javax.swing.GroupLayout(JP_ChatList);
         JP_ChatList.setLayout(JP_ChatListLayout);
         JP_ChatListLayout.setHorizontalGroup(
             JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(JP_ChatListLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(JP_FriendList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         JP_ChatListLayout.setVerticalGroup(
             JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
+            .addGroup(JP_ChatListLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(JP_FriendList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout JP_MainLayout = new javax.swing.GroupLayout(JP_Main);
@@ -523,7 +544,7 @@ public class ClientMainView extends javax.swing.JFrame {
 
     private void txt_DescriptionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_DescriptionFocusGained
         // TODO add your handling code here:
-        if (txt_Description.getText().equals(" Hey, tell every one what do you think... ?")) {
+        if (txt_Description.getText().equals(" Tell everyone what do you think... ?")) {
             txt_Description.setText("");
             txt_Description.setForeground(Color.DARK_GRAY);
         }
@@ -532,7 +553,7 @@ public class ClientMainView extends javax.swing.JFrame {
     private void txt_DescriptionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_DescriptionFocusLost
         // TODO add your handling code here:
         if (txt_Description.getText().trim().isEmpty()) {
-            txt_Description.setText(" Hey, tell every one what do you think... ?");
+            txt_Description.setText(" Tell everyone what do you think... ?");
             txt_Description.setForeground(Color.GRAY);
         }
         userController.changeDescription();
@@ -602,6 +623,7 @@ public class ClientMainView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar JMenu;
     private javax.swing.JPanel JP_ChatList;
+    private javax.swing.JPanel JP_FriendList;
     private javax.swing.JPanel JP_Info;
     private javax.swing.JPanel JP_Main;
     private javax.swing.JPopupMenu.Separator jSeparator1;

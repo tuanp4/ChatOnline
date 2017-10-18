@@ -13,6 +13,12 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
+    public User(String username, String description, int status) {
+        this.username = username;
+        this.description = description;
+        this.status = status;
+    }
+
     private static final long serialVersionUID = 1L;
 
     private int id;

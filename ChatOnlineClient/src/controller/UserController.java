@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import model.User;
 import view.*;
 
@@ -186,6 +187,23 @@ public class UserController {
             } else {
                 clientMainView.returnDescription(result);
             }
+            mySocket.close();
+        } catch (Exception ex) {
+            accountInfoView.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
+    public void getFriendList() {
+        try {
+            User user = clientMainView.getUserID();
+            user.setAction("getFriendList");
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(user);
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            ArrayList<User> result = (ArrayList<User>) o;
+            clientMainView.setFriendList(clientMainView.returnFriendList(result));
             mySocket.close();
         } catch (Exception ex) {
             accountInfoView.showMessage(ex.getStackTrace().toString());

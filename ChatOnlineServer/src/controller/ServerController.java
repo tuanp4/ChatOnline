@@ -67,16 +67,16 @@ public class ServerController {
             Object o = ois.readObject();
             if (o instanceof Conversation) {
                 Conversation conversation = (Conversation) o;
-                
+
             } else if (o instanceof Friendship) {
                 Friendship friendship = (Friendship) o;
-                
+
             } else if (o instanceof Group) {
                 Group group = (Group) o;
-                
+
             } else if (o instanceof Message) {
                 Message message = (Message) o;
-                
+
             } else if (o instanceof User) {
                 User user = (User) o;
                 DAOUser dao = new DAOUser(con);
@@ -101,6 +101,9 @@ public class ServerController {
                 }
                 if (user.getAction().equals("changeDescription")) {
                     oos.writeObject(userController.changeUserDescription(user));
+                }
+                if (user.getAction().equals("getFriendList")) {
+                    oos.writeObject(userController.returnAvailableFriendList(user));
                 }
             }
         } catch (Exception e) {
