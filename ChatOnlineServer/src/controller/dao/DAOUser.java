@@ -219,12 +219,9 @@ public class DAOUser extends IDAO {
                 temp.setId(rs.getInt(1));
                 temp.setUsername(rs.getString(2));
                 temp.setDisplay_name(rs.getString(3));
-                temp.setGender(rs.getInt(4));
-                temp.setAvatar_path(rs.getString(5));
-                temp.setEmail(rs.getString(6));
-                temp.setPhone_number(rs.getString(7));
-                temp.setDescription(rs.getString(8));
-                temp.setStatus(rs.getInt(9));
+                temp.setAvatar_path(rs.getString(4));
+                temp.setDescription(rs.getString(5));
+                temp.setStatus(rs.getInt(6));
                 vector.add(temp);
                 i++;
             }

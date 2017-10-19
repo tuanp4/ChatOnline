@@ -47,7 +47,7 @@ public class ClientMainView extends javax.swing.JFrame {
     private ChangePasswordView myChangePasswordView;
     private boolean checkMyAccountInfoView = false;
     private boolean checkMyChangePasswordView = false;
-    private JList<User> friendList;
+    DefaultListModel<User> friendList = new DefaultListModel<>();
 
     public void setUser(User user) {
         this.user = user;
@@ -57,10 +57,6 @@ public class ClientMainView extends javax.swing.JFrame {
         User model = new User();
         model.setId(user.getId());
         return model;
-    }
-
-    public void setFriendList(JList<User> friendList) {
-        this.friendList = friendList;
     }
 
     public void setCheckMyAccountInfoView(boolean checkMyAccountInfoView) {
@@ -88,25 +84,21 @@ public class ClientMainView extends javax.swing.JFrame {
         displayStatus(user);
         displayName(user);
         displayDescription(user);
-        System.out.println(friendList.getModel().getElementAt(0).getEmail());
-        displayFriendList(friendList);
 
         lbl_Avatar.requestFocusInWindow();
     }
 
-    public JList<User> returnFriendList(ArrayList<User> users) {
-        DefaultListModel<User> model = new DefaultListModel<>();
+    public void returnFriendList(ArrayList<User> users) {
+        friendList.removeAllElements();
         for (User user : users) {
-            model.addElement(user);
+            friendList.addElement(user);
         }
-        JList<User> list = new JList<User>(model);
-        list.setCellRenderer(new UserRenderer());
-        return list;
+        JList<User> list = new JList<User>(friendList);
+        displayFriendList(list);
     }
 
     public void displayFriendList(JList<User> friendList) {
-        JP_FriendList.removeAll();
-        JP_FriendList.add(new JScrollPane(friendList), BorderLayout.CENTER);
+        JListFriendList = friendList;
     }
 
     public void returnStatus(User user) {
@@ -120,15 +112,13 @@ public class ClientMainView extends javax.swing.JFrame {
     }
 
     public User getUserChangedStatus() {
-        User model = new User();
-        model.setId(user.getId());
+        User model = getUserID();
         model.setStatus(status);
         return model;
     }
 
     public User getUserChangedDescription() {
-        User model = new User();
-        model.setId(user.getId());
+        User model = getUserID();
         if (!txt_Description.getText().equals(" Tell everyone what do you think... ?")) {
             model.setDescription(txt_Description.getText());
         }
@@ -251,7 +241,11 @@ public class ClientMainView extends javax.swing.JFrame {
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
+        lbl_FriendList = new javax.swing.JLabel();
         JP_FriendList = new javax.swing.JPanel(new BorderLayout());
+        JScrollPaneFriendList = new javax.swing.JScrollPane();
+        JListFriendList = new javax.swing.JList<>();
+        lbl_FriendList1 = new javax.swing.JLabel();
         JMenu = new javax.swing.JMenuBar();
         mn_MyProfile = new javax.swing.JMenu();
         mn_ChangeAccountInfo = new javax.swing.JMenuItem();
@@ -337,16 +331,32 @@ public class ClientMainView extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        lbl_FriendList.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        lbl_FriendList.setForeground(new java.awt.Color(255, 255, 0));
+        lbl_FriendList.setIcon(new javax.swing.ImageIcon("C:\\Users\\tuanp\\OneDrive\\Documents\\NetBeansProjects\\ChatOnline\\ChatOnlineClient\\file\\default\\down.png")); // NOI18N
+        lbl_FriendList.setText("Friends List");
+
+        JP_FriendList.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
+
+        JListFriendList.setModel(friendList);
+        JListFriendList.setCellRenderer(new UserRenderer());
+        JScrollPaneFriendList.setViewportView(JListFriendList);
+
         javax.swing.GroupLayout JP_FriendListLayout = new javax.swing.GroupLayout(JP_FriendList);
         JP_FriendList.setLayout(JP_FriendListLayout);
         JP_FriendListLayout.setHorizontalGroup(
             JP_FriendListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(JScrollPaneFriendList)
         );
         JP_FriendListLayout.setVerticalGroup(
             JP_FriendListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 568, Short.MAX_VALUE)
+            .addComponent(JScrollPaneFriendList, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
         );
+
+        lbl_FriendList1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        lbl_FriendList1.setForeground(new java.awt.Color(255, 255, 0));
+        lbl_FriendList1.setIcon(new javax.swing.ImageIcon("C:\\Users\\tuanp\\OneDrive\\Documents\\NetBeansProjects\\ChatOnline\\ChatOnlineClient\\file\\default\\down.png")); // NOI18N
+        lbl_FriendList1.setText("Groups List");
 
         javax.swing.GroupLayout JP_ChatListLayout = new javax.swing.GroupLayout(JP_ChatList);
         JP_ChatList.setLayout(JP_ChatListLayout);
@@ -354,15 +364,25 @@ public class ClientMainView extends javax.swing.JFrame {
             JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_ChatListLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(JP_FriendList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(JP_FriendList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(JP_ChatListLayout.createSequentialGroup()
+                        .addGroup(JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_FriendList)
+                            .addComponent(lbl_FriendList1))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         JP_ChatListLayout.setVerticalGroup(
             JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_ChatListLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(JP_FriendList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(lbl_FriendList)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(JP_FriendList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbl_FriendList1)
+                .addContainerGap(201, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout JP_MainLayout = new javax.swing.GroupLayout(JP_Main);
@@ -621,15 +641,19 @@ public class ClientMainView extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList<User> JListFriendList;
     private javax.swing.JMenuBar JMenu;
     private javax.swing.JPanel JP_ChatList;
     private javax.swing.JPanel JP_FriendList;
     private javax.swing.JPanel JP_Info;
     private javax.swing.JPanel JP_Main;
+    private javax.swing.JScrollPane JScrollPaneFriendList;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel lbl_Avatar;
     private javax.swing.JLabel lbl_DisplayName;
+    private javax.swing.JLabel lbl_FriendList;
+    private javax.swing.JLabel lbl_FriendList1;
     private javax.swing.JMenuItem mn_About;
     private javax.swing.JMenuItem mn_ChangeAccountInfo;
     private javax.swing.JMenuItem mn_ChangePassword;

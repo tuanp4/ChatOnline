@@ -45,7 +45,7 @@ public class UserRenderer extends javax.swing.JPanel implements ListCellRenderer
                 URL url = new URL(upload_domain + user.getAvatar_path());
                 avatar = ImageIO.read(url);
             }
-            Image avatar_rs = avatar.getScaledInstance(78, 78, Image.SCALE_SMOOTH);
+            Image avatar_rs = avatar.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
             ImageIcon avatar_img = new ImageIcon(avatar_rs);
             lbl_Avatar.setText("");
             lbl_Avatar.setIcon(avatar_img);
@@ -114,10 +114,10 @@ public class UserRenderer extends javax.swing.JPanel implements ListCellRenderer
         lbl_Avatar.setText("Avatar");
         lbl_Avatar.setToolTipText("");
         lbl_Avatar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
-        lbl_Avatar.setMaximumSize(new java.awt.Dimension(78, 78));
-        lbl_Avatar.setMinimumSize(new java.awt.Dimension(78, 78));
+        lbl_Avatar.setMaximumSize(new java.awt.Dimension(50, 50));
+        lbl_Avatar.setMinimumSize(new java.awt.Dimension(50, 50));
         lbl_Avatar.setOpaque(true);
-        lbl_Avatar.setPreferredSize(new java.awt.Dimension(78, 78));
+        lbl_Avatar.setPreferredSize(new java.awt.Dimension(50, 50));
         lbl_Avatar.setRequestFocusEnabled(false);
 
         lbl_DisplayName.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N

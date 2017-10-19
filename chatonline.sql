@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(50) DEFAULT NULL COMMENT 'địa chỉ mail',
   `phone_number` varchar(50) DEFAULT NULL COMMENT 'số điện thoại',
   `description` varchar(1000) DEFAULT NULL COMMENT 'mô tả. VD: vui/buồn/chán/...',
-  `status` int(11) DEFAULT '0' COMMENT 'trạng thái. Giá trị: 1 - online; 2 - away; 3 - busy; 4 - invisible; 5 - offline',
+  `status` int(11) DEFAULT '0' COMMENT 'trạng thái. Giá trị: 0 - online; 1 - away; 2 - busy; 3 - invisible; 4 - offline',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
@@ -117,14 +117,14 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table chat_online.user: ~8 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 REPLACE INTO `user` (`id`, `username`, `password_hash`, `display_name`, `gender`, `avatar_path`, `email`, `phone_number`, `description`, `status`) VALUES
-	(1, 'tuanpham', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Phạm Mạnh Tuấn', 0, NULL, 'tuanpham@gmail.com', NULL, NULL, 0),
-	(2, 'thangbui', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Bùi Đức Thắng', 0, NULL, 'thangbui@gmail.com', NULL, NULL, 1),
-	(3, 'hangnguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Thị Hằng', 1, NULL, 'hangnguyen@gmail.com', NULL, NULL, 0),
-	(4, 'quannguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Tiến Quân', 0, NULL, 'quannguyen@gmail.com', NULL, NULL, 4),
-	(5, 'tiennguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Khắc Tiến', 0, NULL, 'tiennguyen@gmail.com', NULL, NULL, 0),
-	(6, 'trangnguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Thị Huyền Trang', 1, NULL, 'trangnguyen@gmail.com', NULL, NULL, 5),
-	(7, 'datnguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Văn Đạt', 0, NULL, 'datnguyen@gmail.com', NULL, NULL, 0),
-	(8, 'hienpham', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Phạm Thị Thu Hiền', 1, NULL, 'hienpham@gmail.com', NULL, NULL, 0);
+	(1, 'tuanpham', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Phạm Mạnh Tuấn', 0, NULL, 'tuanpham@gmail.com', NULL, 'tuanpham@gmail.com', 0),
+	(2, 'thangbui', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Bùi Đức Thắng', 0, NULL, 'thangbui@gmail.com', NULL, 'thangbui@gmail.com', 0),
+	(3, 'hangnguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Thị Hằng', 1, NULL, 'hangnguyen@gmail.com', NULL, 'hangnguyen@gmail.com', 0),
+	(4, 'quannguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Tiến Quân', 0, NULL, 'quannguyen@gmail.com', NULL, 'quannguyen@gmail.com', 0),
+	(5, 'tiennguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Khắc Tiến', 0, NULL, 'tiennguyen@gmail.com', NULL, 'tiennguyen@gmail.com', 0),
+	(6, 'trangnguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Thị Huyền Trang', 1, NULL, 'trangnguyen@gmail.com', NULL, 'trangnguyen@gmail.com', 0),
+	(7, 'datnguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Văn Đạt', 0, NULL, 'datnguyen@gmail.com', NULL, 'datnguyen@gmail.com', 0),
+	(8, 'hienpham', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Phạm Thị Thu Hiền', 1, NULL, 'hienpham@gmail.com', NULL, 'hienpham@gmail.com', 0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

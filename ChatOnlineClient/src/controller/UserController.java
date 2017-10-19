@@ -203,7 +203,7 @@ public class UserController {
             ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             ArrayList<User> result = (ArrayList<User>) o;
-            clientMainView.setFriendList(clientMainView.returnFriendList(result));
+            clientMainView.returnFriendList(result);
             mySocket.close();
         } catch (Exception ex) {
             accountInfoView.showMessage(ex.getStackTrace().toString());
