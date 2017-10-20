@@ -6,7 +6,7 @@
 package controller;
 
 import static com.sun.corba.se.impl.util.Utility.printStackTrace;
-import controller.dao.DAOUser;
+import controller.dao.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -67,6 +67,11 @@ public class ServerController {
             Object o = ois.readObject();
             if (o instanceof Conversation) {
                 Conversation conversation = (Conversation) o;
+                DAOConversation dao = new DAOConversation(con);
+                ConversationController conversationController = new ConversationController(dao);
+                if (conversation.getAction().equals("getGroupList")) {
+                    oos.writeObject(conversationController.returnAvailableGroupList(conversation));
+                }
 
             } else if (o instanceof Friendship) {
                 Friendship friendship = (Friendship) o;

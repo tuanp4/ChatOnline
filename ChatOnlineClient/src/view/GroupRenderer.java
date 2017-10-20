@@ -16,13 +16,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
-import model.User;
+import model.Conversation;
 
 /**
  *
  * @author Valdez
  */
-public class UserRenderer extends javax.swing.JPanel implements ListCellRenderer<User> {
+public class GroupRenderer extends javax.swing.JPanel implements ListCellRenderer<Conversation> {
 
     private final String file_path = "file/default/";
     private final String upload_domain = "http://uploads.chatonline.com";
@@ -30,7 +30,7 @@ public class UserRenderer extends javax.swing.JPanel implements ListCellRenderer
     /**
      * Creates new form UserRenderer
      */
-    public UserRenderer() {
+    public GroupRenderer() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
@@ -38,11 +38,11 @@ public class UserRenderer extends javax.swing.JPanel implements ListCellRenderer
         initComponents();
     }
 
-    public void displayAvatar(User user) {
+    public void displayAvatar(Conversation conversation) {
         try {
-            BufferedImage avatar = ImageIO.read(new File(file_path + "default_avatar.png"));
-            if (user.getAvatar_path() != null) {
-                URL url = new URL(upload_domain + user.getAvatar_path());
+            BufferedImage avatar = ImageIO.read(new File(file_path + "default_group_avatar.png"));
+            if (conversation.getAvatar_path() != null) {
+                URL url = new URL(upload_domain + conversation.getAvatar_path());
                 avatar = ImageIO.read(url);
             }
             Image avatar_rs = avatar.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -53,44 +53,12 @@ public class UserRenderer extends javax.swing.JPanel implements ListCellRenderer
         }
     }
 
-    public void displayStatus(User user) {
-        try {
-            String status_path = file_path;
-            int temp = user.getStatus();
-            switch (temp) {
-                case 0:
-                    status_path += "online-icon.png";
-                    break;
-                case 1:
-                    status_path += "away-icon.png";
-                    break;
-                case 2:
-                    status_path += "busy-icon.png";
-                    break;
-                case 3:
-                    status_path += "invisible-icon.png";
-                    break;
-                case 4:
-                    status_path += "offline-icon.png";
-                    break;
-            }
-            BufferedImage status = ImageIO.read(new File(status_path));
-            ImageIcon status_img = new ImageIcon(status);
-            lbl_DisplayName.setIcon(status_img);
-        } catch (IOException ex) {
-        }
+    public void displayName(Conversation conversation) {
+        lbl_DisplayName.setText(conversation.getName());
     }
 
-    public void displayName(User user) {
-        if (user.getDisplay_name() != null && !user.getDisplay_name().equals("")) {
-            lbl_DisplayName.setText(user.getDisplay_name());
-        } else {
-            lbl_DisplayName.setText(user.getUsername());
-        }
-    }
-
-    public void displayDescription(User user) {
-        lbl_Description.setText(user.getDescription());
+    public void displayDescription(Conversation conversation) {
+        lbl_Description.setText(conversation.getDescription());
     }
 
     /**
@@ -156,16 +124,15 @@ public class UserRenderer extends javax.swing.JPanel implements ListCellRenderer
                         .addComponent(lbl_DisplayName, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbl_Description)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     @Override
-    public Component getListCellRendererComponent(JList<? extends User> list, User value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends Conversation> list, Conversation value, int index, boolean isSelected, boolean cellHasFocus) {
         try {
             displayAvatar(value);
-            displayStatus(value);
             displayName(value);
             displayDescription(value);
             lbl_Avatar.setOpaque(true);

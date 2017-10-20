@@ -5,7 +5,7 @@
  */
 package view;
 
-import controller.UserController;
+import controller.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -25,10 +25,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
 import model.*;
 
 /**
@@ -41,6 +38,7 @@ public class ClientMainView extends javax.swing.JFrame {
     private final String upload_domain = "http://uploads.chatonline.com";
 
     private UserController userController = new UserController(this);
+    private ConversationController conversationController = new ConversationController(this);
     private User user;
     private int status;
     private AccountInfoView myAccountInfoView;
@@ -48,6 +46,7 @@ public class ClientMainView extends javax.swing.JFrame {
     private boolean checkMyAccountInfoView = false;
     private boolean checkMyChangePasswordView = false;
     DefaultListModel<User> friendList = new DefaultListModel<>();
+    DefaultListModel<Conversation> groupList = new DefaultListModel<>();
 
     public void setUser(User user) {
         this.user = user;
@@ -77,6 +76,7 @@ public class ClientMainView extends javax.swing.JFrame {
         }
         setUser(user);
         userController.getFriendList();
+        conversationController.getGroupList();
         initComponents();
         this.setSize(350, GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
         this.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this.getWidth(), 0);
@@ -99,6 +99,19 @@ public class ClientMainView extends javax.swing.JFrame {
 
     public void displayFriendList(JList<User> friendList) {
         JListFriendList = friendList;
+    }
+
+    public void returnGroupList(ArrayList<Conversation> conversations) {
+        groupList.removeAllElements();
+        for (Conversation conversation : conversations) {
+            groupList.addElement(conversation);
+        }
+        JList<Conversation> list = new JList<Conversation>(groupList);
+        displayGroupList(list);
+    }
+
+    public void displayGroupList(JList<Conversation> groupList) {
+        JListGroupList = groupList;
     }
 
     public void returnStatus(User user) {
@@ -142,7 +155,7 @@ public class ClientMainView extends javax.swing.JFrame {
 
     public void displayAvatar(User user) {
         try {
-            BufferedImage avatar = ImageIO.read(new File(file_path + "default_avatar.jpg"));
+            BufferedImage avatar = ImageIO.read(new File(file_path + "default_avatar.png"));
             if (user.getAvatar_path() != null) {
                 URL url = new URL(upload_domain + user.getAvatar_path());
                 avatar = ImageIO.read(url);
@@ -245,7 +258,10 @@ public class ClientMainView extends javax.swing.JFrame {
         JP_FriendList = new javax.swing.JPanel(new BorderLayout());
         JScrollPaneFriendList = new javax.swing.JScrollPane();
         JListFriendList = new javax.swing.JList<>();
-        lbl_FriendList1 = new javax.swing.JLabel();
+        lbl_GroupList = new javax.swing.JLabel();
+        JP_GroupList = new javax.swing.JPanel();
+        JScrollPaneGroupList = new javax.swing.JScrollPane();
+        JListGroupList = new javax.swing.JList<>();
         JMenu = new javax.swing.JMenuBar();
         mn_MyProfile = new javax.swing.JMenu();
         mn_ChangeAccountInfo = new javax.swing.JMenuItem();
@@ -346,17 +362,34 @@ public class ClientMainView extends javax.swing.JFrame {
         JP_FriendList.setLayout(JP_FriendListLayout);
         JP_FriendListLayout.setHorizontalGroup(
             JP_FriendListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(JScrollPaneFriendList)
+            .addComponent(JScrollPaneFriendList, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
         );
         JP_FriendListLayout.setVerticalGroup(
             JP_FriendListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(JScrollPaneFriendList, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
         );
 
-        lbl_FriendList1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        lbl_FriendList1.setForeground(new java.awt.Color(255, 255, 0));
-        lbl_FriendList1.setIcon(new javax.swing.ImageIcon("C:\\Users\\tuanp\\OneDrive\\Documents\\NetBeansProjects\\ChatOnline\\ChatOnlineClient\\file\\default\\down.png")); // NOI18N
-        lbl_FriendList1.setText("Groups List");
+        lbl_GroupList.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        lbl_GroupList.setForeground(new java.awt.Color(255, 255, 0));
+        lbl_GroupList.setIcon(new javax.swing.ImageIcon("C:\\Users\\tuanp\\OneDrive\\Documents\\NetBeansProjects\\ChatOnline\\ChatOnlineClient\\file\\default\\down.png")); // NOI18N
+        lbl_GroupList.setText("Groups List");
+
+        JP_GroupList.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
+
+        JListGroupList.setModel(groupList);
+        JListGroupList.setCellRenderer(new GroupRenderer());
+        JScrollPaneGroupList.setViewportView(JListGroupList);
+
+        javax.swing.GroupLayout JP_GroupListLayout = new javax.swing.GroupLayout(JP_GroupList);
+        JP_GroupList.setLayout(JP_GroupListLayout);
+        JP_GroupListLayout.setHorizontalGroup(
+            JP_GroupListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(JScrollPaneGroupList)
+        );
+        JP_GroupListLayout.setVerticalGroup(
+            JP_GroupListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(JScrollPaneGroupList, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout JP_ChatListLayout = new javax.swing.GroupLayout(JP_ChatList);
         JP_ChatList.setLayout(JP_ChatListLayout);
@@ -369,20 +402,22 @@ public class ClientMainView extends javax.swing.JFrame {
                     .addGroup(JP_ChatListLayout.createSequentialGroup()
                         .addGroup(JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_FriendList)
-                            .addComponent(lbl_FriendList1))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(lbl_GroupList))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(JP_GroupList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         JP_ChatListLayout.setVerticalGroup(
             JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_ChatListLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lbl_FriendList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(5, 5, 5)
                 .addComponent(JP_FriendList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_FriendList1)
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addComponent(lbl_GroupList)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(JP_GroupList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout JP_MainLayout = new javax.swing.GroupLayout(JP_Main);
@@ -642,18 +677,21 @@ public class ClientMainView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<User> JListFriendList;
+    private javax.swing.JList<Conversation> JListGroupList;
     private javax.swing.JMenuBar JMenu;
     private javax.swing.JPanel JP_ChatList;
     private javax.swing.JPanel JP_FriendList;
+    private javax.swing.JPanel JP_GroupList;
     private javax.swing.JPanel JP_Info;
     private javax.swing.JPanel JP_Main;
     private javax.swing.JScrollPane JScrollPaneFriendList;
+    private javax.swing.JScrollPane JScrollPaneGroupList;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel lbl_Avatar;
     private javax.swing.JLabel lbl_DisplayName;
     private javax.swing.JLabel lbl_FriendList;
-    private javax.swing.JLabel lbl_FriendList1;
+    private javax.swing.JLabel lbl_GroupList;
     private javax.swing.JMenuItem mn_About;
     private javax.swing.JMenuItem mn_ChangeAccountInfo;
     private javax.swing.JMenuItem mn_ChangePassword;

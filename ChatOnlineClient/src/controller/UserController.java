@@ -13,7 +13,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import model.User;
+import model.*;
 import view.*;
 
 /**
@@ -147,7 +147,7 @@ public class UserController {
             }
             mySocket.close();
         } catch (Exception ex) {
-            accountInfoView.showMessage(ex.getStackTrace().toString());
+            clientMainView.showMessage(ex.getStackTrace().toString());
         }
     }
 
@@ -168,7 +168,7 @@ public class UserController {
             }
             mySocket.close();
         } catch (Exception ex) {
-            accountInfoView.showMessage(ex.getStackTrace().toString());
+            changePasswordView.showMessage(ex.getStackTrace().toString());
         }
     }
 
@@ -189,7 +189,7 @@ public class UserController {
             }
             mySocket.close();
         } catch (Exception ex) {
-            accountInfoView.showMessage(ex.getStackTrace().toString());
+            clientMainView.showMessage(ex.getStackTrace().toString());
         }
     }
 
@@ -206,7 +206,7 @@ public class UserController {
             clientMainView.returnFriendList(result);
             mySocket.close();
         } catch (Exception ex) {
-            accountInfoView.showMessage(ex.getStackTrace().toString());
+            clientMainView.showMessage(ex.getStackTrace().toString());
         }
     }
 

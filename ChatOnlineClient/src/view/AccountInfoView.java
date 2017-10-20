@@ -110,7 +110,7 @@ public class AccountInfoView extends javax.swing.JFrame {
 
     public void displayAvatar() {
         try {
-            BufferedImage avatar = ImageIO.read(new File(file_path + "default_avatar.jpg"));
+            BufferedImage avatar = ImageIO.read(new File(file_path + "default_avatar.png"));
             if (user.getAvatar_path() != null) {
                 URL url = new URL(upload_domain + user.getAvatar_path());
                 avatar = ImageIO.read(url);

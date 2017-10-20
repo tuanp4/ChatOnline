@@ -18,6 +18,7 @@ public class Conversation implements Serializable {
 
     private int id;
     private String name;
+    private String avatar_path;
     private String description;
     private String frame_color;
     private String main_icon;
@@ -39,6 +40,14 @@ public class Conversation implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAvatar_path() {
+        return avatar_path;
+    }
+
+    public void setAvatar_path(String avatar_path) {
+        this.avatar_path = avatar_path;
     }
 
     public String getDescription() {
@@ -82,6 +91,16 @@ public class Conversation implements Serializable {
     }
 
     public Conversation() {
+    }
+
+    private int mainUserId;
+
+    public int getMainUserId() {
+        return mainUserId;
+    }
+
+    public void setMainUserId(int mainUserId) {
+        this.mainUserId = mainUserId;
     }
 
 }
