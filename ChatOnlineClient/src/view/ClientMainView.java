@@ -25,6 +25,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import model.*;
 
@@ -356,6 +357,11 @@ public class ClientMainView extends javax.swing.JFrame {
 
         JListFriendList.setModel(friendList);
         JListFriendList.setCellRenderer(new UserRenderer());
+        JListFriendList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JListFriendListMouseClicked(evt);
+            }
+        });
         JScrollPaneFriendList.setViewportView(JListFriendList);
 
         javax.swing.GroupLayout JP_FriendListLayout = new javax.swing.GroupLayout(JP_FriendList);
@@ -638,6 +644,20 @@ public class ClientMainView extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_mn_ExitActionPerformed
+
+    private void JListFriendListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JListFriendListMouseClicked
+        // TODO add your handling code here:
+        JList list = (JList) evt.getSource();
+        if (SwingUtilities.isLeftMouseButton(evt)) {
+            if (evt.getClickCount() == 2) {
+                int index = list.locationToIndex(evt.getPoint());
+                showMessage(index + " double click");
+            }
+        } else if (SwingUtilities.isRightMouseButton(evt)) {
+            int index = list.locationToIndex(evt.getPoint());
+            showMessage(index + " right click");
+        }
+    }//GEN-LAST:event_JListFriendListMouseClicked
 
     /**
      * @param args the command line arguments
