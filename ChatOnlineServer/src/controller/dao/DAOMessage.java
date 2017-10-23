@@ -33,4 +33,31 @@ public class DAOMessage extends IDAO {
         }
     }
 
+    public Message sendMessage(Message message) {
+        try {
+            String sql = "INSERT INTO `message` (`conversation_id`, `user_id`, `content`) VALUES (?, ?, ?)";
+            this.preStatement = this.conn.prepareStatement(sql);
+            this.preStatement.setInt(1, message.getConversation_id());
+            this.preStatement.setInt(2, message.getUser_id());
+            this.preStatement.setString(3, message.getContent());
+            int check = this.preStatement.executeUpdate();
+            if (check != 0) {
+                sql = "SELECT `nick_name` FROM `group` WHERE `conversation_id` = ?";
+                this.preStatement = this.conn.prepareStatement(sql);
+                this.preStatement.setInt(1, message.getConversation_id());
+                rs = this.preStatement.executeQuery();
+                while (rs.next()) {
+                    message.setNick_name(rs.getString(1));
+                    break;
+                }
+                return message;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

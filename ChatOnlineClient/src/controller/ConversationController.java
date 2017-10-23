@@ -48,4 +48,27 @@ public class ConversationController {
         }
     }
 
+    public void createFriendConversation(int friendID) {
+        try {
+            Conversation conversation = new Conversation();
+            conversation.setMainUserId(clientMainView.getUserID().getId());
+            conversation.setFriendId(friendID);
+            conversation.setAction("createFriendConversation");
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(conversation);
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            Conversation result = (Conversation) o;
+            if (result == null) {
+                clientMainView.showMessage("Some error occurred. Please try again!");
+            } else {
+                clientMainView.openFriendChatBox(result);
+            }
+            mySocket.close();
+        } catch (Exception ex) {
+            clientMainView.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
 }

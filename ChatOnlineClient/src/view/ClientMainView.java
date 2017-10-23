@@ -89,6 +89,11 @@ public class ClientMainView extends javax.swing.JFrame {
         lbl_Avatar.requestFocusInWindow();
     }
 
+    public void openFriendChatBox(Conversation conversation) {
+        ChatBox chatBox = new ChatBox(conversation);
+        chatBox.setVisible(true);
+    }
+
     public void returnFriendList(ArrayList<User> users) {
         friendList.removeAllElements();
         for (User user : users) {
@@ -651,7 +656,8 @@ public class ClientMainView extends javax.swing.JFrame {
         if (SwingUtilities.isLeftMouseButton(evt)) {
             if (evt.getClickCount() == 2) {
                 int index = list.locationToIndex(evt.getPoint());
-                showMessage(index + " double click");
+//                showMessage(index + " double click");
+                conversationController.createFriendConversation(friendList.get(index).getId());
             }
         } else if (SwingUtilities.isRightMouseButton(evt)) {
             int index = list.locationToIndex(evt.getPoint());

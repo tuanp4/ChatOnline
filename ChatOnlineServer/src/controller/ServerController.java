@@ -72,7 +72,9 @@ public class ServerController {
                 if (conversation.getAction().equals("getGroupList")) {
                     oos.writeObject(conversationController.returnAvailableGroupList(conversation));
                 }
-
+                if (conversation.getAction().equals("createFriendConversation")) {
+                    oos.writeObject(conversationController.returnFriendConversation(conversation));
+                }
             } else if (o instanceof Friendship) {
                 Friendship friendship = (Friendship) o;
 
@@ -81,6 +83,11 @@ public class ServerController {
 
             } else if (o instanceof Message) {
                 Message message = (Message) o;
+                DAOMessage dao = new DAOMessage(con);
+                MessageController messageController = new MessageController(dao);
+                if(message.getAction().equals("sendMessage")){
+                    oos.writeObject(messageController.returnSentMessage(message));
+                }
 
             } else if (o instanceof User) {
                 User user = (User) o;

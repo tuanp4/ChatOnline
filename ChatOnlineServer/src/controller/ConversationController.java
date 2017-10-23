@@ -27,5 +27,9 @@ public class ConversationController {
         ArrayList<Conversation> availableGroupList = new ArrayList<>(Arrays.asList(dao.getAvailableGroupList(conversation)));
         return availableGroupList;
     }
-    
+
+    public Conversation returnFriendConversation(Conversation conversation) {
+        return dao.getFriendConversation(conversation);
+    }
+
 }

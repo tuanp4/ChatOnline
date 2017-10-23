@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Vector;
 import model.Conversation;
-import model.User;
 
 /**
  *
@@ -59,6 +58,47 @@ public class DAOConversation extends IDAO {
             return null;
         }
         return vector.toArray(result);
+    }
+
+    public Conversation getFriendConversation(Conversation conversation) {
+        try {
+            String sql = "SELECT `id` FROM `conversation` WHERE `conversation`.`name` IS NULL AND `conversation`.`description` = ?";
+            this.preStatement = this.conn.prepareStatement(sql);
+            if (conversation.getMainUserId() < conversation.getFriendId()) {
+                this.preStatement.setString(1, conversation.getMainUserId() + " " + conversation.getFriendId());
+            } else {
+                this.preStatement.setString(1, conversation.getFriendId() + " " + conversation.getMainUserId());
+            }
+            rs = this.preStatement.executeQuery();
+            Conversation temp = null;
+            while (rs.next()) {
+                temp = new Conversation();
+                temp.setId(rs.getInt(1));
+                break;
+            }
+            temp.setMainUserId(conversation.getMainUserId());
+            temp.setFriendId(conversation.getFriendId());
+            sql = "SELECT `avatar_path` FROM `user` WHERE `id` = ?";
+            this.preStatement = this.conn.prepareStatement(sql);
+            this.preStatement.setInt(1, conversation.getMainUserId());
+            rs = this.preStatement.executeQuery();
+            while (rs.next()) {
+                temp.setMainUserAvatarPath(rs.getString(1));
+                break;
+            }
+            sql = "SELECT `avatar_path` FROM `user` WHERE `id` = ?";
+            this.preStatement = this.conn.prepareStatement(sql);
+            this.preStatement.setInt(1, conversation.getFriendId());
+            rs = this.preStatement.executeQuery();
+            while (rs.next()) {
+                temp.setFriendAvatarPath(rs.getString(1));
+                break;
+            }
+            return temp;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }
