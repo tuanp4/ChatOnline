@@ -15,11 +15,13 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.text.html.HTMLEditorKit;
 import model.*;
 
 /**
@@ -47,12 +49,22 @@ public class ChatBox extends javax.swing.JFrame {
         } catch (Exception ex) {
         }
         setConversation(conversation);
+        this.setTitle(conversation.getFriendDisplayName());
         initComponents();
         displayAvatar(conversation);
     }
 
     public void returnMessage(Message message) {
-        JTextAreaChatHistory.append(message.getNick_name() + ": " + message.getContent() + "\n");
+        append("<b style='color:blue;'>" + message.getNick_name() + ":</b> " + message.getContent());
+    }
+
+    public void append(String data) {
+        HTMLEditorKit editor = (HTMLEditorKit) JEditorPaneChatHistory.getEditorKit();
+        StringReader reader = new StringReader(data);
+        try {
+            editor.read(reader, JEditorPaneChatHistory.getDocument(), JEditorPaneChatHistory.getDocument().getLength());
+        } catch (Exception ex) {
+        }
     }
 
     public Message getSendingMessage() {
@@ -117,12 +129,12 @@ public class ChatBox extends javax.swing.JFrame {
         };
         JPanelChatHistory = new javax.swing.JPanel();
         JScrollPaneChatHistory = new javax.swing.JScrollPane();
-        JTextAreaChatHistory = new javax.swing.JTextArea();
+        JEditorPaneChatHistory = new javax.swing.JEditorPane();
         JPanelNewMessage = new javax.swing.JPanel();
-        JScrollPaneNewMessage = new javax.swing.JScrollPane();
-        JTextAreaNewMessage = new javax.swing.JTextArea();
         jp_BtnSend = new javax.swing.JPanel();
         lbl_BtnSend = new javax.swing.JLabel();
+        JScrollPaneNewMessage = new javax.swing.JScrollPane();
+        JTextAreaNewMessage = new javax.swing.JTextArea();
         JP_Avatar = new javax.swing.JPanel() {
             @Override
             protected void paintComponent(Graphics grphcs) {
@@ -145,40 +157,31 @@ public class ChatBox extends javax.swing.JFrame {
 
         JScrollPaneChatHistory.setBorder(null);
 
-        JTextAreaChatHistory.setEditable(false);
-        JTextAreaChatHistory.setColumns(20);
-        JTextAreaChatHistory.setLineWrap(true);
-        JTextAreaChatHistory.setRows(5);
-        JScrollPaneChatHistory.setViewportView(JTextAreaChatHistory);
+        JEditorPaneChatHistory.setEditable(false);
+        JEditorPaneChatHistory.setContentType("text/html"); // NOI18N
+        JEditorPaneChatHistory.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
+        JEditorPaneChatHistory.setText("<html>\n  <head>\n\n  </head>\n  <body>\n    \n  </body>\n</html>\n");
+        JScrollPaneChatHistory.setViewportView(JEditorPaneChatHistory);
 
         javax.swing.GroupLayout JPanelChatHistoryLayout = new javax.swing.GroupLayout(JPanelChatHistory);
         JPanelChatHistory.setLayout(JPanelChatHistoryLayout);
         JPanelChatHistoryLayout.setHorizontalGroup(
             JPanelChatHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanelChatHistoryLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addComponent(JScrollPaneChatHistory)
-                .addContainerGap())
+                .addGap(6, 6, 6))
         );
         JPanelChatHistoryLayout.setVerticalGroup(
             JPanelChatHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanelChatHistoryLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(JScrollPaneChatHistory)
-                .addContainerGap())
+                .addGap(6, 6, 6)
+                .addComponent(JScrollPaneChatHistory, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
 
         JPanelNewMessage.setBackground(new java.awt.Color(255, 255, 255));
         JPanelNewMessage.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
-
-        JScrollPaneNewMessage.setBorder(null);
-        JScrollPaneNewMessage.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        JScrollPaneNewMessage.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-
-        JTextAreaNewMessage.setColumns(20);
-        JTextAreaNewMessage.setLineWrap(true);
-        JTextAreaNewMessage.setRows(5);
-        JScrollPaneNewMessage.setViewportView(JTextAreaNewMessage);
 
         jp_BtnSend.setBackground(new java.awt.Color(163, 73, 164));
         jp_BtnSend.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
@@ -210,27 +213,36 @@ public class ChatBox extends javax.swing.JFrame {
             .addComponent(lbl_BtnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        JScrollPaneNewMessage.setBorder(null);
+        JScrollPaneNewMessage.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPaneNewMessage.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        JTextAreaNewMessage.setColumns(20);
+        JTextAreaNewMessage.setLineWrap(true);
+        JTextAreaNewMessage.setRows(5);
+        JScrollPaneNewMessage.setViewportView(JTextAreaNewMessage);
+
         javax.swing.GroupLayout JPanelNewMessageLayout = new javax.swing.GroupLayout(JPanelNewMessage);
         JPanelNewMessage.setLayout(JPanelNewMessageLayout);
         JPanelNewMessageLayout.setHorizontalGroup(
             JPanelNewMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanelNewMessageLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(JScrollPaneNewMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+                .addGap(6, 6, 6)
+                .addComponent(JScrollPaneNewMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jp_BtnSend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11))
         );
         JPanelNewMessageLayout.setVerticalGroup(
             JPanelNewMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanelNewMessageLayout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addGroup(JPanelNewMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JScrollPaneNewMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(JPanelNewMessageLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jp_BtnSend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(JPanelNewMessageLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jp_BtnSend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
+            .addGroup(JPanelNewMessageLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(JScrollPaneNewMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
 
         javax.swing.GroupLayout JP_ChatLayout = new javax.swing.GroupLayout(JP_Chat);
@@ -247,9 +259,9 @@ public class ChatBox extends javax.swing.JFrame {
             JP_ChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_ChatLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(JPanelChatHistory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(11, 11, 11)
-                .addComponent(JPanelNewMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(JPanelChatHistory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JPanelNewMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -376,6 +388,7 @@ public class ChatBox extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JEditorPane JEditorPaneChatHistory;
     private javax.swing.JPanel JP_Avatar;
     private javax.swing.JPanel JP_Chat;
     private javax.swing.JPanel JP_Main;
@@ -383,7 +396,6 @@ public class ChatBox extends javax.swing.JFrame {
     private javax.swing.JPanel JPanelNewMessage;
     private javax.swing.JScrollPane JScrollPaneChatHistory;
     private javax.swing.JScrollPane JScrollPaneNewMessage;
-    private javax.swing.JTextArea JTextAreaChatHistory;
     private javax.swing.JTextArea JTextAreaNewMessage;
     private javax.swing.JPanel jp_BtnSend;
     private javax.swing.JLabel lbl_BtnSend;

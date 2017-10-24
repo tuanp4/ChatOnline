@@ -86,12 +86,17 @@ public class DAOConversation extends IDAO {
                 temp.setMainUserAvatarPath(rs.getString(1));
                 break;
             }
-            sql = "SELECT `avatar_path` FROM `user` WHERE `id` = ?";
+            sql = "SELECT `username`, `display_name`, `avatar_path` FROM `user` WHERE `id` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setInt(1, conversation.getFriendId());
             rs = this.preStatement.executeQuery();
             while (rs.next()) {
-                temp.setFriendAvatarPath(rs.getString(1));
+                if (rs.getString(2) != null && !rs.getString(2).equals("")) {
+                    temp.setFriendDisplayName(rs.getString(2));
+                } else{
+                    temp.setFriendDisplayName(rs.getString(1));
+                }
+                temp.setFriendAvatarPath(rs.getString(3));
                 break;
             }
             return temp;

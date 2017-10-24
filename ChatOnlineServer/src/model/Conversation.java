@@ -97,6 +97,7 @@ public class Conversation implements Serializable {
     private int friendId;
     private String mainUserAvatarPath;
     private String friendAvatarPath;
+    private String friendDisplayName;
 
     public int getMainUserId() {
         return mainUserId;
@@ -128,6 +129,14 @@ public class Conversation implements Serializable {
 
     public void setFriendAvatarPath(String friendAvatarPath) {
         this.friendAvatarPath = friendAvatarPath;
+    }
+
+    public String getFriendDisplayName() {
+        return friendDisplayName;
+    }
+
+    public void setFriendDisplayName(String friendDisplayName) {
+        this.friendDisplayName = friendDisplayName;
     }
 
 }
