@@ -85,10 +85,12 @@ public class ServerController {
                 Message message = (Message) o;
                 DAOMessage dao = new DAOMessage(con);
                 MessageController messageController = new MessageController(dao);
-                if(message.getAction().equals("sendMessage")){
+                if (message.getAction().equals("sendMessage")) {
                     oos.writeObject(messageController.returnSentMessage(message));
                 }
-
+                if (message.getAction().equals("getHistoryMessages")) {
+                    oos.writeObject(messageController.returnHistoryMessages(message));
+                }
             } else if (o instanceof User) {
                 User user = (User) o;
                 DAOUser dao = new DAOUser(con);

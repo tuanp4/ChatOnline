@@ -12,11 +12,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -34,28 +36,43 @@ public class ChatBox extends javax.swing.JFrame {
     private final String upload_domain = "http://uploads.chatonline.com";
 
     private MessageController messageController = new MessageController(this);
+    private ClientMainView clientMainView;
     private Conversation conversation;
 
     public void setConversation(Conversation conversation) {
         this.conversation = conversation;
     }
 
+    public Conversation getConversation() {
+        return conversation;
+    }
+
+    public Message getConversationID() {
+        Message model = new Message();
+        model.setConversation_id(conversation.getId());
+        return model;
+    }
+
     /**
      * Creates new form ChatBox
      */
-    public ChatBox(Conversation conversation) {
+    public ChatBox(Conversation conversation, ClientMainView clientMainView) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
         }
         setConversation(conversation);
+        this.clientMainView = clientMainView;
         this.setTitle(conversation.getFriendDisplayName());
         initComponents();
+        messageController.getHistoryMessages();
         displayAvatar(conversation);
     }
 
     public void returnMessage(Message message) {
-        append("<b style='color:blue;'>" + message.getNick_name() + ":</b> " + message.getContent());
+        append("<div>"
+                + "<b style='color: blue;'>" + message.getNick_name() + ":</b> " + message.getContent()
+                + "</div>");
     }
 
     public void append(String data) {
@@ -71,9 +88,17 @@ public class ChatBox extends javax.swing.JFrame {
         Message message = new Message();
         message.setConversation_id(conversation.getId());
         message.setUser_id(conversation.getMainUserId());
-        message.setContent(JTextAreaNewMessage.getText());
+        message.setContent(JTextAreaNewMessage.getText().replace("\n", "<br>"));
         JTextAreaNewMessage.setText("");
         return message;
+    }
+
+    public void returnHistoryMessages(ArrayList<Message> messages) {
+        for (Message message : messages) {
+            append("<div>"
+                    + "<b style='color: blue;'>" + message.getNick_name() + ":</b> " + message.getContent()
+                    + "</div>");
+        }
     }
 
     public void displayAvatar(Conversation conversation) {
@@ -99,6 +124,9 @@ public class ChatBox extends javax.swing.JFrame {
             lbl_FriendAvatar.setIcon(friendAvatar_img);
         } catch (IOException ex) {
         }
+    }
+
+    public void displayHistoryMessage(Conversation conversation) {
     }
 
     public void showMessage(String msg) {
@@ -220,6 +248,11 @@ public class ChatBox extends javax.swing.JFrame {
         JTextAreaNewMessage.setColumns(20);
         JTextAreaNewMessage.setLineWrap(true);
         JTextAreaNewMessage.setRows(5);
+        JTextAreaNewMessage.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                JTextAreaNewMessageKeyReleased(evt);
+            }
+        });
         JScrollPaneNewMessage.setViewportView(JTextAreaNewMessage);
 
         javax.swing.GroupLayout JPanelNewMessageLayout = new javax.swing.GroupLayout(JPanelNewMessage);
@@ -351,6 +384,17 @@ public class ChatBox extends javax.swing.JFrame {
             messageController.sendMessage();
         }
     }//GEN-LAST:event_lbl_BtnSendMouseClicked
+
+    private void JTextAreaNewMessageKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTextAreaNewMessageKeyReleased
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (evt.isShiftDown()) {
+                JTextAreaNewMessage.append("\n");
+            } else {
+                messageController.sendMessage();
+            }
+        }
+    }//GEN-LAST:event_JTextAreaNewMessageKeyReleased
 
     /**
      * @param args the command line arguments

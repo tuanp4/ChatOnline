@@ -155,8 +155,8 @@ public class ClientStartView extends javax.swing.JFrame {
             }
         });
         pwd_PasswordSI.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                pwd_PasswordSIKeyPressed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                pwd_PasswordSIKeyReleased(evt);
             }
         });
 
@@ -604,17 +604,6 @@ public class ClientStartView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_LoginMouseClicked
 
-    private void pwd_PasswordSIKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pwd_PasswordSIKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (txt_UsernameSI.getText().trim().equals("") || pwd_PasswordSI.getPassword().length == 0) {
-                showMessage("please fill the required fields (username, password).");
-            } else {
-                userController.login();
-            }
-        }
-    }//GEN-LAST:event_pwd_PasswordSIKeyPressed
-
     private void txt_UsernameJUFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_UsernameJUFocusGained
         // TODO add your handling code here:
         if (txt_UsernameJU.getText().equals(" Username")) {
@@ -745,6 +734,17 @@ public class ClientStartView extends javax.swing.JFrame {
         // TODO add your handling code here:
         jp_ToLogin.setBackground(new Color(58, 56, 77));
     }//GEN-LAST:event_btn_ToLoginMouseExited
+
+    private void pwd_PasswordSIKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pwd_PasswordSIKeyReleased
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (txt_UsernameSI.getText().trim().equals("") || pwd_PasswordSI.getPassword().length == 0) {
+                showMessage("please fill the required fields (username, password).");
+            } else {
+                userController.login();
+            }
+        }
+    }//GEN-LAST:event_pwd_PasswordSIKeyReleased
 
     /**
      * @param args the command line arguments

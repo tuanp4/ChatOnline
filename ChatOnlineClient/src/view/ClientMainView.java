@@ -46,8 +46,9 @@ public class ClientMainView extends javax.swing.JFrame {
     private ChangePasswordView myChangePasswordView;
     private boolean checkMyAccountInfoView = false;
     private boolean checkMyChangePasswordView = false;
-    DefaultListModel<User> friendList = new DefaultListModel<>();
-    DefaultListModel<Conversation> groupList = new DefaultListModel<>();
+    private DefaultListModel<User> friendList = new DefaultListModel<>();
+    private DefaultListModel<Conversation> groupList = new DefaultListModel<>();
+    private ArrayList<ChatBox> friendChatBoxList = new ArrayList<ChatBox>();
 
     public void setUser(User user) {
         this.user = user;
@@ -76,9 +77,9 @@ public class ClientMainView extends javax.swing.JFrame {
         } catch (Exception ex) {
         }
         setUser(user);
+        initComponents();
         userController.getFriendList();
         conversationController.getGroupList();
-        initComponents();
         this.setSize(350, GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
         this.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this.getWidth(), 0);
         displayAvatar(user);
@@ -90,8 +91,18 @@ public class ClientMainView extends javax.swing.JFrame {
     }
 
     public void openFriendChatBox(Conversation conversation) {
-        ChatBox chatBox = new ChatBox(conversation);
-        chatBox.setVisible(true);
+        Boolean check = false;
+        for (ChatBox cb : friendChatBoxList) {
+            if (cb.getConversation().getId() == conversation.getId()) {
+                cb.setVisible(true);
+                check = true;
+            }
+        }
+        if (check == false) {
+            ChatBox chatBox = new ChatBox(conversation, this);
+            friendChatBoxList.add(chatBox);
+            chatBox.setVisible(true);
+        }
     }
 
     public void returnFriendList(ArrayList<User> users) {
@@ -656,7 +667,6 @@ public class ClientMainView extends javax.swing.JFrame {
         if (SwingUtilities.isLeftMouseButton(evt)) {
             if (evt.getClickCount() == 2) {
                 int index = list.locationToIndex(evt.getPoint());
-//                showMessage(index + " double click");
                 conversationController.createFriendConversation(friendList.get(index).getId());
             }
         } else if (SwingUtilities.isRightMouseButton(evt)) {

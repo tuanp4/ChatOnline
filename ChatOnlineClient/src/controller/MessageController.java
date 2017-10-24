@@ -48,4 +48,21 @@ public class MessageController {
         }
     }
 
+    public void getHistoryMessages() {
+        try {
+            Message message = chatBox.getConversationID();
+            message.setAction("getHistoryMessages");
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(message);
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            ArrayList<Message> result = (ArrayList<Message>) o;
+            chatBox.returnHistoryMessages(result);
+            mySocket.close();
+        } catch (Exception ex) {
+            chatBox.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
 }

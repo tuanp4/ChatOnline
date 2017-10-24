@@ -6,6 +6,8 @@
 package controller;
 
 import controller.dao.DAOMessage;
+import java.util.ArrayList;
+import java.util.Arrays;
 import model.Message;
 
 /**
@@ -22,6 +24,11 @@ public class MessageController {
 
     public Message returnSentMessage(Message message) {
         return dao.sendMessage(message);
+    }
+
+    public ArrayList<Message> returnHistoryMessages(Message message) {
+        ArrayList<Message> allHistoryMessages = new ArrayList<>(Arrays.asList(dao.getHistoryMessages(message)));
+        return allHistoryMessages;
     }
 
     
