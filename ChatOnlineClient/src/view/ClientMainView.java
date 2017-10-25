@@ -70,6 +70,10 @@ public class ClientMainView extends javax.swing.JFrame {
         this.checkMyChangePasswordView = checkMyChangePasswordView;
     }
 
+    public JLabel getLbl_Avatar() {
+        return lbl_Avatar;
+    }
+
     /**
      * Creates new form JF_Main
      */
@@ -402,10 +406,8 @@ public class ClientMainView extends javax.swing.JFrame {
                 }
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                if (text.getText().trim().isEmpty()) {
-                    text.setText(" Type friend's username here...");
-                    text.setForeground(Color.GRAY);
-                }
+                text.setText(" Type friend's username here...");
+                text.setForeground(Color.GRAY);
             }
         });
 
