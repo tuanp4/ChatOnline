@@ -14,6 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.ArrayList;
 import view.ServerView;
 import model.*;
 
@@ -118,6 +119,9 @@ public class ServerController {
                 }
                 if (user.getAction().equals("getFriendList")) {
                     oos.writeObject(userController.returnAvailableFriendList(user));
+                }
+                if (user.getAction().equals("getSuggestedNewFriends")) {
+                    oos.writeObject(userController.returnAllUsers(user));
                 }
             }
         } catch (Exception e) {

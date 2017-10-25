@@ -23,8 +23,10 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import model.*;
@@ -281,6 +283,8 @@ public class ClientMainView extends javax.swing.JFrame {
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
+        lbl_AddfriendIcon = new javax.swing.JLabel();
+        cb_Addfriend = new javax.swing.JComboBox<>();
         lbl_FriendList = new javax.swing.JLabel();
         JP_FriendList = new javax.swing.JPanel(new BorderLayout());
         JScrollPaneFriendList = new javax.swing.JScrollPane();
@@ -379,6 +383,32 @@ public class ClientMainView extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        lbl_AddfriendIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_AddfriendIcon.setIcon(new javax.swing.ImageIcon(file_path + "add-contact-icon.png"));
+
+        cb_Addfriend.setEditable(true);
+        cb_Addfriend.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
+        cb_Addfriend.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        JTextField text = (JTextField) cb_Addfriend.getEditor().getEditorComponent();
+        text.setText(" Type friend's username here...");
+        text.setFont(txt_Description.getFont());
+        text.setForeground(txt_Description.getForeground());
+        text.addKeyListener(new ComboAddNewFriendKeyHandler(cb_Addfriend, this));
+        text.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                if (text.getText().equals(" Type friend's username here...")) {
+                    text.setText(" ");
+                    text.setForeground(Color.DARK_GRAY);
+                }
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                if (text.getText().trim().isEmpty()) {
+                    text.setText(" Type friend's username here...");
+                    text.setForeground(Color.GRAY);
+                }
+            }
+        });
+
         lbl_FriendList.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         lbl_FriendList.setForeground(new java.awt.Color(255, 255, 0));
         lbl_FriendList.setIcon(new javax.swing.ImageIcon(file_path + "down.png"));
@@ -403,7 +433,9 @@ public class ClientMainView extends javax.swing.JFrame {
         );
         JP_FriendListLayout.setVerticalGroup(
             JP_FriendListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(JScrollPaneFriendList, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JP_FriendListLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(JScrollPaneFriendList, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         lbl_GroupList.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -425,7 +457,7 @@ public class ClientMainView extends javax.swing.JFrame {
         );
         JP_GroupListLayout.setVerticalGroup(
             JP_GroupListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(JScrollPaneGroupList, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+            .addComponent(JScrollPaneGroupList, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout JP_ChatListLayout = new javax.swing.GroupLayout(JP_ChatList);
@@ -436,19 +468,28 @@ public class ClientMainView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JP_FriendList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(JP_GroupList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(JP_ChatListLayout.createSequentialGroup()
                         .addGroup(JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_FriendList)
-                            .addComponent(lbl_GroupList))
+                            .addComponent(lbl_GroupList)
+                            .addComponent(lbl_FriendList))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(JP_GroupList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JP_ChatListLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lbl_AddfriendIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cb_Addfriend, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         JP_ChatListLayout.setVerticalGroup(
             JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_ChatListLayout.createSequentialGroup()
+                .addGroup(JP_ChatListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cb_Addfriend)
+                    .addComponent(lbl_AddfriendIcon, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                .addGap(9, 9, 9)
                 .addComponent(lbl_FriendList)
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(JP_FriendList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbl_GroupList)
@@ -768,8 +809,10 @@ public class ClientMainView extends javax.swing.JFrame {
     private javax.swing.JPanel JP_Main;
     private javax.swing.JScrollPane JScrollPaneFriendList;
     private javax.swing.JScrollPane JScrollPaneGroupList;
+    private javax.swing.JComboBox<String> cb_Addfriend;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JLabel lbl_AddfriendIcon;
     private javax.swing.JLabel lbl_Avatar;
     private javax.swing.JLabel lbl_DisplayName;
     private javax.swing.JLabel lbl_FriendList;

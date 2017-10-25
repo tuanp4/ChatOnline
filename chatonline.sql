@@ -13,12 +13,10 @@
 
 
 -- Dumping database structure for chat_online
-DROP DATABASE IF EXISTS `chat_online`;
 CREATE DATABASE IF NOT EXISTS `chat_online` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `chat_online`;
 
 -- Dumping structure for table chat_online.conversation
-DROP TABLE IF EXISTS `conversation`;
 CREATE TABLE IF NOT EXISTS `conversation` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'mã hội thoại',
   `name` varchar(250) DEFAULT NULL COMMENT 'tên hội thoại',
@@ -45,7 +43,6 @@ REPLACE INTO `conversation` (`id`, `name`, `avatar_path`, `description`, `frame_
 /*!40000 ALTER TABLE `conversation` ENABLE KEYS */;
 
 -- Dumping structure for table chat_online.friendship
-DROP TABLE IF EXISTS `friendship`;
 CREATE TABLE IF NOT EXISTS `friendship` (
   `sender_id` int(11) NOT NULL COMMENT 'mã người gửi',
   `receiver_id` int(11) NOT NULL COMMENT 'mã người nhận',
@@ -70,7 +67,6 @@ REPLACE INTO `friendship` (`sender_id`, `receiver_id`, `confirm`, `ignore`) VALU
 /*!40000 ALTER TABLE `friendship` ENABLE KEYS */;
 
 -- Dumping structure for table chat_online.group
-DROP TABLE IF EXISTS `group`;
 CREATE TABLE IF NOT EXISTS `group` (
   `conversation_id` int(11) NOT NULL COMMENT 'mã hội thoại',
   `user_id` int(11) NOT NULL COMMENT 'mã người dùng',
@@ -113,7 +109,6 @@ REPLACE INTO `group` (`conversation_id`, `user_id`, `nick_name`, `is_participant
 /*!40000 ALTER TABLE `group` ENABLE KEYS */;
 
 -- Dumping structure for table chat_online.message
-DROP TABLE IF EXISTS `message`;
 CREATE TABLE IF NOT EXISTS `message` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'mã tin nhắn',
   `conversation_id` int(11) NOT NULL COMMENT 'mã hội thoại',
@@ -193,7 +188,6 @@ REPLACE INTO `message` (`id`, `conversation_id`, `user_id`, `content`, `created_
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 
 -- Dumping structure for table chat_online.user
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'mã người dùng',
   `username` varchar(50) NOT NULL COMMENT 'tên đăng nhập',
@@ -214,7 +208,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 REPLACE INTO `user` (`id`, `username`, `password_hash`, `display_name`, `gender`, `avatar_path`, `email`, `phone_number`, `description`, `status`) VALUES
 	(1, 'tuanpham', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Phạm Mạnh Tuấn', 0, '/avatar/2017/10/06/16/07c0501b9f0ca6de.png', 'tuanpham@gmail.com', NULL, 'tuanpham@gmail.com', 0),
-	(2, 'thangbui', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Bùi Đức Thắng', 0, '/avatar/2017/10/23/16/7b4796e0e01be65a.png', 'thangbui@gmail.com', NULL, 'thangbui@gmail.com', 1),
+	(2, 'thangbui', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Bùi Đức Thắng', 0, '/avatar/2017/10/23/16/7b4796e0e01be65a.png', 'thangbui@gmail.com', NULL, 'thangbui@gmail.com', 4),
 	(3, 'hangnguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Thị Hằng', 1, NULL, 'hangnguyen@gmail.com', NULL, 'hangnguyen@gmail.com', 0),
 	(4, 'quannguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Tiến Quân', 0, NULL, 'quannguyen@gmail.com', NULL, 'quannguyen@gmail.com', 0),
 	(5, 'tiennguyen', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nguyễn Khắc Tiến', 0, NULL, 'tiennguyen@gmail.com', NULL, 'tiennguyen@gmail.com', 0),

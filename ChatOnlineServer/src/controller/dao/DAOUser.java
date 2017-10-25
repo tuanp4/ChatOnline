@@ -233,4 +233,28 @@ public class DAOUser extends IDAO {
         return vector.toArray(result);
     }
 
+    public User[] getAllUsers(User user) {
+        Vector<User> vector = new Vector<User>();
+        User[] result;
+        try {
+            String sql = "SELECT `id`, `username` FROM `user` WHERE `username` LIKE ?";
+            this.preStatement = this.conn.prepareStatement(sql);
+            this.preStatement.setString(1, "%" + user.getUsername() + "%");
+            rs = this.preStatement.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                User temp = new User();
+                temp.setId(rs.getInt(1));
+                temp.setUsername(" " + rs.getString(2));
+                vector.add(temp);
+                i++;
+            }
+            result = new User[i];
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return vector.toArray(result);
+    }
+
 }
