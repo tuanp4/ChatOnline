@@ -78,6 +78,8 @@ public class ClientMainView extends javax.swing.JFrame {
         }
         setUser(user);
         initComponents();
+        status = 0;
+        userController.changeStatus();
         userController.getFriendList();
         conversationController.getGroupList();
         this.setSize(350, GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
@@ -308,6 +310,11 @@ public class ClientMainView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ChatOnline");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         JP_Main.setBackground((new java.awt.Color(120, 36, 111)).brighter());
 
@@ -657,11 +664,17 @@ public class ClientMainView extends javax.swing.JFrame {
         if (output == JOptionPane.YES_OPTION) {
             ClientStartView clientStartView = new ClientStartView();
             clientStartView.setVisible(true);
-            myAccountInfoView.dispose();
-            myChangePasswordView.dispose();
+            if (checkMyAccountInfoView) {
+                myAccountInfoView.dispose();
+            }
+            if (checkMyChangePasswordView) {
+                myChangePasswordView.dispose();
+            }
             for (ChatBox cb : friendChatBoxList) {
                 cb.dispose();
             }
+            status = 4;
+            userController.changeStatus();
             this.dispose();
         }
     }//GEN-LAST:event_mn_SignOutActionPerformed
@@ -670,11 +683,17 @@ public class ClientMainView extends javax.swing.JFrame {
         // TODO add your handling code here:
         int output = JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "Exit", JOptionPane.YES_NO_OPTION);
         if (output == JOptionPane.YES_OPTION) {
-            myAccountInfoView.dispose();
-            myChangePasswordView.dispose();
+            if (checkMyAccountInfoView) {
+                myAccountInfoView.dispose();
+            }
+            if (checkMyChangePasswordView) {
+                myChangePasswordView.dispose();
+            }
             for (ChatBox cb : friendChatBoxList) {
                 cb.dispose();
             }
+            status = 4;
+            userController.changeStatus();
             this.dispose();
         }
     }//GEN-LAST:event_mn_ExitActionPerformed
@@ -682,16 +701,25 @@ public class ClientMainView extends javax.swing.JFrame {
     private void JListFriendListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JListFriendListMouseClicked
         // TODO add your handling code here:
         JList list = (JList) evt.getSource();
-        if (SwingUtilities.isLeftMouseButton(evt)) {
-            if (evt.getClickCount() == 2) {
+        try {
+            if (SwingUtilities.isLeftMouseButton(evt)) {
+                if (evt.getClickCount() == 2) {
+                    int index = list.locationToIndex(evt.getPoint());
+                    conversationController.createFriendConversation(friendList.get(index).getId());
+                }
+            } else if (SwingUtilities.isRightMouseButton(evt)) {
                 int index = list.locationToIndex(evt.getPoint());
-                conversationController.createFriendConversation(friendList.get(index).getId());
+                showMessage(index + " right click");
             }
-        } else if (SwingUtilities.isRightMouseButton(evt)) {
-            int index = list.locationToIndex(evt.getPoint());
-            showMessage(index + " right click");
+        } catch (ArrayIndexOutOfBoundsException ex) {
         }
     }//GEN-LAST:event_JListFriendListMouseClicked
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        status = 4;
+        userController.changeStatus();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
