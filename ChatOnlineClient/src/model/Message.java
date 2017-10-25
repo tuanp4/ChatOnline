@@ -94,6 +94,7 @@ public class Message implements Serializable {
     }
 
     private String nick_name;
+    private String user_avatar;
 
     public String getNick_name() {
         return nick_name;
@@ -101,6 +102,14 @@ public class Message implements Serializable {
 
     public void setNick_name(String nick_name) {
         this.nick_name = nick_name;
+    }
+
+    public String getUser_avatar() {
+        return user_avatar;
+    }
+
+    public void setUser_avatar(String user_avatar) {
+        this.user_avatar = user_avatar;
     }
 
 }

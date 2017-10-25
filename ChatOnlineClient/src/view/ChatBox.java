@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -32,7 +33,6 @@ import model.*;
  */
 public class ChatBox extends javax.swing.JFrame {
 
-    private final String file_path = "file/default/";
     private final String upload_domain = "http://uploads.chatonline.com";
 
     private MessageController messageController = new MessageController(this);
@@ -70,9 +70,18 @@ public class ChatBox extends javax.swing.JFrame {
     }
 
     public void returnMessage(Message message) {
-        append("<div>"
-                + "<b style='color: blue;'>" + message.getNick_name() + ":</b> " + message.getContent()
-                + "</div>");
+        append("<table style='background: #f2f2f2; margin-bottom: 3px;'>"
+                + "<tr>"
+                + "<td valign=top>"
+                + "<img src='" + upload_domain + message.getUser_avatar() + "' height='40' width='40' style='border-radius: 50%;'>"
+                + "</td>"
+                + "<td valign=top style='width:300px; word-wrap:break-word;'>"
+                + "<b style='color:blue'>" + message.getNick_name() + ": </b>"
+                + "<br>"
+                + message.getContent()
+                + "</td>"
+                + "</tr>"
+                + "</table>");
     }
 
     public void append(String data) {
@@ -95,9 +104,18 @@ public class ChatBox extends javax.swing.JFrame {
 
     public void returnHistoryMessages(ArrayList<Message> messages) {
         for (Message message : messages) {
-            append("<div>"
-                    + "<b style='color: blue;'>" + message.getNick_name() + ":</b> " + message.getContent()
-                    + "</div>");
+            append("<table style='background: #f2f2f2; margin-bottom: 3px;'>"
+                    + "<tr>"
+                    + "<td valign=top>"
+                    + "<img src='" + upload_domain + message.getUser_avatar() + "' height='40' width='40' style='border-radius: 50%;'>"
+                    + "</td>"
+                    + "<td valign=top style='width:300px; word-wrap:break-word;'>"
+                    + "<b style='color:blue'>" + message.getNick_name() + ": </b>"
+                    + "<br>"
+                    + message.getContent()
+                    + "</td>"
+                    + "</tr>"
+                    + "</table>");
         }
     }
 
@@ -105,7 +123,7 @@ public class ChatBox extends javax.swing.JFrame {
         try {
             lbl_MyAvatar.setText("");
             lbl_FriendAvatar.setText("");
-            BufferedImage myAvatar = ImageIO.read(new File(file_path + "default_avatar.png"));
+            BufferedImage myAvatar = ImageIO.read(new URL(upload_domain + "/default/default_avatar.png"));
             if (conversation.getMainUserAvatarPath() != null) {
                 URL url = new URL(upload_domain + conversation.getMainUserAvatarPath());
                 myAvatar = ImageIO.read(url);
@@ -114,7 +132,7 @@ public class ChatBox extends javax.swing.JFrame {
             ImageIcon myAvatar_img = new ImageIcon(myAvatar_rs);
             lbl_MyAvatar.setIcon(myAvatar_img);
 
-            BufferedImage friendAvatar = ImageIO.read(new File(file_path + "default_avatar.png"));
+            BufferedImage friendAvatar = ImageIO.read(new URL(upload_domain + "/default/default_avatar.png"));
             if (conversation.getFriendAvatarPath() != null) {
                 URL url = new URL(upload_domain + conversation.getFriendAvatarPath());
                 friendAvatar = ImageIO.read(url);
@@ -179,6 +197,12 @@ public class ChatBox extends javax.swing.JFrame {
         lbl_MyAvatar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         JPanelChatHistory.setBackground(new java.awt.Color(255, 255, 255));
         JPanelChatHistory.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
@@ -395,6 +419,15 @@ public class ChatBox extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_JTextAreaNewMessageKeyReleased
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        try {
+            clientMainView.closeFriendChatBox(conversation);
+        } catch (ConcurrentModificationException ex) {
+
+        }
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments

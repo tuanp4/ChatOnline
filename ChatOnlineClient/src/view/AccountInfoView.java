@@ -33,7 +33,6 @@ import model.User;
  */
 public class AccountInfoView extends javax.swing.JFrame {
 
-    private final String file_path = "file/default/";
     private final String upload_domain = "http://uploads.chatonline.com";
 
     private UserController userController = new UserController(this);
@@ -110,7 +109,7 @@ public class AccountInfoView extends javax.swing.JFrame {
 
     public void displayAvatar() {
         try {
-            BufferedImage avatar = ImageIO.read(new File(file_path + "default_avatar.png"));
+            BufferedImage avatar = ImageIO.read(new URL(upload_domain + "/default/default_avatar.png"));
             if (user.getAvatar_path() != null) {
                 URL url = new URL(upload_domain + user.getAvatar_path());
                 avatar = ImageIO.read(url);

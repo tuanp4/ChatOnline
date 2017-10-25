@@ -48,9 +48,17 @@ public class DAOMessage extends IDAO {
                 this.preStatement = this.conn.prepareStatement(sql);
                 this.preStatement.setInt(1, message.getConversation_id());
                 this.preStatement.setInt(2, message.getUser_id());
-                rs = this.preStatement.executeQuery();
-                while (rs.next()) {
-                    message.setNick_name(rs.getString(1));
+                ResultSet nick_name = this.preStatement.executeQuery();
+                while (nick_name.next()) {
+                    message.setNick_name(nick_name.getString(1));
+                    break;
+                }
+                sql = "SELECT `avatar_path` FROM `user` WHERE `id` = ?";
+                this.preStatement = this.conn.prepareStatement(sql);
+                this.preStatement.setInt(1, message.getUser_id());
+                ResultSet avatar_path = this.preStatement.executeQuery();
+                while (avatar_path.next()) {
+                    message.setUser_avatar(avatar_path.getString(1));
                     break;
                 }
                 return message;
@@ -83,6 +91,14 @@ public class DAOMessage extends IDAO {
                 ResultSet nick_name = this.preStatement.executeQuery();
                 while (nick_name.next()) {
                     temp.setNick_name(nick_name.getString(1));
+                    break;
+                }
+                sql = "SELECT `avatar_path` FROM `user` WHERE `id` = ?";
+                this.preStatement = this.conn.prepareStatement(sql);
+                this.preStatement.setInt(1, temp.getUser_id());
+                ResultSet avatar_path = this.preStatement.executeQuery();
+                while (avatar_path.next()) {
+                    temp.setUser_avatar(avatar_path.getString(1));
                     break;
                 }
                 vector.add(temp);

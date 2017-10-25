@@ -24,7 +24,7 @@ import model.User;
  */
 public class UserRenderer extends javax.swing.JPanel implements ListCellRenderer<User> {
 
-    private final String file_path = "file/default/";
+    private final String file_path = "file/icon/";
     private final String upload_domain = "http://uploads.chatonline.com";
 
     /**
@@ -40,7 +40,7 @@ public class UserRenderer extends javax.swing.JPanel implements ListCellRenderer
 
     public void displayAvatar(User user) {
         try {
-            BufferedImage avatar = ImageIO.read(new File(file_path + "default_avatar.png"));
+            BufferedImage avatar = ImageIO.read(new URL(upload_domain + "/default/default_avatar.png"));
             if (user.getAvatar_path() != null) {
                 URL url = new URL(upload_domain + user.getAvatar_path());
                 avatar = ImageIO.read(url);

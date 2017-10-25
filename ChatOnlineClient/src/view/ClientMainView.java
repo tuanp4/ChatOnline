@@ -35,7 +35,7 @@ import model.*;
  */
 public class ClientMainView extends javax.swing.JFrame {
 
-    private final String file_path = "file/default/";
+    private final String file_path = "file/icon/";
     private final String upload_domain = "http://uploads.chatonline.com";
 
     private UserController userController = new UserController(this);
@@ -102,6 +102,14 @@ public class ClientMainView extends javax.swing.JFrame {
             ChatBox chatBox = new ChatBox(conversation, this);
             friendChatBoxList.add(chatBox);
             chatBox.setVisible(true);
+        }
+    }
+
+    public void closeFriendChatBox(Conversation conversation) {
+        for (ChatBox cb : friendChatBoxList) {
+            if (cb.getConversation().getId() == conversation.getId()) {
+                friendChatBoxList.remove(cb);
+            }
         }
     }
 
@@ -172,7 +180,7 @@ public class ClientMainView extends javax.swing.JFrame {
 
     public void displayAvatar(User user) {
         try {
-            BufferedImage avatar = ImageIO.read(new File(file_path + "default_avatar.png"));
+            BufferedImage avatar = ImageIO.read(new URL(upload_domain + "/default/default_avatar.png"));
             if (user.getAvatar_path() != null) {
                 URL url = new URL(upload_domain + user.getAvatar_path());
                 avatar = ImageIO.read(url);
@@ -206,7 +214,7 @@ public class ClientMainView extends javax.swing.JFrame {
                     status_path += "offline-icon.png";
                     break;
             }
-            BufferedImage status = ImageIO.read(new File(status_path));
+            BufferedImage status = ImageIO.read(new URL(status_path));
             ImageIcon status_img = new ImageIcon(status);
             lbl_DisplayName.setIcon(status_img);
         } catch (IOException ex) {
@@ -366,7 +374,7 @@ public class ClientMainView extends javax.swing.JFrame {
 
         lbl_FriendList.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         lbl_FriendList.setForeground(new java.awt.Color(255, 255, 0));
-        lbl_FriendList.setIcon(new javax.swing.ImageIcon("C:\\Users\\tuanp\\OneDrive\\Documents\\NetBeansProjects\\ChatOnline\\ChatOnlineClient\\file\\default\\down.png")); // NOI18N
+        lbl_FriendList.setIcon(new javax.swing.ImageIcon(file_path + "down.png"));
         lbl_FriendList.setText("Friends List");
 
         JP_FriendList.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
@@ -393,7 +401,7 @@ public class ClientMainView extends javax.swing.JFrame {
 
         lbl_GroupList.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         lbl_GroupList.setForeground(new java.awt.Color(255, 255, 0));
-        lbl_GroupList.setIcon(new javax.swing.ImageIcon("C:\\Users\\tuanp\\OneDrive\\Documents\\NetBeansProjects\\ChatOnline\\ChatOnlineClient\\file\\default\\down.png")); // NOI18N
+        lbl_GroupList.setIcon(new javax.swing.ImageIcon(file_path + "down.png"));
         lbl_GroupList.setText("Groups List");
 
         JP_GroupList.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
@@ -649,6 +657,11 @@ public class ClientMainView extends javax.swing.JFrame {
         if (output == JOptionPane.YES_OPTION) {
             ClientStartView clientStartView = new ClientStartView();
             clientStartView.setVisible(true);
+            myAccountInfoView.dispose();
+            myChangePasswordView.dispose();
+            for (ChatBox cb : friendChatBoxList) {
+                cb.dispose();
+            }
             this.dispose();
         }
     }//GEN-LAST:event_mn_SignOutActionPerformed
@@ -657,6 +670,11 @@ public class ClientMainView extends javax.swing.JFrame {
         // TODO add your handling code here:
         int output = JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "Exit", JOptionPane.YES_NO_OPTION);
         if (output == JOptionPane.YES_OPTION) {
+            myAccountInfoView.dispose();
+            myChangePasswordView.dispose();
+            for (ChatBox cb : friendChatBoxList) {
+                cb.dispose();
+            }
             this.dispose();
         }
     }//GEN-LAST:event_mn_ExitActionPerformed

@@ -24,7 +24,6 @@ import model.Conversation;
  */
 public class GroupRenderer extends javax.swing.JPanel implements ListCellRenderer<Conversation> {
 
-    private final String file_path = "file/default/";
     private final String upload_domain = "http://uploads.chatonline.com";
 
     /**
@@ -40,7 +39,7 @@ public class GroupRenderer extends javax.swing.JPanel implements ListCellRendere
 
     public void displayAvatar(Conversation conversation) {
         try {
-            BufferedImage avatar = ImageIO.read(new File(file_path + "default_group_avatar.png"));
+            BufferedImage avatar = ImageIO.read(new URL(upload_domain + "/default/default_group_avatar.png"));
             if (conversation.getAvatar_path() != null) {
                 URL url = new URL(upload_domain + conversation.getAvatar_path());
                 avatar = ImageIO.read(url);
