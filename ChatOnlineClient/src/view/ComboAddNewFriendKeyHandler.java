@@ -26,7 +26,8 @@ import model.User;
 public class ComboAddNewFriendKeyHandler extends KeyAdapter {
 
     private final JComboBox<String> comboBox;
-    private final ArrayList<String> list = new ArrayList<String>();
+    private final ArrayList<String> usernameList = new ArrayList<String>();
+    private final ArrayList<User> userList = new ArrayList<User>();
 
     private UserController userController = new UserController(this);
     private ClientMainView clientMainView;
@@ -38,9 +39,11 @@ public class ComboAddNewFriendKeyHandler extends KeyAdapter {
     }
 
     public void returnSuggestedNewFriends(ArrayList<User> users) {
-        list.removeAll(list);
+        userList.removeAll(userList);
+        usernameList.removeAll(usernameList);
         for (User user : users) {
-            list.add(user.getUsername());
+            userList.add(user);
+            usernameList.add(" " + user.getUsername());
         }
     }
 
@@ -76,7 +79,7 @@ public class ComboAddNewFriendKeyHandler extends KeyAdapter {
                 if (text.trim().isEmpty()) {
                     comboBox.hidePopup();
                 } else {
-                    m = getSuggestedModel(list, text.trim());
+                    m = getSuggestedModel(usernameList, text.trim());
                     if (m.getSize() == 0) {
                         comboBox.hidePopup();
                     } else {
@@ -91,31 +94,24 @@ public class ComboAddNewFriendKeyHandler extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
         JTextField textField = (JTextField) e.getComponent();
-        String text = textField.getText();
         switch (e.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
-                if (!list.isEmpty()) {
+                if (!usernameList.isEmpty()) {
                     if (comboBox.getSelectedIndex() == -1) {
-                    textField.setText(comboBox.getItemAt(0));
+                        textField.setText(comboBox.getItemAt(0));
                     }
                 }
                 break;
             case KeyEvent.VK_ENTER:
-                if (!list.isEmpty()) {
+                if (!usernameList.isEmpty()) {
                     clientMainView.getLbl_Avatar().requestFocus();
                     if (comboBox.getSelectedIndex() != -1) {
-                        clientMainView.showMessage(comboBox.getSelectedItem().toString());
+                        clientMainView.openUserInfoView(userList.get(comboBox.getSelectedIndex()));
                     } else {
-                        clientMainView.showMessage(comboBox.getItemAt(0));
+                        clientMainView.openUserInfoView(userList.get(0));
                     }
                 }
                 break;
-//            case KeyEvent.VK_UP:
-//                e.consume();
-//                break;
-//            case KeyEvent.VK_DOWN:
-//                e.consume();
-//                break;
             default:
                 break;
         }

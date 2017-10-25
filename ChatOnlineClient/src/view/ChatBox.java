@@ -425,7 +425,6 @@ public class ChatBox extends javax.swing.JFrame {
         try {
             clientMainView.closeFriendChatBox(conversation);
         } catch (ConcurrentModificationException ex) {
-
         }
     }//GEN-LAST:event_formWindowClosed
 

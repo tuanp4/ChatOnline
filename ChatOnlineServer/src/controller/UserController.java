@@ -129,8 +129,8 @@ public class UserController {
         return availableFriendList;
     }
 
-    public ArrayList<User> returnAllUsers(User user) {
-        ArrayList<User> listUsers = new ArrayList<>(Arrays.asList(dao.getAllUsers(user)));
+    public ArrayList<User> returnSuggestedUsers(User user) {
+        ArrayList<User> listUsers = new ArrayList<>(Arrays.asList(dao.getSuggestedUsers(user)));
         return listUsers;
     }
 

@@ -51,6 +51,7 @@ public class ClientMainView extends javax.swing.JFrame {
     private DefaultListModel<User> friendList = new DefaultListModel<>();
     private DefaultListModel<Conversation> groupList = new DefaultListModel<>();
     private ArrayList<ChatBox> friendChatBoxList = new ArrayList<ChatBox>();
+    private ArrayList<OtherUserInfoView> otherUserInfoViewsList = new ArrayList<OtherUserInfoView>();
 
     public void setUser(User user) {
         this.user = user;
@@ -96,6 +97,29 @@ public class ClientMainView extends javax.swing.JFrame {
         displayDescription(user);
 
         lbl_Avatar.requestFocusInWindow();
+    }
+
+    public void openUserInfoView(User user) {
+        Boolean check = false;
+        for (OtherUserInfoView ouiv : otherUserInfoViewsList) {
+            if (ouiv.getUser().getId() == user.getId()) {
+                ouiv.setVisible(true);
+                check = true;
+            }
+        }
+        if (check == false) {
+            OtherUserInfoView chatBox = new OtherUserInfoView(user, this);
+            otherUserInfoViewsList.add(chatBox);
+            chatBox.setVisible(true);
+        }
+    }
+
+    public void closeUserInfoView(User user) {
+        for (OtherUserInfoView ouiv : otherUserInfoViewsList) {
+            if (ouiv.getUser().getId() == user.getId()) {
+                otherUserInfoViewsList.remove(ouiv);
+            }
+        }
     }
 
     public void openFriendChatBox(Conversation conversation) {

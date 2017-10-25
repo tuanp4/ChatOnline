@@ -121,7 +121,7 @@ public class ServerController {
                     oos.writeObject(userController.returnAvailableFriendList(user));
                 }
                 if (user.getAction().equals("getSuggestedNewFriends")) {
-                    oos.writeObject(userController.returnAllUsers(user));
+                    oos.writeObject(userController.returnSuggestedUsers(user));
                 }
             }
         } catch (Exception e) {

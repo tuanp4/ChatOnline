@@ -36,7 +36,7 @@ public class DAOUser extends IDAO {
 
     public User getUserByUsername(User user) {
         try {
-            String sql = "SELECT * FROM user WHERE username = ?";
+            String sql = "SELECT * FROM `user` WHERE `username` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setString(1, user.getUsername());
             rs = this.preStatement.executeQuery();
@@ -64,7 +64,7 @@ public class DAOUser extends IDAO {
 
     public User getUserByUsernameOrEmail(User user) {
         try {
-            String sql = "SELECT * FROM user WHERE username = ? OR email = ?";
+            String sql = "SELECT * FROM `user` WHERE `username` = ? OR `email` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setString(1, user.getUsername());
             this.preStatement.setString(2, user.getEmail());
@@ -84,7 +84,7 @@ public class DAOUser extends IDAO {
 
     public User getUserById(User user) {
         try {
-            String sql = "SELECT * FROM user WHERE id = ?";
+            String sql = "SELECT * FROM `user` WHERE `id` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setInt(1, user.getId());
             rs = this.preStatement.executeQuery();
@@ -112,7 +112,7 @@ public class DAOUser extends IDAO {
 
     public boolean signUpUser(User user) {
         try {
-            String sql = "INSERT INTO user (username, password_hash, email, gender) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO `user` (`username`, `password_hash`, `email`, `gender`) VALUES (?, ?, ?, ?)";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setString(1, user.getUsername());
             this.preStatement.setString(2, user.getPassword_hash());
@@ -128,7 +128,7 @@ public class DAOUser extends IDAO {
 
     public boolean changeUserInfo(User user) {
         try {
-            String sql = "UPDATE user SET display_name = ?, email = ?, phone_number = ? WHERE id = ?";
+            String sql = "UPDATE `user` SET `display_name` = ?, `email` = ?, `phone_number` = ? WHERE `id` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setString(1, user.getDisplay_name());
             this.preStatement.setString(2, user.getEmail());
@@ -144,7 +144,7 @@ public class DAOUser extends IDAO {
 
     public boolean changeUserAvatar(User user, String avatar_path) {
         try {
-            String sql = "UPDATE user SET avatar_path = ? WHERE id = ?";
+            String sql = "UPDATE `user` SET `avatar_path` = ? WHERE `id` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setString(1, avatar_path);
             this.preStatement.setInt(2, user.getId());
@@ -158,7 +158,7 @@ public class DAOUser extends IDAO {
 
     public boolean changeUserStatus(User user) {
         try {
-            String sql = "UPDATE user SET status = ? WHERE id = ?";
+            String sql = "UPDATE `user` SET `status` = ? WHERE `id` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setInt(1, user.getStatus());
             this.preStatement.setInt(2, user.getId());
@@ -172,7 +172,7 @@ public class DAOUser extends IDAO {
 
     public boolean changeUserPassword(User user) {
         try {
-            String sql = "UPDATE user SET password_hash = ? WHERE id = ?";
+            String sql = "UPDATE `user` SET `password_hash` = ? WHERE `id` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setString(1, user.getPassword_hash());
             this.preStatement.setInt(2, user.getId());
@@ -186,7 +186,7 @@ public class DAOUser extends IDAO {
 
     public boolean changeUserDescription(User user) {
         try {
-            String sql = "UPDATE user SET description = ? WHERE id = ?";
+            String sql = "UPDATE `user` SET `description` = ? WHERE `id` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setString(1, user.getDescription());
             this.preStatement.setInt(2, user.getId());
@@ -202,13 +202,13 @@ public class DAOUser extends IDAO {
         Vector<User> vector = new Vector<User>();
         User[] result;
         try {
-            String sql = "SELECT id, username, display_name, avatar_path, description, status "
-                    + "FROM user INNER JOIN friendship ON user.id = friendship.sender_id "
-                    + "WHERE friendship.receiver_id = ? AND friendship.confirm = 1 AND user.status < 4 "
+            String sql = "SELECT `id`, `username`, `display_name`, `avatar_path`, `description`, `status` "
+                    + "FROM `user` INNER JOIN `friendship` ON `user`.`id` = `friendship`.`sender_id` "
+                    + "WHERE `friendship`.`receiver_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` < 4 "
                     + "UNION "
-                    + "SELECT id, username, display_name, avatar_path, description, status "
-                    + "FROM user INNER JOIN friendship ON user.id = friendship.receiver_id"
-                    + " WHERE friendship.sender_id = ? AND friendship.confirm = 1 AND user.status < 4";
+                    + "SELECT `id`, `username`, `display_name`, `avatar_path`, `description`, `status` "
+                    + "FROM `user` INNER JOIN `friendship` ON `user`.`id` = `friendship`.`sender_id` "
+                    + " WHERE `friendship`.`sender_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` < 4";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setInt(1, user.getId());
             this.preStatement.setInt(2, user.getId());
@@ -233,19 +233,25 @@ public class DAOUser extends IDAO {
         return vector.toArray(result);
     }
 
-    public User[] getAllUsers(User user) {
+    public User[] getSuggestedUsers(User user) {
         Vector<User> vector = new Vector<User>();
         User[] result;
         try {
-            String sql = "SELECT `id`, `username` FROM `user` WHERE `username` LIKE ?";
+            String sql = "SELECT `id`, `username`, `display_name`, `gender`, `avatar_path`, `email`, `phone_number` FROM `user` WHERE `id` != ? AND `username` LIKE ?";
             this.preStatement = this.conn.prepareStatement(sql);
-            this.preStatement.setString(1, "%" + user.getUsername() + "%");
+            this.preStatement.setInt(1, user.getId());
+            this.preStatement.setString(2, "%" + user.getUsername() + "%");
             rs = this.preStatement.executeQuery();
             int i = 0;
             while (rs.next()) {
                 User temp = new User();
                 temp.setId(rs.getInt(1));
-                temp.setUsername(" " + rs.getString(2));
+                temp.setUsername(rs.getString(2));
+                temp.setDisplay_name(rs.getString(3));
+                temp.setGender(rs.getInt(4));
+                temp.setAvatar_path(rs.getString(5));
+                temp.setEmail(rs.getString(6));
+                temp.setPhone_number(rs.getString(7));
                 vector.add(temp);
                 i++;
             }
