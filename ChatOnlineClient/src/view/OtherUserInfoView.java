@@ -5,7 +5,7 @@
  */
 package view;
 
-import controller.UserController;
+import controller.FriendshipController;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -13,10 +13,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ConcurrentModificationException;
@@ -24,9 +20,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import model.User;
+import model.*;
 
 /**
  *
@@ -36,12 +30,20 @@ public class OtherUserInfoView extends javax.swing.JFrame {
 
     private final String upload_domain = "http://uploads.chatonline.com";
 
-//    private UserController userController = new UserController(this);
+    private FriendshipController friendshipController = new FriendshipController(this);
     private ClientMainView clientMainView;
     private User user;
+    private String friendshipState;
 
     public User getUser() {
         return user;
+    }
+
+    public Friendship getUserIDs() {
+        Friendship friendship = new Friendship();
+        friendship.setSender_id(clientMainView.getUserID().getId());
+        friendship.setReceiver_id(user.getId());
+        return friendship;
     }
 
     /**
@@ -55,10 +57,29 @@ public class OtherUserInfoView extends javax.swing.JFrame {
         this.user = user;
         this.clientMainView = clientMainView;
         this.setTitle("User account: " + user.getUsername());
+        friendshipController.getFriendshipState();
         initComponents();
         displayAvatar();
         displayStaticInfo();
+        displayFriendshipState();
         displayFormInfo();
+    }
+
+    public void returnFriendshipState(String state) {
+        this.friendshipState = state;
+    }
+
+    public void changeFriendshipState(String state) {
+        this.friendshipState = state;
+        displayFriendshipState();
+        clientMainView.getUserController().getFriendList();
+    }
+
+    public void displayFriendshipState() {
+        btn_FriendShipAction.setText(friendshipState);
+        if (friendshipState.equals("Friends") || friendshipState.equals("Friend Request Sent")) {
+            jp_FriendShipAction.setBackground(new Color(93, 53, 176).brighter());
+        }
     }
 
     public void displayStaticInfo() {
@@ -215,7 +236,7 @@ public class OtherUserInfoView extends javax.swing.JFrame {
         jp_FriendShipAction.setLayout(jp_FriendShipActionLayout);
         jp_FriendShipActionLayout.setHorizontalGroup(
             jp_FriendShipActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btn_FriendShipAction, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+            .addComponent(btn_FriendShipAction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jp_FriendShipActionLayout.setVerticalGroup(
             jp_FriendShipActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -239,9 +260,7 @@ public class OtherUserInfoView extends javax.swing.JFrame {
                         .addGroup(jp_BasicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_Gender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txt_Username, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jp_BasicLayout.createSequentialGroup()
-                        .addComponent(jp_FriendShipAction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(jp_FriendShipAction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jp_BasicLayout.setVerticalGroup(
@@ -362,16 +381,25 @@ public class OtherUserInfoView extends javax.swing.JFrame {
 
     private void btn_FriendShipActionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_FriendShipActionMouseClicked
         // TODO add your handling code here:
+        if (friendshipState.equals("Add Friend")) {
+            friendshipController.addFriend();
+        } else if (friendshipState.equals("Respond to Friend Request")) {
+            friendshipController.acceptFriendRequest();
+        }
     }//GEN-LAST:event_btn_FriendShipActionMouseClicked
 
     private void btn_FriendShipActionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_FriendShipActionMouseEntered
         // TODO add your handling code here:
-        jp_FriendShipAction.setBackground(jp_FriendShipAction.getBackground().brighter());
+        if (!friendshipState.equals("Friends") && !friendshipState.equals("Friend Request Sent")) {
+            jp_FriendShipAction.setBackground(jp_FriendShipAction.getBackground().brighter());
+        }
     }//GEN-LAST:event_btn_FriendShipActionMouseEntered
 
     private void btn_FriendShipActionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_FriendShipActionMouseExited
         // TODO add your handling code here:
-        jp_FriendShipAction.setBackground(new Color(93, 53, 176));
+        if (!friendshipState.equals("Friends") && !friendshipState.equals("Friend Request Sent")) {
+            jp_FriendShipAction.setBackground(new Color(93, 53, 176));
+        }
     }//GEN-LAST:event_btn_FriendShipActionMouseExited
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

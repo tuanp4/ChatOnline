@@ -38,6 +38,7 @@ public class ConversationController {
             Socket mySocket = new Socket(serverHost, serverPort);
             ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(conversation);
+            oos.flush();
             ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             ArrayList<Conversation> result = (ArrayList<Conversation>) o;
@@ -57,6 +58,7 @@ public class ConversationController {
             Socket mySocket = new Socket(serverHost, serverPort);
             ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(conversation);
+            oos.flush();
             ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             Conversation result = (Conversation) o;

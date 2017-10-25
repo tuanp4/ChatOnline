@@ -85,7 +85,7 @@
                       <Component id="lbl_Avatar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="lbl_ForUsername" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="lbl_ForGender" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -96,10 +96,7 @@
                                   <Component id="txt_Username" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jp_FriendShipAction" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="jp_FriendShipAction" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -224,7 +221,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btn_FriendShipAction" alignment="0" pref="123" max="32767" attributes="0"/>
+                      <Component id="btn_FriendShipAction" alignment="0" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">

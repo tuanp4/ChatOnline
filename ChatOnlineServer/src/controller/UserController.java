@@ -56,7 +56,7 @@ public class UserController {
         return null;
     }
 
-    public boolean signUpUser(User user) {
+    public Boolean signUpUser(User user) {
         User userDAO = dao.getUserByUsernameOrEmail(user);
         if (userDAO != null) {
             return false;

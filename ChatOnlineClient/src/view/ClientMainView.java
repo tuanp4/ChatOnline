@@ -75,6 +75,10 @@ public class ClientMainView extends javax.swing.JFrame {
         return lbl_Avatar;
     }
 
+    public UserController getUserController() {
+        return userController;
+    }
+
     /**
      * Creates new form JF_Main
      */
@@ -419,8 +423,8 @@ public class ClientMainView extends javax.swing.JFrame {
         cb_Addfriend.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         JTextField text = (JTextField) cb_Addfriend.getEditor().getEditorComponent();
         text.setText(" Type friend's username here...");
-        text.setFont(txt_Description.getFont());
-        text.setForeground(txt_Description.getForeground());
+        text.setFont(new java.awt.Font("Tahoma", 2, 14));
+        text.setForeground(java.awt.Color.gray);
         text.addKeyListener(new ComboAddNewFriendKeyHandler(cb_Addfriend, this));
         text.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -740,6 +744,9 @@ public class ClientMainView extends javax.swing.JFrame {
             for (ChatBox cb : friendChatBoxList) {
                 cb.dispose();
             }
+            for (OtherUserInfoView ouiv : otherUserInfoViewsList) {
+                ouiv.dispose();
+            }
             status = 4;
             userController.changeStatus();
             this.dispose();
@@ -758,6 +765,9 @@ public class ClientMainView extends javax.swing.JFrame {
             }
             for (ChatBox cb : friendChatBoxList) {
                 cb.dispose();
+            }
+            for (OtherUserInfoView ouiv : otherUserInfoViewsList) {
+                ouiv.dispose();
             }
             status = 4;
             userController.changeStatus();

@@ -72,13 +72,28 @@ public class ServerController {
                 ConversationController conversationController = new ConversationController(dao);
                 if (conversation.getAction().equals("getGroupList")) {
                     oos.writeObject(conversationController.returnAvailableGroupList(conversation));
+                    oos.flush();
                 }
                 if (conversation.getAction().equals("createFriendConversation")) {
                     oos.writeObject(conversationController.returnFriendConversation(conversation));
+                    oos.flush();
                 }
             } else if (o instanceof Friendship) {
                 Friendship friendship = (Friendship) o;
-
+                DAOFriendship dao = new DAOFriendship(con);
+                FriendshipController friendshipController = new FriendshipController(dao);
+                if (friendship.getAction().equals("getFriendshipState")) {
+                    oos.writeObject(friendshipController.returnFriendshipState(friendship));
+                    oos.flush();
+                }
+                if (friendship.getAction().equals("addFriend")) {
+                    oos.writeObject(friendshipController.returnAddFriendRespond(friendship));
+                    oos.flush();
+                }
+                if (friendship.getAction().equals("acceptFriendRequest")) {
+                    oos.writeObject(friendshipController.returnAcceptFriendRequestRespond(friendship));
+                    oos.flush();
+                }
             } else if (o instanceof Group) {
                 Group group = (Group) o;
 
@@ -88,9 +103,11 @@ public class ServerController {
                 MessageController messageController = new MessageController(dao);
                 if (message.getAction().equals("sendMessage")) {
                     oos.writeObject(messageController.returnSentMessage(message));
+                    oos.flush();
                 }
                 if (message.getAction().equals("getHistoryMessages")) {
                     oos.writeObject(messageController.returnHistoryMessages(message));
+                    oos.flush();
                 }
             } else if (o instanceof User) {
                 User user = (User) o;
@@ -98,30 +115,39 @@ public class ServerController {
                 UserController userController = new UserController(dao);
                 if (user.getAction().equals("login")) {
                     oos.writeObject(userController.checkUserLogin(user));
+                    oos.flush();
                 }
                 if (user.getAction().equals("signUp")) {
                     oos.writeObject(userController.signUpUser(user));
+                    oos.flush();
                 }
                 if (user.getAction().equals("changeInfo")) {
                     oos.writeObject(userController.changeUserInfo(user));
+                    oos.flush();
                 }
                 if (user.getAction().equals("changeAvatar")) {
                     oos.writeObject(userController.changeUserAvatar(user));
+                    oos.flush();
                 }
                 if (user.getAction().equals("changeStatus")) {
                     oos.writeObject(userController.changeUserStatus(user));
+                    oos.flush();
                 }
                 if (user.getAction().equals("changePassword")) {
                     oos.writeObject(userController.changeUserPassword(user));
+                    oos.flush();
                 }
                 if (user.getAction().equals("changeDescription")) {
                     oos.writeObject(userController.changeUserDescription(user));
+                    oos.flush();
                 }
                 if (user.getAction().equals("getFriendList")) {
                     oos.writeObject(userController.returnAvailableFriendList(user));
+                    oos.flush();
                 }
                 if (user.getAction().equals("getSuggestedNewFriends")) {
                     oos.writeObject(userController.returnSuggestedUsers(user));
+                    oos.flush();
                 }
             }
         } catch (Exception e) {

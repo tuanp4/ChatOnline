@@ -110,7 +110,7 @@ public class DAOUser extends IDAO {
         }
     }
 
-    public boolean signUpUser(User user) {
+    public Boolean signUpUser(User user) {
         try {
             String sql = "INSERT INTO `user` (`username`, `password_hash`, `email`, `gender`) VALUES (?, ?, ?, ?)";
             this.preStatement = this.conn.prepareStatement(sql);
@@ -126,7 +126,7 @@ public class DAOUser extends IDAO {
         }
     }
 
-    public boolean changeUserInfo(User user) {
+    public Boolean changeUserInfo(User user) {
         try {
             String sql = "UPDATE `user` SET `display_name` = ?, `email` = ?, `phone_number` = ? WHERE `id` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
@@ -142,7 +142,7 @@ public class DAOUser extends IDAO {
         }
     }
 
-    public boolean changeUserAvatar(User user, String avatar_path) {
+    public Boolean changeUserAvatar(User user, String avatar_path) {
         try {
             String sql = "UPDATE `user` SET `avatar_path` = ? WHERE `id` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
@@ -156,7 +156,7 @@ public class DAOUser extends IDAO {
         }
     }
 
-    public boolean changeUserStatus(User user) {
+    public Boolean changeUserStatus(User user) {
         try {
             String sql = "UPDATE `user` SET `status` = ? WHERE `id` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
@@ -170,7 +170,7 @@ public class DAOUser extends IDAO {
         }
     }
 
-    public boolean changeUserPassword(User user) {
+    public Boolean changeUserPassword(User user) {
         try {
             String sql = "UPDATE `user` SET `password_hash` = ? WHERE `id` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
@@ -184,7 +184,7 @@ public class DAOUser extends IDAO {
         }
     }
 
-    public boolean changeUserDescription(User user) {
+    public Boolean changeUserDescription(User user) {
         try {
             String sql = "UPDATE `user` SET `description` = ? WHERE `id` = ?";
             this.preStatement = this.conn.prepareStatement(sql);
@@ -207,8 +207,8 @@ public class DAOUser extends IDAO {
                     + "WHERE `friendship`.`receiver_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` < 4 "
                     + "UNION "
                     + "SELECT `id`, `username`, `display_name`, `avatar_path`, `description`, `status` "
-                    + "FROM `user` INNER JOIN `friendship` ON `user`.`id` = `friendship`.`sender_id` "
-                    + " WHERE `friendship`.`sender_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` < 4";
+                    + "FROM `user` INNER JOIN `friendship` ON `user`.`id` = `friendship`.`receiver_id` "
+                    + "WHERE `friendship`.`sender_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` < 4";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setInt(1, user.getId());
             this.preStatement.setInt(2, user.getId());
