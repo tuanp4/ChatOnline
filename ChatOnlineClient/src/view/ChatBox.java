@@ -14,7 +14,6 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
@@ -70,6 +69,9 @@ public class ChatBox extends javax.swing.JFrame {
     }
 
     public void returnMessage(Message message) {
+        if (message.getUser_avatar() == null) {
+            message.setUser_avatar("/default/default_avatar.png");
+        }
         append("<table style='background: #f2f2f2; margin-bottom: 3px;'>"
                 + "<tr>"
                 + "<td valign=top>"
@@ -104,6 +106,9 @@ public class ChatBox extends javax.swing.JFrame {
 
     public void returnHistoryMessages(ArrayList<Message> messages) {
         for (Message message : messages) {
+            if (message.getUser_avatar() == null) {
+                message.setUser_avatar("/default/default_avatar.png");
+            }
             append("<table style='background: #f2f2f2; margin-bottom: 3px;'>"
                     + "<tr>"
                     + "<td valign=top>"

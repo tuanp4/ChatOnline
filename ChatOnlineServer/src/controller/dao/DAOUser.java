@@ -204,11 +204,11 @@ public class DAOUser extends IDAO {
         try {
             String sql = "SELECT `id`, `username`, `display_name`, `avatar_path`, `description`, `status` "
                     + "FROM `user` INNER JOIN `friendship` ON `user`.`id` = `friendship`.`sender_id` "
-                    + "WHERE `friendship`.`receiver_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` < 4 "
+                    + "WHERE `friendship`.`receiver_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` < 3 "
                     + "UNION "
                     + "SELECT `id`, `username`, `display_name`, `avatar_path`, `description`, `status` "
                     + "FROM `user` INNER JOIN `friendship` ON `user`.`id` = `friendship`.`receiver_id` "
-                    + "WHERE `friendship`.`sender_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` < 4";
+                    + "WHERE `friendship`.`sender_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` < 3";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setInt(1, user.getId());
             this.preStatement.setInt(2, user.getId());

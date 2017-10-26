@@ -5,7 +5,6 @@
  */
 package controller;
 
-import static com.sun.corba.se.impl.util.Utility.printStackTrace;
 import controller.dao.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,7 +13,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.ArrayList;
 import view.ServerView;
 import model.*;
 
@@ -130,6 +128,7 @@ public class ServerController {
                     oos.flush();
                 }
                 if (user.getAction().equals("changeStatus")) {
+                    System.out.println(user.getStatus());
                     oos.writeObject(userController.changeUserStatus(user));
                     oos.flush();
                 }
@@ -152,7 +151,7 @@ public class ServerController {
             }
         } catch (Exception e) {
             view.showMessage(e.toString());
-            printStackTrace();
+            e.printStackTrace();
         }
     }
 

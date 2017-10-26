@@ -90,6 +90,7 @@ public class ClientMainView extends javax.swing.JFrame {
         setUser(user);
         initComponents();
         status = 0;
+        user.setStatus(status);
         userController.changeStatus();
         userController.getFriendList();
         conversationController.getGroupList();
@@ -250,7 +251,7 @@ public class ClientMainView extends javax.swing.JFrame {
                     status_path += "offline-icon.png";
                     break;
             }
-            BufferedImage status = ImageIO.read(new URL(status_path));
+            BufferedImage status = ImageIO.read(new File(status_path));
             ImageIcon status_img = new ImageIcon(status);
             lbl_DisplayName.setIcon(status_img);
         } catch (IOException ex) {
@@ -333,7 +334,6 @@ public class ClientMainView extends javax.swing.JFrame {
         mn_StatusAway = new javax.swing.JMenuItem();
         mn_StatusBusy = new javax.swing.JMenuItem();
         mn_StatusInvisble = new javax.swing.JMenuItem();
-        mn_StatusOffline = new javax.swing.JMenuItem();
         mn_ChangePassword = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mn_SignOut = new javax.swing.JMenuItem();
@@ -591,15 +591,6 @@ public class ClientMainView extends javax.swing.JFrame {
         });
         mn_Status.add(mn_StatusInvisble);
 
-        mn_StatusOffline.setIcon(new javax.swing.ImageIcon(file_path + "offline-icon.png"));
-        mn_StatusOffline.setText("Offline");
-        mn_StatusOffline.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mn_StatusOfflineActionPerformed(evt);
-            }
-        });
-        mn_Status.add(mn_StatusOffline);
-
         mn_MyProfile.add(mn_Status);
 
         mn_ChangePassword.setText("Change Password");
@@ -689,12 +680,6 @@ public class ClientMainView extends javax.swing.JFrame {
         status = 3;
         userController.changeStatus();
     }//GEN-LAST:event_mn_StatusInvisbleActionPerformed
-
-    private void mn_StatusOfflineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_StatusOfflineActionPerformed
-        // TODO add your handling code here:
-        status = 4;
-        userController.changeStatus();
-    }//GEN-LAST:event_mn_StatusOfflineActionPerformed
 
     private void mn_ChangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_ChangePasswordActionPerformed
         // TODO add your handling code here:
@@ -864,7 +849,6 @@ public class ClientMainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem mn_StatusAway;
     private javax.swing.JMenuItem mn_StatusBusy;
     private javax.swing.JMenuItem mn_StatusInvisble;
-    private javax.swing.JMenuItem mn_StatusOffline;
     private javax.swing.JMenuItem mn_StatusOnline;
     private javax.swing.JMenuItem mn_Version;
     private javax.swing.JTextField txt_Description;

@@ -91,6 +91,72 @@ public class DAOFriendship extends IDAO {
             this.preStatement.setInt(1, friendship.getReceiver_id());
             this.preStatement.setInt(2, friendship.getSender_id());
             int check = this.preStatement.executeUpdate();
+            if (check != 0) {
+                sql = "INSERT INTO `conversation`(`description`) VALUES (?)";
+                this.preStatement = this.conn.prepareStatement(sql);
+                if (friendship.getSender_id() < friendship.getReceiver_id()) {
+                    this.preStatement.setString(1, friendship.getSender_id() + " " + friendship.getReceiver_id());
+                } else {
+                    this.preStatement.setString(1, friendship.getReceiver_id() + " " + friendship.getSender_id());
+                }
+                this.preStatement.executeUpdate();
+                //--------------------------------------------------------------
+                int conversationID = -1;
+                sql = "SELECT `id` FROM `conversation` WHERE `description` = ?";
+                this.preStatement = this.conn.prepareStatement(sql);
+                if (friendship.getSender_id() < friendship.getReceiver_id()) {
+                    this.preStatement.setString(1, friendship.getSender_id() + " " + friendship.getReceiver_id());
+                } else {
+                    this.preStatement.setString(1, friendship.getReceiver_id() + " " + friendship.getSender_id());
+                }
+                rs = this.preStatement.executeQuery();
+                while (rs.next()) {
+                    conversationID = rs.getInt(1);
+                    break;
+                }
+                //--------------------------------------------------------------
+                String senderUsername = "";
+                sql = "SELECT `username`, `display_name` FROM `user` WHERE `id` = ?";
+                this.preStatement = this.conn.prepareStatement(sql);
+                this.preStatement.setInt(1, friendship.getSender_id());
+                rs = this.preStatement.executeQuery();
+                while (rs.next()) {
+                    if (rs.getString(2) == null || rs.getString(2).equals("")) {
+                        senderUsername = rs.getString(1);
+                    } else {
+                        senderUsername = rs.getString(2);
+                    }
+                    break;
+                }
+                //--------------------------------------------------------------
+                String receiverUsername = "";
+                sql = "SELECT `username`, `display_name` FROM `user` WHERE `id` = ?";
+                this.preStatement = this.conn.prepareStatement(sql);
+                this.preStatement.setInt(1, friendship.getReceiver_id());
+                rs = this.preStatement.executeQuery();
+                while (rs.next()) {
+                    if (rs.getString(2) == null || rs.getString(2).equals("")) {
+                        receiverUsername = rs.getString(1);
+                    } else {
+                        receiverUsername = rs.getString(2);
+                    }
+                    break;
+                }
+                //--------------------------------------------------------------
+                sql = "INSERT INTO `group`(`conversation_id`, `user_id`, `nick_name`) VALUES (?, ?, ?)";
+                this.preStatement = this.conn.prepareStatement(sql);
+                this.preStatement.setInt(1, conversationID);
+                this.preStatement.setInt(2, friendship.getSender_id());
+                this.preStatement.setString(3, senderUsername);
+                this.preStatement.executeUpdate();
+                //--------------------------------------------------------------
+                sql = "INSERT INTO `group`(`conversation_id`, `user_id`, `nick_name`) VALUES (?, ?, ?)";
+                this.preStatement = this.conn.prepareStatement(sql);
+                this.preStatement.setInt(1, conversationID);
+                this.preStatement.setInt(2, friendship.getReceiver_id());
+                this.preStatement.setString(3, receiverUsername);
+                this.preStatement.executeUpdate();
+            }
             return (check != 0);
         } catch (SQLException e) {
             e.printStackTrace();
