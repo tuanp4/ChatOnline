@@ -396,16 +396,12 @@ public class OtherUserInfoView extends javax.swing.JFrame {
 
     private void btn_FriendShipActionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_FriendShipActionMouseEntered
         // TODO add your handling code here:
-        if (!friendshipState.equals("Friends") && !friendshipState.equals("Friend Request Sent")) {
-            jp_FriendShipAction.setBackground(jp_FriendShipAction.getBackground().brighter());
-        }
+        jp_FriendShipAction.setBackground(jp_FriendShipAction.getBackground().brighter());
     }//GEN-LAST:event_btn_FriendShipActionMouseEntered
 
     private void btn_FriendShipActionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_FriendShipActionMouseExited
         // TODO add your handling code here:
-        if (!friendshipState.equals("Friends") && !friendshipState.equals("Friend Request Sent")) {
-            jp_FriendShipAction.setBackground(new Color(93, 53, 176));
-        }
+        jp_FriendShipAction.setBackground(new Color(93, 53, 176));
     }//GEN-LAST:event_btn_FriendShipActionMouseExited
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

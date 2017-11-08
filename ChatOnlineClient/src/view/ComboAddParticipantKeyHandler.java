@@ -103,10 +103,11 @@ public class ComboAddParticipantKeyHandler extends KeyAdapter {
             case KeyEvent.VK_ENTER:
                 if (!usernameList.isEmpty()) {
                     if (comboBox.getSelectedIndex() != -1) {
-                        createGroupView.showMessage(userList.get(comboBox.getSelectedIndex()).getUsername());
+                        createGroupView.addParticipant(userList.get(comboBox.getSelectedIndex()));
                     } else {
-                        createGroupView.showMessage(userList.get(0).getUsername());
+                        createGroupView.addParticipant(userList.get(0));
                     }
+                    textField.setText(" ");
                 }
                 break;
             default:

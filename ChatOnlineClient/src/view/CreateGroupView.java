@@ -12,10 +12,12 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 import model.*;
 
 /**
@@ -25,8 +27,9 @@ import model.*;
 public class CreateGroupView extends javax.swing.JFrame {
 
     private final String file_path = "file/icon/";
-    
+
     private ClientMainView clientMainView;
+    private ArrayList<User> users = new ArrayList<User>();
 
     public User getUserID() {
         return clientMainView.getUserID();
@@ -44,6 +47,38 @@ public class CreateGroupView extends javax.swing.JFrame {
         initComponents();
 
         lbl_AddParticipantIcon.requestFocusInWindow();
+    }
+
+    public void addParticipant(User user) {
+        Boolean added = false;
+        for (User u : users) {
+            if (u.getId() == user.getId()) {
+                added = true;
+            }
+        }
+        if (!added) {
+            users.add(user);
+        }
+        loadParticipantList();
+    }
+
+    private void loadParticipantList() {
+        DefaultTableModel defaultTableModel = (DefaultTableModel) JTableParticipantList.getModel();
+        defaultTableModel.getDataVector().removeAllElements();
+        String groupName = "";
+        for (User user : users) {
+            defaultTableModel.addRow(new Object[]{user.getUsername(), user.getDisplay_name()});
+            if (user.getDisplay_name().isEmpty()) {
+                groupName += user.getUsername() + ", ";
+            } else {
+                groupName += user.getDisplay_name() + ", ";
+            }
+        }
+        if (users.size() > 0) {
+            txt_GroupName.setText(groupName.substring(0, groupName.length() - 2));
+        } else {
+            txt_GroupName.setText("");
+        }
     }
 
     public void showMessage(String msg) {
@@ -137,10 +172,6 @@ public class CreateGroupView extends javax.swing.JFrame {
             }
         });
         JScrollPaneParticipantList.setViewportView(JTableParticipantList);
-        if (JTableParticipantList.getColumnModel().getColumnCount() > 0) {
-            JTableParticipantList.getColumnModel().getColumn(0).setResizable(false);
-            JTableParticipantList.getColumnModel().getColumn(1).setResizable(false);
-        }
 
         javax.swing.GroupLayout JP_ParticipantListLayout = new javax.swing.GroupLayout(JP_ParticipantList);
         JP_ParticipantList.setLayout(JP_ParticipantListLayout);
@@ -311,6 +342,14 @@ public class CreateGroupView extends javax.swing.JFrame {
 
     private void btn_RemoveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_RemoveMouseClicked
         // TODO add your handling code here:
+        int r = JTableParticipantList.getSelectedRow();
+        if (r >= 0 && r < users.size()) {
+            users.remove(r);
+            if (users.size() == 0 || JTableParticipantList.getSelectedRow() == 0) {
+                JTableParticipantList.clearSelection();
+            }
+            loadParticipantList();
+        }
     }//GEN-LAST:event_btn_RemoveMouseClicked
 
     private void btn_RemoveMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_RemoveMouseEntered
@@ -338,13 +377,19 @@ public class CreateGroupView extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_CreateGroupMouseExited
 
     private void btn_RemoveMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_RemoveMousePressed
-        // TODO add your handling code here:
-        btn_Remove.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+        // TODO add your handling code here:                
+        int r = JTableParticipantList.getSelectedRow();
+        if (r >= 0 && r < users.size()) {
+            btn_Remove.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+        }
     }//GEN-LAST:event_btn_RemoveMousePressed
 
     private void btn_RemoveMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_RemoveMouseReleased
         // TODO add your handling code here:
-        btn_Remove.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+        int r = JTableParticipantList.getSelectedRow();
+        if (r >= 0 && r < users.size()) {
+            btn_Remove.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+        }
     }//GEN-LAST:event_btn_RemoveMouseReleased
 
     private void btn_CreateGroupMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_CreateGroupMousePressed
