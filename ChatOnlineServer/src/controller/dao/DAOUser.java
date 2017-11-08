@@ -204,11 +204,12 @@ public class DAOUser extends IDAO {
         try {
             String sql = "SELECT `id`, `username`, `display_name`, `avatar_path`, `description`, `status` "
                     + "FROM `user` INNER JOIN `friendship` ON `user`.`id` = `friendship`.`sender_id` "
-                    + "WHERE `friendship`.`receiver_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` < 3 "
+                    + "WHERE `friendship`.`receiver_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` != 3 "
                     + "UNION "
                     + "SELECT `id`, `username`, `display_name`, `avatar_path`, `description`, `status` "
                     + "FROM `user` INNER JOIN `friendship` ON `user`.`id` = `friendship`.`receiver_id` "
-                    + "WHERE `friendship`.`sender_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` < 3";
+                    + "WHERE `friendship`.`sender_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`status` != 3 "
+                    + "ORDER BY `status`";
             this.preStatement = this.conn.prepareStatement(sql);
             this.preStatement.setInt(1, user.getId());
             this.preStatement.setInt(2, user.getId());
@@ -252,6 +253,40 @@ public class DAOUser extends IDAO {
                 temp.setAvatar_path(rs.getString(5));
                 temp.setEmail(rs.getString(6));
                 temp.setPhone_number(rs.getString(7));
+                vector.add(temp);
+                i++;
+            }
+            result = new User[i];
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return vector.toArray(result);
+    }
+
+    public User[] getSuggestedParticipants(User user) {
+        Vector<User> vector = new Vector<User>();
+        User[] result;
+        try {
+            String sql = "SELECT `id`, `username`, `display_name` "
+                    + "FROM `user` INNER JOIN `friendship` ON `user`.`id` = `friendship`.`sender_id` "
+                    + "WHERE `friendship`.`receiver_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`username` LIKE ? "
+                    + "UNION "
+                    + "SELECT `id`, `username`, `display_name` "
+                    + "FROM `user` INNER JOIN `friendship` ON `user`.`id` = `friendship`.`receiver_id` "
+                    + "WHERE `friendship`.`sender_id` = ? AND `friendship`.`confirm` = 1 AND `user`.`username` LIKE ?";
+            this.preStatement = this.conn.prepareStatement(sql);
+            this.preStatement.setInt(1, user.getId());
+            this.preStatement.setString(2, "%" + user.getUsername() + "%");
+            this.preStatement.setInt(3, user.getId());
+            this.preStatement.setString(4, "%" + user.getUsername() + "%");
+            rs = this.preStatement.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                User temp = new User();
+                temp.setId(rs.getInt(1));
+                temp.setUsername(rs.getString(2));
+                temp.setDisplay_name(rs.getString(3));
                 vector.add(temp);
                 i++;
             }

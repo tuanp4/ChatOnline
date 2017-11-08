@@ -251,6 +251,12 @@ public class AccountInfoView extends javax.swing.JFrame {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn_ChangeAvatarMouseExited(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btn_ChangeAvatarMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btn_ChangeAvatarMouseReleased(evt);
+            }
         });
 
         javax.swing.GroupLayout jp_ChangeAvatarLayout = new javax.swing.GroupLayout(jp_ChangeAvatar);
@@ -357,6 +363,12 @@ public class AccountInfoView extends javax.swing.JFrame {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn_SaveMouseExited(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btn_SaveMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btn_SaveMouseReleased(evt);
+            }
         });
 
         javax.swing.GroupLayout jp_SaveLayout = new javax.swing.GroupLayout(jp_Save);
@@ -392,6 +404,12 @@ public class AccountInfoView extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn_CancelMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btn_CancelMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btn_CancelMouseReleased(evt);
             }
         });
 
@@ -570,6 +588,36 @@ public class AccountInfoView extends javax.swing.JFrame {
         // TODO add your handling code here:
         clientMainView.setCheckMyAccountInfoView(false);
     }//GEN-LAST:event_formWindowClosed
+
+    private void btn_ChangeAvatarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ChangeAvatarMousePressed
+        // TODO add your handling code here:
+        btn_ChangeAvatar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+    }//GEN-LAST:event_btn_ChangeAvatarMousePressed
+
+    private void btn_ChangeAvatarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ChangeAvatarMouseReleased
+        // TODO add your handling code here:
+        btn_ChangeAvatar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+    }//GEN-LAST:event_btn_ChangeAvatarMouseReleased
+
+    private void btn_SaveMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SaveMousePressed
+        // TODO add your handling code here:
+        btn_Save.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+    }//GEN-LAST:event_btn_SaveMousePressed
+
+    private void btn_SaveMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SaveMouseReleased
+        // TODO add your handling code here:
+        btn_Save.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+    }//GEN-LAST:event_btn_SaveMouseReleased
+
+    private void btn_CancelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_CancelMousePressed
+        // TODO add your handling code here:
+        btn_Cancel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+    }//GEN-LAST:event_btn_CancelMousePressed
+
+    private void btn_CancelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_CancelMouseReleased
+        // TODO add your handling code here:
+        btn_Cancel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+    }//GEN-LAST:event_btn_CancelMouseReleased
 
     /**
      * @param args the command line arguments

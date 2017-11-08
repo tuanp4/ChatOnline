@@ -128,7 +128,6 @@ public class ServerController {
                     oos.flush();
                 }
                 if (user.getAction().equals("changeStatus")) {
-                    System.out.println(user.getStatus());
                     oos.writeObject(userController.changeUserStatus(user));
                     oos.flush();
                 }
@@ -146,6 +145,10 @@ public class ServerController {
                 }
                 if (user.getAction().equals("getSuggestedNewFriends")) {
                     oos.writeObject(userController.returnSuggestedUsers(user));
+                    oos.flush();
+                }
+                if (user.getAction().equals("getSuggestedParticipantFriends")) {
+                    oos.writeObject(userController.returnSuggestedParticipants(user));
                     oos.flush();
                 }
             }

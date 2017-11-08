@@ -164,6 +164,12 @@ public class ChangePasswordView extends javax.swing.JFrame {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn_SaveMouseExited(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btn_SaveMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btn_SaveMouseReleased(evt);
+            }
         });
 
         javax.swing.GroupLayout jp_SaveLayout = new javax.swing.GroupLayout(jp_Save);
@@ -264,6 +270,16 @@ public class ChangePasswordView extends javax.swing.JFrame {
         // TODO add your handling code here:
         clientMainView.setCheckMyChangePasswordView(false);
     }//GEN-LAST:event_formWindowClosed
+
+    private void btn_SaveMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SaveMousePressed
+        // TODO add your handling code here:
+        btn_Save.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+    }//GEN-LAST:event_btn_SaveMousePressed
+
+    private void btn_SaveMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SaveMouseReleased
+        // TODO add your handling code here:
+        btn_Save.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+    }//GEN-LAST:event_btn_SaveMouseReleased
 
     /**
      * @param args the command line arguments

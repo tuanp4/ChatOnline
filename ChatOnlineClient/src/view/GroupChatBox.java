@@ -5,33 +5,24 @@
  */
 package view;
 
-import controller.*;
+import controller.MessageController;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.text.html.HTMLEditorKit;
 import model.*;
 
 /**
  *
  * @author Valdez
  */
-public class ChatBox extends javax.swing.JFrame {
+public class GroupChatBox extends javax.swing.JFrame {
 
+    private final String file_path = "file/icon/";
     private final String upload_domain = "http://uploads.chatonline.com";
 
     private MessageController messageController = new MessageController(this);
@@ -53,100 +44,17 @@ public class ChatBox extends javax.swing.JFrame {
     }
 
     /**
-     * Creates new form ChatBox
+     * Creates new form GroupChatBox
      */
-    public ChatBox(Conversation conversation, ClientMainView clientMainView) {
+    public GroupChatBox(Conversation conversation, ClientMainView clientMainView) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
         }
         setConversation(conversation);
         this.clientMainView = clientMainView;
-        this.setTitle(conversation.getFriendDisplayName());
+        this.setTitle(conversation.getName());
         initComponents();
-        messageController.getHistoryMessages();
-        displayAvatar(conversation);
-    }
-
-    public void returnMessage(Message message) {
-        if (message.getUser_avatar() == null) {
-            message.setUser_avatar("/default/default_avatar.png");
-        }
-        append("<table style='background: #f2f2f2; margin-bottom: 3px;'>"
-                + "<tr>"
-                + "<td valign=top>"
-                + "<img src='" + upload_domain + message.getUser_avatar() + "' height='40' width='40' style='border-radius: 50%;'>"
-                + "</td>"
-                + "<td valign=top style='width:300px; word-wrap:break-word;'>"
-                + "<b style='color:blue'>" + message.getNick_name() + ": </b>"
-                + "<br>"
-                + message.getContent()
-                + "</td>"
-                + "</tr>"
-                + "</table>");
-    }
-
-    public void append(String data) {
-        HTMLEditorKit editor = (HTMLEditorKit) JEditorPaneChatHistory.getEditorKit();
-        StringReader reader = new StringReader(data);
-        try {
-            editor.read(reader, JEditorPaneChatHistory.getDocument(), JEditorPaneChatHistory.getDocument().getLength());
-        } catch (Exception ex) {
-        }
-    }
-
-    public Message getSendingMessage() {
-        Message message = new Message();
-        message.setConversation_id(conversation.getId());
-        message.setUser_id(conversation.getMainUserId());
-        message.setContent(JTextAreaNewMessage.getText().replace("\n", "<br>"));
-        JTextAreaNewMessage.setText("");
-        return message;
-    }
-
-    public void returnHistoryMessages(ArrayList<Message> messages) {
-        for (Message message : messages) {
-            if (message.getUser_avatar() == null) {
-                message.setUser_avatar("/default/default_avatar.png");
-            }
-            append("<table style='background: #f2f2f2; margin-bottom: 3px;'>"
-                    + "<tr>"
-                    + "<td valign=top>"
-                    + "<img src='" + upload_domain + message.getUser_avatar() + "' height='40' width='40' style='border-radius: 50%;'>"
-                    + "</td>"
-                    + "<td valign=top style='width:300px; word-wrap:break-word;'>"
-                    + "<b style='color:blue'>" + message.getNick_name() + ": </b>"
-                    + "<br>"
-                    + message.getContent()
-                    + "</td>"
-                    + "</tr>"
-                    + "</table>");
-        }
-    }
-
-    public void displayAvatar(Conversation conversation) {
-        try {
-            lbl_MyAvatar.setText("");
-            lbl_FriendAvatar.setText("");
-            BufferedImage myAvatar = ImageIO.read(new URL(upload_domain + "/default/default_avatar.png"));
-            if (conversation.getMainUserAvatarPath() != null) {
-                URL url = new URL(upload_domain + conversation.getMainUserAvatarPath());
-                myAvatar = ImageIO.read(url);
-            }
-            Image myAvatar_rs = myAvatar.getScaledInstance(78, 78, Image.SCALE_SMOOTH);
-            ImageIcon myAvatar_img = new ImageIcon(myAvatar_rs);
-            lbl_MyAvatar.setIcon(myAvatar_img);
-
-            BufferedImage friendAvatar = ImageIO.read(new URL(upload_domain + "/default/default_avatar.png"));
-            if (conversation.getFriendAvatarPath() != null) {
-                URL url = new URL(upload_domain + conversation.getFriendAvatarPath());
-                friendAvatar = ImageIO.read(url);
-            }
-            Image friendAvatar_rs = friendAvatar.getScaledInstance(78, 78, Image.SCALE_SMOOTH);
-            ImageIcon friendAvatar_img = new ImageIcon(friendAvatar_rs);
-            lbl_FriendAvatar.setIcon(friendAvatar_img);
-        } catch (IOException ex) {
-        }
     }
 
     public void showMessage(String msg) {
@@ -195,16 +103,10 @@ public class ChatBox extends javax.swing.JFrame {
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
-        lbl_FriendAvatar = new javax.swing.JLabel();
         lbl_MyAvatar = new javax.swing.JLabel();
+        lbl_FriendList = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
-            }
-        });
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         JPanelChatHistory.setBackground(new java.awt.Color(255, 255, 255));
         JPanelChatHistory.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
@@ -325,20 +227,10 @@ public class ChatBox extends javax.swing.JFrame {
             .addGroup(JP_ChatLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(JPanelChatHistory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(JPanelNewMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-
-        lbl_FriendAvatar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_FriendAvatar.setText("Avatar");
-        lbl_FriendAvatar.setToolTipText("");
-        lbl_FriendAvatar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
-        lbl_FriendAvatar.setMaximumSize(new java.awt.Dimension(78, 78));
-        lbl_FriendAvatar.setMinimumSize(new java.awt.Dimension(78, 78));
-        lbl_FriendAvatar.setOpaque(true);
-        lbl_FriendAvatar.setPreferredSize(new java.awt.Dimension(78, 78));
-        lbl_FriendAvatar.setRequestFocusEnabled(false);
 
         lbl_MyAvatar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_MyAvatar.setText("Avatar");
@@ -350,23 +242,28 @@ public class ChatBox extends javax.swing.JFrame {
         lbl_MyAvatar.setPreferredSize(new java.awt.Dimension(78, 78));
         lbl_MyAvatar.setRequestFocusEnabled(false);
 
+        lbl_FriendList.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        lbl_FriendList.setForeground(new java.awt.Color(255, 255, 0));
+        lbl_FriendList.setIcon(new javax.swing.ImageIcon(file_path + "down.png"));
+        lbl_FriendList.setText("Participants");
+
         javax.swing.GroupLayout JP_AvatarLayout = new javax.swing.GroupLayout(JP_Avatar);
         JP_Avatar.setLayout(JP_AvatarLayout);
         JP_AvatarLayout.setHorizontalGroup(
             JP_AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_AvatarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(JP_AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_FriendAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_MyAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(JP_AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lbl_MyAvatar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_FriendList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         JP_AvatarLayout.setVerticalGroup(
             JP_AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_AvatarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbl_FriendAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
+                .addComponent(lbl_FriendList)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbl_MyAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -400,6 +297,13 @@ public class ChatBox extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btn_SendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SendMouseClicked
+        // TODO add your handling code here:
+        if (!JTextAreaNewMessage.getText().equals("")) {
+//            messageController.sendMessage();
+        }
+    }//GEN-LAST:event_btn_SendMouseClicked
+
     private void btn_SendMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SendMouseEntered
         // TODO add your handling code here:
         jp_Send.setBackground(jp_Send.getBackground().brighter());
@@ -410,31 +314,16 @@ public class ChatBox extends javax.swing.JFrame {
         jp_Send.setBackground(new Color(163, 73, 164));
     }//GEN-LAST:event_btn_SendMouseExited
 
-    private void btn_SendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SendMouseClicked
-        // TODO add your handling code here:
-        if (!JTextAreaNewMessage.getText().equals("")) {
-            messageController.sendMessage();
-        }
-    }//GEN-LAST:event_btn_SendMouseClicked
-
     private void JTextAreaNewMessageKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTextAreaNewMessageKeyReleased
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (evt.isShiftDown()) {
                 JTextAreaNewMessage.append("\n");
             } else {
-                messageController.sendMessage();
+//                messageController.sendMessage();
             }
         }
     }//GEN-LAST:event_JTextAreaNewMessageKeyReleased
-
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
-        try {
-            clientMainView.closeFriendChatBox(conversation);
-        } catch (ConcurrentModificationException ex) {
-        }
-    }//GEN-LAST:event_formWindowClosed
 
     private void btn_SendMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SendMousePressed
         // TODO add your handling code here:
@@ -463,20 +352,20 @@ public class ChatBox extends javax.swing.JFrame {
 //                }
 //            }
 //        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(ChatBox.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(GroupChatBox.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(ChatBox.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(GroupChatBox.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(ChatBox.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(GroupChatBox.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(ChatBox.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(GroupChatBox.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        }
 //        //</editor-fold>
 //
 //        /* Create and display the form */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                new ChatBox().setVisible(true);
+//                new GroupChatBox().setVisible(true);
 //            }
 //        });
 //    }
@@ -493,7 +382,7 @@ public class ChatBox extends javax.swing.JFrame {
     private javax.swing.JTextArea JTextAreaNewMessage;
     private javax.swing.JLabel btn_Send;
     private javax.swing.JPanel jp_Send;
-    private javax.swing.JLabel lbl_FriendAvatar;
+    private javax.swing.JLabel lbl_FriendList;
     private javax.swing.JLabel lbl_MyAvatar;
     // End of variables declaration//GEN-END:variables
 }

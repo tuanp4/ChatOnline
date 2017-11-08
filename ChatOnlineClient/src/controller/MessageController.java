@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import model.Message;
 import view.ChatBox;
+import view.GroupChatBox;
 
 /**
  *
@@ -19,11 +20,16 @@ import view.ChatBox;
 public class MessageController {
 
     private ChatBox chatBox;
+    private GroupChatBox groupChatBox;
     private String serverHost = "localhost";
     private int serverPort = 8888;
 
     public MessageController(ChatBox chatBox) {
         this.chatBox = chatBox;
+    }
+
+    public MessageController(GroupChatBox groupChatBox) {
+        this.groupChatBox = groupChatBox;
     }
 
     public void sendMessage() {

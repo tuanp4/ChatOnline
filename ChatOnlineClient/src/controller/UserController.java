@@ -27,6 +27,7 @@ public class UserController {
     private AccountInfoView accountInfoView;
     private ChangePasswordView changePasswordView;
     private ComboAddNewFriendKeyHandler comboAddNewFriendKeyHandler;
+    private ComboAddParticipantKeyHandler comboAddParticipantKeyHandler;
     private String serverHost = "localhost";
     private int serverPort = 8888;
 
@@ -48,6 +49,10 @@ public class UserController {
 
     public UserController(ComboAddNewFriendKeyHandler comboAddNewFriendKeyHandler) {
         this.comboAddNewFriendKeyHandler = comboAddNewFriendKeyHandler;
+    }
+
+    public UserController(ComboAddParticipantKeyHandler comboAddParticipantKeyHandler) {
+        this.comboAddParticipantKeyHandler = comboAddParticipantKeyHandler;
     }
 
     public void login() {
@@ -237,7 +242,23 @@ public class UserController {
             comboAddNewFriendKeyHandler.returnSuggestedNewFriends(result);
             mySocket.close();
         } catch (Exception ex) {
-            clientMainView.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
+    public void getSuggestedParticipantFriends() {
+        try {
+            User user = comboAddParticipantKeyHandler.getCbParticipantFriendsText();
+            user.setAction("getSuggestedParticipantFriends");
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(user);
+            oos.flush();
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            ArrayList<User> result = (ArrayList<User>) o;
+            comboAddParticipantKeyHandler.returnSuggestedParticipantFriends(result);
+            mySocket.close();
+        } catch (Exception ex) {
         }
     }
 

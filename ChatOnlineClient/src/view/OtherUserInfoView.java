@@ -230,6 +230,12 @@ public class OtherUserInfoView extends javax.swing.JFrame {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn_FriendShipActionMouseExited(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btn_FriendShipActionMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btn_FriendShipActionMouseReleased(evt);
+            }
         });
 
         javax.swing.GroupLayout jp_FriendShipActionLayout = new javax.swing.GroupLayout(jp_FriendShipAction);
@@ -409,6 +415,20 @@ public class OtherUserInfoView extends javax.swing.JFrame {
         } catch (ConcurrentModificationException ex) {
         }
     }//GEN-LAST:event_formWindowClosed
+
+    private void btn_FriendShipActionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_FriendShipActionMousePressed
+        // TODO add your handling code here:        
+        if (!friendshipState.equals("Friends") && !friendshipState.equals("Friend Request Sent")) {
+            btn_FriendShipAction.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+        }
+    }//GEN-LAST:event_btn_FriendShipActionMousePressed
+
+    private void btn_FriendShipActionMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_FriendShipActionMouseReleased
+        // TODO add your handling code here:
+        if (!friendshipState.equals("Friends") && !friendshipState.equals("Friend Request Sent")) {
+            btn_FriendShipAction.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+        }
+    }//GEN-LAST:event_btn_FriendShipActionMouseReleased
 
     /**
      * @param args the command line arguments

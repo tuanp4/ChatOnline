@@ -134,4 +134,9 @@ public class UserController {
         return listUsers;
     }
 
+    public ArrayList<User> returnSuggestedParticipants(User user) {
+        ArrayList<User> listUsers = new ArrayList<>(Arrays.asList(dao.getSuggestedParticipants(user)));
+        return listUsers;
+    }
+
 }

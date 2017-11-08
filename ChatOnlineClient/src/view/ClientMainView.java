@@ -46,8 +46,10 @@ public class ClientMainView extends javax.swing.JFrame {
     private int status;
     private AccountInfoView myAccountInfoView;
     private ChangePasswordView myChangePasswordView;
+    private CreateGroupView createGroupView;
     private boolean checkMyAccountInfoView = false;
     private boolean checkMyChangePasswordView = false;
+    private boolean checkCreateGroupView = false;
     private DefaultListModel<User> friendList = new DefaultListModel<>();
     private DefaultListModel<Conversation> groupList = new DefaultListModel<>();
     private ArrayList<ChatBox> friendChatBoxList = new ArrayList<ChatBox>();
@@ -69,6 +71,10 @@ public class ClientMainView extends javax.swing.JFrame {
 
     public void setCheckMyChangePasswordView(boolean checkMyChangePasswordView) {
         this.checkMyChangePasswordView = checkMyChangePasswordView;
+    }
+
+    public void setCheckCreateGroupView(boolean checkCreateGroupView) {
+        this.checkCreateGroupView = checkCreateGroupView;
     }
 
     public JLabel getLbl_Avatar() {
@@ -215,6 +221,13 @@ public class ClientMainView extends javax.swing.JFrame {
         myChangePasswordView.setVisible(true);
     }
 
+    public void openCreateGroupView() {
+        checkCreateGroupView = true;
+        createGroupView = new CreateGroupView(this);
+        createGroupView.setLocationRelativeTo(this);
+        createGroupView.setVisible(true);
+    }
+
     public void displayAvatar(User user) {
         try {
             BufferedImage avatar = ImageIO.read(new URL(upload_domain + "/default/default_avatar.png"));
@@ -338,6 +351,8 @@ public class ClientMainView extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mn_SignOut = new javax.swing.JMenuItem();
         mn_Exit = new javax.swing.JMenuItem();
+        mn_Conversation = new javax.swing.JMenu();
+        mn_CreateGroup = new javax.swing.JMenuItem();
         mn_Help = new javax.swing.JMenu();
         mn_About = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -620,9 +635,21 @@ public class ClientMainView extends javax.swing.JFrame {
 
         JMenu.add(mn_MyProfile);
 
+        mn_Conversation.setText("Conversation");
+
+        mn_CreateGroup.setText("Create Group");
+        mn_CreateGroup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_CreateGroupActionPerformed(evt);
+            }
+        });
+        mn_Conversation.add(mn_CreateGroup);
+
+        JMenu.add(mn_Conversation);
+
         mn_Help.setText("Help");
 
-        mn_About.setText("About us");
+        mn_About.setText("About Us");
         mn_Help.add(mn_About);
         mn_Help.add(jSeparator2);
 
@@ -726,6 +753,9 @@ public class ClientMainView extends javax.swing.JFrame {
             if (checkMyChangePasswordView) {
                 myChangePasswordView.dispose();
             }
+            if (checkCreateGroupView) {
+                createGroupView.dispose();
+            }
             for (ChatBox cb : friendChatBoxList) {
                 cb.dispose();
             }
@@ -747,6 +777,9 @@ public class ClientMainView extends javax.swing.JFrame {
             }
             if (checkMyChangePasswordView) {
                 myChangePasswordView.dispose();
+            }
+            if (checkCreateGroupView) {
+                createGroupView.dispose();
             }
             for (ChatBox cb : friendChatBoxList) {
                 cb.dispose();
@@ -782,6 +815,15 @@ public class ClientMainView extends javax.swing.JFrame {
         status = 4;
         userController.changeStatus();
     }//GEN-LAST:event_formWindowClosing
+
+    private void mn_CreateGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_CreateGroupActionPerformed
+        // TODO add your handling code here:
+        if (checkCreateGroupView == true) {
+            createGroupView.setVisible(true);
+        } else {
+            openCreateGroupView();
+        }
+    }//GEN-LAST:event_mn_CreateGroupActionPerformed
 
     /**
      * @param args the command line arguments
@@ -841,6 +883,8 @@ public class ClientMainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem mn_About;
     private javax.swing.JMenuItem mn_ChangeAccountInfo;
     private javax.swing.JMenuItem mn_ChangePassword;
+    private javax.swing.JMenu mn_Conversation;
+    private javax.swing.JMenuItem mn_CreateGroup;
     private javax.swing.JMenuItem mn_Exit;
     private javax.swing.JMenu mn_Help;
     private javax.swing.JMenu mn_MyProfile;
