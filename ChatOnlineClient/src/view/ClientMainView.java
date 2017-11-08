@@ -53,6 +53,7 @@ public class ClientMainView extends javax.swing.JFrame {
     private DefaultListModel<User> friendList = new DefaultListModel<>();
     private DefaultListModel<Conversation> groupList = new DefaultListModel<>();
     private ArrayList<ChatBox> friendChatBoxList = new ArrayList<ChatBox>();
+    private ArrayList<GroupChatBox> groupChatBoxList = new ArrayList<GroupChatBox>();
     private ArrayList<OtherUserInfoView> otherUserInfoViewsList = new ArrayList<OtherUserInfoView>();
 
     public void setUser(User user) {
@@ -83,6 +84,10 @@ public class ClientMainView extends javax.swing.JFrame {
 
     public UserController getUserController() {
         return userController;
+    }
+
+    public ConversationController getConversationController() {
+        return conversationController;
     }
 
     /**
@@ -148,10 +153,33 @@ public class ClientMainView extends javax.swing.JFrame {
         }
     }
 
+    public void openGroupChatBox(Conversation conversation) {
+        Boolean check = false;
+        for (GroupChatBox gcb : groupChatBoxList) {
+            if (gcb.getConversation().getId() == conversation.getId()) {
+                gcb.setVisible(true);
+                check = true;
+            }
+        }
+        if (check == false) {
+            GroupChatBox groupChatBox = new GroupChatBox(conversation, this);
+            groupChatBoxList.add(groupChatBox);
+            groupChatBox.setVisible(true);
+        }
+    }
+
     public void closeFriendChatBox(Conversation conversation) {
         for (ChatBox cb : friendChatBoxList) {
             if (cb.getConversation().getId() == conversation.getId()) {
                 friendChatBoxList.remove(cb);
+            }
+        }
+    }
+
+    public void closeGroupChatBox(Conversation conversation) {
+        for (GroupChatBox gcb : groupChatBoxList) {
+            if (gcb.getConversation().getId() == conversation.getId()) {
+                groupChatBoxList.remove(gcb);
             }
         }
     }
@@ -223,7 +251,7 @@ public class ClientMainView extends javax.swing.JFrame {
 
     public void openCreateGroupView() {
         checkCreateGroupView = true;
-        createGroupView = new CreateGroupView(this);
+        createGroupView = new CreateGroupView(user, this);
         createGroupView.setLocationRelativeTo(this);
         createGroupView.setVisible(true);
     }
@@ -492,6 +520,11 @@ public class ClientMainView extends javax.swing.JFrame {
 
         JListGroupList.setModel(groupList);
         JListGroupList.setCellRenderer(new GroupRenderer());
+        JListGroupList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JListGroupListMouseClicked(evt);
+            }
+        });
         JScrollPaneGroupList.setViewportView(JListGroupList);
 
         javax.swing.GroupLayout JP_GroupListLayout = new javax.swing.GroupLayout(JP_GroupList);
@@ -759,6 +792,9 @@ public class ClientMainView extends javax.swing.JFrame {
             for (ChatBox cb : friendChatBoxList) {
                 cb.dispose();
             }
+            for (GroupChatBox gcb : groupChatBoxList) {
+                gcb.dispose();
+            }
             for (OtherUserInfoView ouiv : otherUserInfoViewsList) {
                 ouiv.dispose();
             }
@@ -784,6 +820,9 @@ public class ClientMainView extends javax.swing.JFrame {
             for (ChatBox cb : friendChatBoxList) {
                 cb.dispose();
             }
+            for (GroupChatBox gcb : groupChatBoxList) {
+                gcb.dispose();
+            }
             for (OtherUserInfoView ouiv : otherUserInfoViewsList) {
                 ouiv.dispose();
             }
@@ -800,11 +839,11 @@ public class ClientMainView extends javax.swing.JFrame {
             if (SwingUtilities.isLeftMouseButton(evt)) {
                 if (evt.getClickCount() == 2) {
                     int index = list.locationToIndex(evt.getPoint());
-                    conversationController.createFriendConversation(friendList.get(index).getId());
+                    conversationController.openFriendConversation(friendList.get(index).getId());
                 }
             } else if (SwingUtilities.isRightMouseButton(evt)) {
                 int index = list.locationToIndex(evt.getPoint());
-                showMessage(index + " right click");
+//                showMessage(index + " right click");
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
         }
@@ -824,6 +863,23 @@ public class ClientMainView extends javax.swing.JFrame {
             openCreateGroupView();
         }
     }//GEN-LAST:event_mn_CreateGroupActionPerformed
+
+    private void JListGroupListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JListGroupListMouseClicked
+        // TODO add your handling code here:
+        JList list = (JList) evt.getSource();
+        try {
+            if (SwingUtilities.isLeftMouseButton(evt)) {
+                if (evt.getClickCount() == 2) {
+                    int index = list.locationToIndex(evt.getPoint());
+                    conversationController.openGroupConversation(groupList.get(index).getId());
+                }
+            } else if (SwingUtilities.isRightMouseButton(evt)) {
+                int index = list.locationToIndex(evt.getPoint());
+//                showMessage(index + " right click");
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+        }
+    }//GEN-LAST:event_JListGroupListMouseClicked
 
     /**
      * @param args the command line arguments

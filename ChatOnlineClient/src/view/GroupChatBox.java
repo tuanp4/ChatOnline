@@ -10,10 +10,22 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.StringReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.text.html.HTMLEditorKit;
 import model.*;
 
 /**
@@ -28,6 +40,7 @@ public class GroupChatBox extends javax.swing.JFrame {
     private MessageController messageController = new MessageController(this);
     private ClientMainView clientMainView;
     private Conversation conversation;
+    private DefaultListModel<User> participantList = new DefaultListModel<>();
 
     public void setConversation(Conversation conversation) {
         this.conversation = conversation;
@@ -55,6 +68,102 @@ public class GroupChatBox extends javax.swing.JFrame {
         this.clientMainView = clientMainView;
         this.setTitle(conversation.getName());
         initComponents();
+        messageController.getGroupHistoryMessages();
+        displayAvatars(conversation);
+        displayParticipantList(conversation);
+    }
+
+    public void returnMessage(Message message) {
+        if (message.getUser_avatar() == null) {
+            message.setUser_avatar("/default/default_avatar.png");
+        }
+        append("<table style='background: #f2f2f2; margin-bottom: 3px;'>"
+                + "<tr>"
+                + "<td valign=top>"
+                + "<img src='" + upload_domain + message.getUser_avatar() + "' height='40' width='40' style='border-radius: 50%;'>"
+                + "</td>"
+                + "<td valign=top style='width:220px; word-wrap:break-word;'>"
+                + "<b style='color:blue'>" + message.getNick_name() + ": </b>"
+                + "<br>"
+                + message.getContent()
+                + "</td>"
+                + "</tr>"
+                + "</table>");
+    }
+
+    public Message getSendingMessage() {
+        Message message = new Message();
+        message.setConversation_id(conversation.getId());
+        message.setUser_id(conversation.getMainUserId());
+        message.setContent(JTextAreaNewMessage.getText().replace("\n", "<br>"));
+        JTextAreaNewMessage.setText("");
+        return message;
+    }
+
+    public void returnHistoryMessages(ArrayList<Message> messages) {
+        for (Message message : messages) {
+            if (message.getUser_avatar() == null) {
+                message.setUser_avatar("/default/default_avatar.png");
+            }
+            append("<table style='background: #f2f2f2; margin-bottom: 3px;'>"
+                    + "<tr>"
+                    + "<td valign=top>"
+                    + "<img src='" + upload_domain + message.getUser_avatar() + "' height='40' width='40' style='border-radius: 50%;'>"
+                    + "</td>"
+                    + "<td valign=top style='width:220px; word-wrap:break-word;'>"
+                    + "<b style='color:blue'>" + message.getNick_name() + ": </b>"
+                    + "<br>"
+                    + message.getContent()
+                    + "</td>"
+                    + "</tr>"
+                    + "</table>");
+        }
+    }
+
+    public void append(String data) {
+        HTMLEditorKit editor = (HTMLEditorKit) JEditorPaneChatHistory.getEditorKit();
+        StringReader reader = new StringReader(data);
+        try {
+            editor.read(reader, JEditorPaneChatHistory.getDocument(), JEditorPaneChatHistory.getDocument().getLength());
+        } catch (Exception ex) {
+        }
+    }
+
+    public void displayAvatars(Conversation conversation) {
+        try {
+            lbl_MyAvatar.setText("");
+            lbl_GroupAvatar.setText("");
+            BufferedImage myAvatar = ImageIO.read(new URL(upload_domain + "/default/default_avatar.png"));
+            if (conversation.getMainUserAvatarPath() != null) {
+                URL url = new URL(upload_domain + conversation.getMainUserAvatarPath());
+                myAvatar = ImageIO.read(url);
+            }
+            Image myAvatar_rs = myAvatar.getScaledInstance(78, 78, Image.SCALE_SMOOTH);
+            ImageIcon myAvatar_img = new ImageIcon(myAvatar_rs);
+            lbl_MyAvatar.setIcon(myAvatar_img);
+
+            BufferedImage groupAvatar = ImageIO.read(new URL(upload_domain + "/default/default_group_avatar.png"));
+            if (conversation.getAvatar_path() != null) {
+                URL url = new URL(upload_domain + conversation.getAvatar_path());
+                groupAvatar = ImageIO.read(url);
+            }
+            Image groupAvatar_rs = groupAvatar.getScaledInstance(78, 78, Image.SCALE_SMOOTH);
+            ImageIcon groupAvatar_img = new ImageIcon(groupAvatar_rs);
+            lbl_GroupAvatar.setIcon(groupAvatar_img);
+        } catch (IOException ex) {
+        }
+    }
+
+    public void displayParticipantList(Conversation conversation) {
+        participantList.removeAllElements();
+        for (String s : conversation.getParticipantDisplayName()) {
+            User user = new User();
+            user.setDisplay_name(s);
+            user.setStatus(conversation.getParticipantStatus().get(conversation.getParticipantDisplayName().indexOf(s)));
+            participantList.addElement(user);
+        }
+        JList<User> list = new JList<User>(participantList);
+        JListParticipant = list;
     }
 
     public void showMessage(String msg) {
@@ -103,10 +212,19 @@ public class GroupChatBox extends javax.swing.JFrame {
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
+        lbl_GroupAvatar = new javax.swing.JLabel();
         lbl_MyAvatar = new javax.swing.JLabel();
         lbl_FriendList = new javax.swing.JLabel();
+        JScrollPaneParticipant = new javax.swing.JScrollPane();
+        JListParticipant = new javax.swing.JList<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         JPanelChatHistory.setBackground(new java.awt.Color(255, 255, 255));
         JPanelChatHistory.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
@@ -126,7 +244,7 @@ public class GroupChatBox extends javax.swing.JFrame {
             .addGroup(JPanelChatHistoryLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addComponent(JScrollPaneChatHistory)
-                .addGap(6, 6, 6))
+                .addContainerGap())
         );
         JPanelChatHistoryLayout.setVerticalGroup(
             JPanelChatHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,7 +313,7 @@ public class GroupChatBox extends javax.swing.JFrame {
             JPanelNewMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanelNewMessageLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(JScrollPaneNewMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                .addComponent(JScrollPaneNewMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jp_Send, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11))
@@ -232,6 +350,16 @@ public class GroupChatBox extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        lbl_GroupAvatar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_GroupAvatar.setText("Avatar");
+        lbl_GroupAvatar.setToolTipText("");
+        lbl_GroupAvatar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.lightGray));
+        lbl_GroupAvatar.setMaximumSize(new java.awt.Dimension(78, 78));
+        lbl_GroupAvatar.setMinimumSize(new java.awt.Dimension(78, 78));
+        lbl_GroupAvatar.setOpaque(true);
+        lbl_GroupAvatar.setPreferredSize(new java.awt.Dimension(78, 78));
+        lbl_GroupAvatar.setRequestFocusEnabled(false);
+
         lbl_MyAvatar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_MyAvatar.setText("Avatar");
         lbl_MyAvatar.setToolTipText("");
@@ -244,8 +372,18 @@ public class GroupChatBox extends javax.swing.JFrame {
 
         lbl_FriendList.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         lbl_FriendList.setForeground(new java.awt.Color(255, 255, 0));
+        lbl_FriendList.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_FriendList.setIcon(new javax.swing.ImageIcon(file_path + "down.png"));
         lbl_FriendList.setText("Participants");
+
+        JScrollPaneParticipant.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
+        JScrollPaneParticipant.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        JListParticipant.setBackground(new java.awt.Color(163, 73, 164));
+        JListParticipant.setModel(participantList);
+        JListParticipant.setCellRenderer(new ParticipantRenderer());
+        JListParticipant.setEnabled(false);
+        JScrollPaneParticipant.setViewportView(JListParticipant);
 
         javax.swing.GroupLayout JP_AvatarLayout = new javax.swing.GroupLayout(JP_Avatar);
         JP_Avatar.setLayout(JP_AvatarLayout);
@@ -253,16 +391,31 @@ public class GroupChatBox extends javax.swing.JFrame {
             JP_AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_AvatarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(JP_AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbl_MyAvatar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbl_FriendList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(JP_AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(JP_AvatarLayout.createSequentialGroup()
+                        .addGap(0, 20, Short.MAX_VALUE)
+                        .addGroup(JP_AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JP_AvatarLayout.createSequentialGroup()
+                                .addComponent(lbl_GroupAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JP_AvatarLayout.createSequentialGroup()
+                                .addComponent(lbl_MyAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JP_AvatarLayout.createSequentialGroup()
+                        .addGroup(JP_AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_FriendList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(JScrollPaneParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         JP_AvatarLayout.setVerticalGroup(
             JP_AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_AvatarLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(lbl_GroupAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbl_FriendList)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(JScrollPaneParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbl_MyAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -273,9 +426,9 @@ public class GroupChatBox extends javax.swing.JFrame {
         JP_MainLayout.setHorizontalGroup(
             JP_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JP_MainLayout.createSequentialGroup()
-                .addComponent(JP_Chat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JP_Chat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(JP_Avatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(JP_Avatar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         JP_MainLayout.setVerticalGroup(
             JP_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -300,7 +453,7 @@ public class GroupChatBox extends javax.swing.JFrame {
     private void btn_SendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_SendMouseClicked
         // TODO add your handling code here:
         if (!JTextAreaNewMessage.getText().equals("")) {
-//            messageController.sendMessage();
+            messageController.sendGroupMessage();
         }
     }//GEN-LAST:event_btn_SendMouseClicked
 
@@ -320,7 +473,7 @@ public class GroupChatBox extends javax.swing.JFrame {
             if (evt.isShiftDown()) {
                 JTextAreaNewMessage.append("\n");
             } else {
-//                messageController.sendMessage();
+                messageController.sendGroupMessage();
             }
         }
     }//GEN-LAST:event_JTextAreaNewMessageKeyReleased
@@ -334,6 +487,14 @@ public class GroupChatBox extends javax.swing.JFrame {
         // TODO add your handling code here:
         jp_Send.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
     }//GEN-LAST:event_btn_SendMouseReleased
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        try {
+            clientMainView.closeGroupChatBox(conversation);
+        } catch (ConcurrentModificationException ex) {
+        }
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
@@ -372,6 +533,7 @@ public class GroupChatBox extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane JEditorPaneChatHistory;
+    private javax.swing.JList<User> JListParticipant;
     private javax.swing.JPanel JP_Avatar;
     private javax.swing.JPanel JP_Chat;
     private javax.swing.JPanel JP_Main;
@@ -379,10 +541,12 @@ public class GroupChatBox extends javax.swing.JFrame {
     private javax.swing.JPanel JPanelNewMessage;
     private javax.swing.JScrollPane JScrollPaneChatHistory;
     private javax.swing.JScrollPane JScrollPaneNewMessage;
+    private javax.swing.JScrollPane JScrollPaneParticipant;
     private javax.swing.JTextArea JTextAreaNewMessage;
     private javax.swing.JLabel btn_Send;
     private javax.swing.JPanel jp_Send;
     private javax.swing.JLabel lbl_FriendList;
+    private javax.swing.JLabel lbl_GroupAvatar;
     private javax.swing.JLabel lbl_MyAvatar;
     // End of variables declaration//GEN-END:variables
 }

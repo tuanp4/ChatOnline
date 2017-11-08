@@ -15,6 +15,7 @@ import view.AccountInfoView;
 import view.ChangePasswordView;
 import view.ClientMainView;
 import view.ClientStartView;
+import view.CreateGroupView;
 
 /**
  *
@@ -23,11 +24,16 @@ import view.ClientStartView;
 public class ConversationController {
 
     private ClientMainView clientMainView;
+    private CreateGroupView createGroupView;
     private String serverHost = "localhost";
     private int serverPort = 8888;
 
     public ConversationController(ClientMainView clientMainView) {
         this.clientMainView = clientMainView;
+    }
+
+    public ConversationController(CreateGroupView createGroupView) {
+        this.createGroupView = createGroupView;
     }
 
     public void getGroupList() {
@@ -49,12 +55,12 @@ public class ConversationController {
         }
     }
 
-    public void createFriendConversation(int friendID) {
+    public void openFriendConversation(int friendID) {
         try {
             Conversation conversation = new Conversation();
             conversation.setMainUserId(clientMainView.getUserID().getId());
             conversation.setFriendId(friendID);
-            conversation.setAction("createFriendConversation");
+            conversation.setAction("openFriendConversation");
             Socket mySocket = new Socket(serverHost, serverPort);
             ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(conversation);
@@ -66,6 +72,52 @@ public class ConversationController {
                 clientMainView.showMessage("Some error occurred. Please try again!");
             } else {
                 clientMainView.openFriendChatBox(result);
+            }
+            mySocket.close();
+        } catch (Exception ex) {
+            clientMainView.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
+    public void createGroupConversation() {
+        try {
+            Conversation conversation = createGroupView.getConversationParticipants();
+            conversation.setAction("createGroupConversation");
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(conversation);
+            oos.flush();
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            Conversation result = (Conversation) o;
+            if (result == null) {
+                createGroupView.showMessage("Some error occurred. Please try again!");
+            } else {
+                createGroupView.openCreatedGroupChat(result);
+            }
+            mySocket.close();
+        } catch (Exception ex) {
+            createGroupView.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
+    public void openGroupConversation(int conversationID) {
+        try {
+            Conversation conversation = new Conversation();
+            conversation.setId(conversationID);
+            conversation.setMainUserId(clientMainView.getUserID().getId());
+            conversation.setAction("openGroupConversation");
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(conversation);
+            oos.flush();
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            Conversation result = (Conversation) o;
+            if (result == null) {
+                clientMainView.showMessage("Some error occurred. Please try again!");
+            } else {
+                clientMainView.openGroupChatBox(result);
             }
             mySocket.close();
         } catch (Exception ex) {

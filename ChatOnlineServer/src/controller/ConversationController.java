@@ -28,8 +28,16 @@ public class ConversationController {
         return availableGroupList;
     }
 
-    public Conversation returnFriendConversation(Conversation conversation) {
-        return dao.getFriendConversation(conversation);
+    public Conversation openFriendConversation(Conversation conversation) {
+        return dao.openFriendConversation(conversation);
+    }
+
+    public Conversation returnGroupConversation(Conversation conversation) {
+        return dao.getGroupConversation(conversation);
+    }
+
+    public Conversation openGroupConversation(Conversation conversation) {
+        return dao.openGroupConversation(conversation);
     }
 
 }

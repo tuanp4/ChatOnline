@@ -15,10 +15,10 @@ import model.Message;
  * @author Valdez
  */
 public class MessageController {
-    
+
     DAOMessage dao;
-    
-    public MessageController(DAOMessage dao){
+
+    public MessageController(DAOMessage dao) {
         this.dao = dao;
     }
 
@@ -31,5 +31,4 @@ public class MessageController {
         return allHistoryMessages;
     }
 
-    
 }

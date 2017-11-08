@@ -72,8 +72,16 @@ public class ServerController {
                     oos.writeObject(conversationController.returnAvailableGroupList(conversation));
                     oos.flush();
                 }
-                if (conversation.getAction().equals("createFriendConversation")) {
-                    oos.writeObject(conversationController.returnFriendConversation(conversation));
+                if (conversation.getAction().equals("openFriendConversation")) {
+                    oos.writeObject(conversationController.openFriendConversation(conversation));
+                    oos.flush();
+                }
+                if (conversation.getAction().equals("createGroupConversation")) {
+                    oos.writeObject(conversationController.returnGroupConversation(conversation));
+                    oos.flush();
+                }
+                if (conversation.getAction().equals("openGroupConversation")) {
+                    oos.writeObject(conversationController.openGroupConversation(conversation));
                     oos.flush();
                 }
             } else if (o instanceof Friendship) {
@@ -104,6 +112,14 @@ public class ServerController {
                     oos.flush();
                 }
                 if (message.getAction().equals("getHistoryMessages")) {
+                    oos.writeObject(messageController.returnHistoryMessages(message));
+                    oos.flush();
+                }
+                if (message.getAction().equals("sendGroupMessage")) {
+                    oos.writeObject(messageController.returnSentMessage(message));
+                    oos.flush();
+                }
+                if (message.getAction().equals("getGroupHistoryMessages")) {
                     oos.writeObject(messageController.returnHistoryMessages(message));
                     oos.flush();
                 }

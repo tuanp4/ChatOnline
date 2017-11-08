@@ -5,15 +5,13 @@
  */
 package view;
 
-import controller.UserController;
-import java.awt.BorderLayout;
+import controller.*;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -28,7 +26,9 @@ public class CreateGroupView extends javax.swing.JFrame {
 
     private final String file_path = "file/icon/";
 
+    private ConversationController conversationController = new ConversationController(this);
     private ClientMainView clientMainView;
+    private User user;
     private ArrayList<User> users = new ArrayList<User>();
 
     public User getUserID() {
@@ -38,15 +38,47 @@ public class CreateGroupView extends javax.swing.JFrame {
     /**
      * Creates new form CreateGroupView
      */
-    public CreateGroupView(ClientMainView clientMainView) {
+    public CreateGroupView(User user, ClientMainView clientMainView) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
         }
+        this.user = user;
         this.clientMainView = clientMainView;
         initComponents();
 
         lbl_AddParticipantIcon.requestFocusInWindow();
+    }
+
+    public void openCreatedGroupChat(Conversation conversation) {
+        clientMainView.getConversationController().getGroupList();
+        clientMainView.getConversationController().openGroupConversation(conversation.getId());
+        this.dispose();
+    }
+
+    public Conversation getConversationParticipants() {
+        Conversation conversation = new Conversation();
+        conversation.setName(txt_GroupName.getText());
+        conversation.setMainUserId(getUserID().getId());
+        ArrayList<Integer> participantId = new ArrayList<Integer>();
+        ArrayList<String> participantDisplayName = new ArrayList<String>();
+        participantId.add(user.getId());
+        if (user.getDisplay_name().isEmpty()) {
+            participantDisplayName.add(user.getUsername());
+        } else {
+            participantDisplayName.add(user.getDisplay_name());
+        }
+        for (User user : users) {
+            participantId.add(user.getId());
+            if (user.getDisplay_name().isEmpty()) {
+                participantDisplayName.add(user.getUsername());
+            } else {
+                participantDisplayName.add(user.getDisplay_name());
+            }
+        }
+        conversation.setParticipantId(participantId);
+        conversation.setParticipantDisplayName(participantDisplayName);
+        return conversation;
     }
 
     public void addParticipant(User user) {
@@ -66,11 +98,19 @@ public class CreateGroupView extends javax.swing.JFrame {
         DefaultTableModel defaultTableModel = (DefaultTableModel) JTableParticipantList.getModel();
         defaultTableModel.getDataVector().removeAllElements();
         String groupName = "";
-        for (User user : users) {
+        if (user.getDisplay_name().isEmpty()) {
+            defaultTableModel.addRow(new Object[]{user.getUsername(), user.getUsername()});
+            groupName += user.getUsername() + ", ";
+        } else {
             defaultTableModel.addRow(new Object[]{user.getUsername(), user.getDisplay_name()});
+            groupName += user.getDisplay_name() + ", ";
+        }
+        for (User user : users) {
             if (user.getDisplay_name().isEmpty()) {
+                defaultTableModel.addRow(new Object[]{user.getUsername(), user.getUsername()});
                 groupName += user.getUsername() + ", ";
             } else {
+                defaultTableModel.addRow(new Object[]{user.getUsername(), user.getDisplay_name()});
                 groupName += user.getDisplay_name() + ", ";
             }
         }
@@ -364,6 +404,11 @@ public class CreateGroupView extends javax.swing.JFrame {
 
     private void btn_CreateGroupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_CreateGroupMouseClicked
         // TODO add your handling code here:
+        if (users.size() < 2) {
+            showMessage("A group requied at least 3 participants.");
+        } else {
+            conversationController.createGroupConversation();
+        }
     }//GEN-LAST:event_btn_CreateGroupMouseClicked
 
     private void btn_CreateGroupMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_CreateGroupMouseEntered

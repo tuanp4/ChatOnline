@@ -47,7 +47,6 @@ public class MessageController {
                 chatBox.showMessage("Some error occurred. Please try again!");
             } else {
                 chatBox.returnMessage(result);
-
             }
             mySocket.close();
         } catch (Exception ex) {
@@ -70,6 +69,47 @@ public class MessageController {
             mySocket.close();
         } catch (Exception ex) {
             chatBox.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
+    public void sendGroupMessage() {
+        try {
+            Message message = groupChatBox.getSendingMessage();
+            message.setAction("sendGroupMessage");
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(message);
+            oos.flush();
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            Message result = (Message) o;
+            if (result == null) {
+                groupChatBox.showMessage("Some error occurred. Please try again!");
+            } else {
+                groupChatBox.returnMessage(result);
+
+            }
+            mySocket.close();
+        } catch (Exception ex) {
+            groupChatBox.showMessage(ex.getStackTrace().toString());
+        }
+    }
+
+    public void getGroupHistoryMessages() {
+        try {
+            Message message = groupChatBox.getConversationID();
+            message.setAction("getGroupHistoryMessages");
+            Socket mySocket = new Socket(serverHost, serverPort);
+            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(message);
+            oos.flush();
+            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            ArrayList<Message> result = (ArrayList<Message>) o;
+            groupChatBox.returnHistoryMessages(result);
+            mySocket.close();
+        } catch (Exception ex) {
+            groupChatBox.showMessage(ex.getStackTrace().toString());
         }
     }
 

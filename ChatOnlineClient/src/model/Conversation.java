@@ -7,6 +7,7 @@ package model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  *
@@ -98,6 +99,9 @@ public class Conversation implements Serializable {
     private String mainUserAvatarPath;
     private String friendAvatarPath;
     private String friendDisplayName;
+    private ArrayList<Integer> participantId;
+    private ArrayList<String> participantDisplayName;
+    private ArrayList<Integer> participantStatus;
 
     public int getMainUserId() {
         return mainUserId;
@@ -137,6 +141,30 @@ public class Conversation implements Serializable {
 
     public void setFriendDisplayName(String friendDisplayName) {
         this.friendDisplayName = friendDisplayName;
+    }
+
+    public ArrayList<Integer> getParticipantId() {
+        return participantId;
+    }
+
+    public void setParticipantId(ArrayList<Integer> participantId) {
+        this.participantId = participantId;
+    }
+
+    public ArrayList<String> getParticipantDisplayName() {
+        return participantDisplayName;
+    }
+
+    public void setParticipantDisplayName(ArrayList<String> participantDisplayName) {
+        this.participantDisplayName = participantDisplayName;
+    }
+
+    public ArrayList<Integer> getParticipantStatus() {
+        return participantStatus;
+    }
+
+    public void setParticipantStatus(ArrayList<Integer> participantStatus) {
+        this.participantStatus = participantStatus;
     }
 
 }

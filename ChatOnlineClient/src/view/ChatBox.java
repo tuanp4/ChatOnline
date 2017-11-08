@@ -65,7 +65,7 @@ public class ChatBox extends javax.swing.JFrame {
         this.setTitle(conversation.getFriendDisplayName());
         initComponents();
         messageController.getHistoryMessages();
-        displayAvatar(conversation);
+        displayAvatars(conversation);
     }
 
     public void returnMessage(Message message) {
@@ -77,22 +77,13 @@ public class ChatBox extends javax.swing.JFrame {
                 + "<td valign=top>"
                 + "<img src='" + upload_domain + message.getUser_avatar() + "' height='40' width='40' style='border-radius: 50%;'>"
                 + "</td>"
-                + "<td valign=top style='width:300px; word-wrap:break-word;'>"
+                + "<td valign=top style='width:220px; word-wrap:break-word;'>"
                 + "<b style='color:blue'>" + message.getNick_name() + ": </b>"
                 + "<br>"
                 + message.getContent()
                 + "</td>"
                 + "</tr>"
                 + "</table>");
-    }
-
-    public void append(String data) {
-        HTMLEditorKit editor = (HTMLEditorKit) JEditorPaneChatHistory.getEditorKit();
-        StringReader reader = new StringReader(data);
-        try {
-            editor.read(reader, JEditorPaneChatHistory.getDocument(), JEditorPaneChatHistory.getDocument().getLength());
-        } catch (Exception ex) {
-        }
     }
 
     public Message getSendingMessage() {
@@ -114,7 +105,7 @@ public class ChatBox extends javax.swing.JFrame {
                     + "<td valign=top>"
                     + "<img src='" + upload_domain + message.getUser_avatar() + "' height='40' width='40' style='border-radius: 50%;'>"
                     + "</td>"
-                    + "<td valign=top style='width:300px; word-wrap:break-word;'>"
+                    + "<td valign=top style='width:220px; word-wrap:break-word;'>"
                     + "<b style='color:blue'>" + message.getNick_name() + ": </b>"
                     + "<br>"
                     + message.getContent()
@@ -124,10 +115,20 @@ public class ChatBox extends javax.swing.JFrame {
         }
     }
 
-    public void displayAvatar(Conversation conversation) {
+    public void append(String data) {
+        HTMLEditorKit editor = (HTMLEditorKit) JEditorPaneChatHistory.getEditorKit();
+        StringReader reader = new StringReader(data);
+        try {
+            editor.read(reader, JEditorPaneChatHistory.getDocument(), JEditorPaneChatHistory.getDocument().getLength());
+        } catch (Exception ex) {
+        }
+    }
+
+    public void displayAvatars(Conversation conversation) {
         try {
             lbl_MyAvatar.setText("");
             lbl_FriendAvatar.setText("");
+            //------------------------------------------------------------------
             BufferedImage myAvatar = ImageIO.read(new URL(upload_domain + "/default/default_avatar.png"));
             if (conversation.getMainUserAvatarPath() != null) {
                 URL url = new URL(upload_domain + conversation.getMainUserAvatarPath());
@@ -136,7 +137,7 @@ public class ChatBox extends javax.swing.JFrame {
             Image myAvatar_rs = myAvatar.getScaledInstance(78, 78, Image.SCALE_SMOOTH);
             ImageIcon myAvatar_img = new ImageIcon(myAvatar_rs);
             lbl_MyAvatar.setIcon(myAvatar_img);
-
+            //------------------------------------------------------------------
             BufferedImage friendAvatar = ImageIO.read(new URL(upload_domain + "/default/default_avatar.png"));
             if (conversation.getFriendAvatarPath() != null) {
                 URL url = new URL(upload_domain + conversation.getFriendAvatarPath());
@@ -206,6 +207,8 @@ public class ChatBox extends javax.swing.JFrame {
             }
         });
 
+        JP_Chat.setPreferredSize(new java.awt.Dimension(369, 404));
+
         JPanelChatHistory.setBackground(new java.awt.Color(255, 255, 255));
         JPanelChatHistory.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.gray, java.awt.Color.gray));
 
@@ -224,7 +227,7 @@ public class ChatBox extends javax.swing.JFrame {
             .addGroup(JPanelChatHistoryLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addComponent(JScrollPaneChatHistory)
-                .addGap(6, 6, 6))
+                .addContainerGap())
         );
         JPanelChatHistoryLayout.setVerticalGroup(
             JPanelChatHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,7 +296,7 @@ public class ChatBox extends javax.swing.JFrame {
             JPanelNewMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanelNewMessageLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(JScrollPaneNewMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                .addComponent(JScrollPaneNewMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jp_Send, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11))
