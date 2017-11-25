@@ -27,13 +27,20 @@ public class ConversationController {
     private CreateGroupView createGroupView;
     private String serverHost = "localhost";
     private int serverPort = 8888;
-
-    public ConversationController(ClientMainView clientMainView) {
+    
+    private ObjectInputStream ois = null;
+    private ObjectOutputStream oos = null;
+    
+    public ConversationController(ClientMainView clientMainView, ObjectInputStream ois, ObjectOutputStream oos) {
+        this.oos = oos;
+        this.ois = ois;
         this.clientMainView = clientMainView;
     }
 
-    public ConversationController(CreateGroupView createGroupView) {
+    public ConversationController(CreateGroupView createGroupView, ObjectInputStream ois, ObjectOutputStream oos) {
         this.createGroupView = createGroupView;
+        this.oos = oos;
+        this.ois = ois;
     }
 
     public void getGroupList() {
@@ -81,12 +88,15 @@ public class ConversationController {
 
     public void createGroupConversation() {
         try {
+            System.out.println("start create conversation");
+            System.out.println(this.oos);
             Conversation conversation = createGroupView.getConversationParticipants();
             conversation.setAction("createGroupConversation");
             Socket mySocket = new Socket(serverHost, serverPort);
             ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(conversation);
             oos.flush();
+            System.out.println("send from server creategroup");
             ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             Conversation result = (Conversation) o;
@@ -95,7 +105,7 @@ public class ConversationController {
             } else {
                 createGroupView.openCreatedGroupChat(result);
             }
-            mySocket.close();
+            //mySocket.close();
         } catch (Exception ex) {
             createGroupView.showMessage(ex.getStackTrace().toString());
         }

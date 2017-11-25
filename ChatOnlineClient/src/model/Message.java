@@ -93,6 +93,13 @@ public class Message implements Serializable {
     public Message() {
     }
 
+    public Message(int conversation_id, String content, String action) {
+        this.conversation_id = conversation_id;
+        this.content = content;
+        this.action = action;
+    }
+
+    
     private String nick_name;
     private String user_avatar;
 

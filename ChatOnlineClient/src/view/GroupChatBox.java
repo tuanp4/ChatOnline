@@ -15,6 +15,8 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class GroupChatBox extends javax.swing.JFrame {
     private final String file_path = "file/icon/";
     private final String upload_domain = "http://uploads.chatonline.com";
 
-    private MessageController messageController = new MessageController(this);
+    private MessageController messageController = null;
     private ClientMainView clientMainView;
     private Conversation conversation;
     private DefaultListModel<User> participantList = new DefaultListModel<>();
@@ -59,7 +61,8 @@ public class GroupChatBox extends javax.swing.JFrame {
     /**
      * Creates new form GroupChatBox
      */
-    public GroupChatBox(Conversation conversation, ClientMainView clientMainView) {
+    public GroupChatBox(Conversation conversation, ClientMainView clientMainView, ObjectInputStream ois, ObjectOutputStream oos) {
+        this.messageController = new MessageController(this,ois,oos);
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {

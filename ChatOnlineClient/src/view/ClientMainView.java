@@ -18,8 +18,12 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -41,7 +45,7 @@ public class ClientMainView extends javax.swing.JFrame {
     private final String upload_domain = "http://uploads.chatonline.com";
 
     private UserController userController = new UserController(this);
-    private ConversationController conversationController = new ConversationController(this);
+    private ConversationController conversationController = null;
     private User user;
     private int status;
     private AccountInfoView myAccountInfoView;
@@ -55,6 +59,11 @@ public class ClientMainView extends javax.swing.JFrame {
     private ArrayList<ChatBox> friendChatBoxList = new ArrayList<ChatBox>();
     private ArrayList<GroupChatBox> groupChatBoxList = new ArrayList<GroupChatBox>();
     private ArrayList<OtherUserInfoView> otherUserInfoViewsList = new ArrayList<OtherUserInfoView>();
+
+    private ObjectInputStream ois = null;
+    private ObjectOutputStream oos = null;
+
+    private Thread listenServer = null;
 
     public void setUser(User user) {
         this.user = user;
@@ -93,7 +102,9 @@ public class ClientMainView extends javax.swing.JFrame {
     /**
      * Creates new form JF_Main
      */
-    public ClientMainView(User user) {
+    public ClientMainView(User user, ObjectInputStream ois, ObjectOutputStream oos) {
+        conversationController = new ConversationController(this, ois, oos);
+        System.out.println("conversation controller");
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
@@ -113,6 +124,13 @@ public class ClientMainView extends javax.swing.JFrame {
         displayDescription(user);
 
         lbl_Avatar.requestFocusInWindow();
+        this.ois = ois;
+        this.oos = oos;
+
+        new Thread(new ListenServer(ois, oos, friendChatBoxList, groupChatBoxList)).start();
+
+        //.listenServer = new Thread(new ListenServer(ois,oos));
+        //listenServer.start();
     }
 
     public void openUserInfoView(User user) {
@@ -125,6 +143,7 @@ public class ClientMainView extends javax.swing.JFrame {
         }
         if (check == false) {
             OtherUserInfoView chatBox = new OtherUserInfoView(user, this);
+
             otherUserInfoViewsList.add(chatBox);
             chatBox.setVisible(true);
         }
@@ -138,22 +157,30 @@ public class ClientMainView extends javax.swing.JFrame {
         }
     }
 
-    public void openFriendChatBox(Conversation conversation) {
+    public void openFriendChatBox(Conversation conversation) throws IOException {
         Boolean check = false;
         for (ChatBox cb : friendChatBoxList) {
             if (cb.getConversation().getId() == conversation.getId()) {
                 cb.setVisible(true);
+                cb.setOos(this.oos);
+                cb.setOis(this.ois);
                 check = true;
             }
         }
         if (check == false) {
-            ChatBox chatBox = new ChatBox(conversation, this);
+            System.out.println("false conversation " + conversation.getId());
+            ChatBox chatBox = new ChatBox(conversation, this, this.ois, this.oos);
+            Message msg = new Message(conversation.getId(), "connected", "sendMessage");
+            
+            this.oos.writeObject(msg);
+            this.oos.flush();
+
             friendChatBoxList.add(chatBox);
             chatBox.setVisible(true);
         }
     }
 
-    public void openGroupChatBox(Conversation conversation) {
+    public void openGroupChatBox(Conversation conversation) throws IOException {
         Boolean check = false;
         for (GroupChatBox gcb : groupChatBoxList) {
             if (gcb.getConversation().getId() == conversation.getId()) {
@@ -162,7 +189,12 @@ public class ClientMainView extends javax.swing.JFrame {
             }
         }
         if (check == false) {
-            GroupChatBox groupChatBox = new GroupChatBox(conversation, this);
+            GroupChatBox groupChatBox = new GroupChatBox(conversation, this,ois,oos);
+            System.out.println("group chatbox conversationid:" + conversation.getId());
+            Message msg = new Message(conversation.getId(), "connected", "sendGroupMessage");
+            this.oos.writeObject(msg);
+            System.out.println("convesationid in mesaage group:" + msg.getConversation_id());
+            this.oos.flush();
             groupChatBoxList.add(groupChatBox);
             groupChatBox.setVisible(true);
         }
@@ -251,7 +283,7 @@ public class ClientMainView extends javax.swing.JFrame {
 
     public void openCreateGroupView() {
         checkCreateGroupView = true;
-        createGroupView = new CreateGroupView(user, this);
+        createGroupView = new CreateGroupView(user, this, this.ois, this.oos);
         createGroupView.setLocationRelativeTo(this);
         createGroupView.setVisible(true);
     }
@@ -778,29 +810,33 @@ public class ClientMainView extends javax.swing.JFrame {
         // TODO add your handling code here:
         int output = JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "Sign out", JOptionPane.YES_NO_OPTION);
         if (output == JOptionPane.YES_OPTION) {
-            ClientStartView clientStartView = new ClientStartView();
-            clientStartView.setVisible(true);
-            if (checkMyAccountInfoView) {
-                myAccountInfoView.dispose();
+            try {
+                ClientStartView clientStartView = new ClientStartView(this.ois, this.oos);
+                clientStartView.setVisible(true);
+                if (checkMyAccountInfoView) {
+                    myAccountInfoView.dispose();
+                }
+                if (checkMyChangePasswordView) {
+                    myChangePasswordView.dispose();
+                }
+                if (checkCreateGroupView) {
+                    createGroupView.dispose();
+                }
+                for (ChatBox cb : friendChatBoxList) {
+                    cb.dispose();
+                }
+                for (GroupChatBox gcb : groupChatBoxList) {
+                    gcb.dispose();
+                }
+                for (OtherUserInfoView ouiv : otherUserInfoViewsList) {
+                    ouiv.dispose();
+                }
+                status = 4;
+                userController.changeStatus();
+                this.dispose();
+            } catch (IOException ex) {
+                Logger.getLogger(ClientMainView.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (checkMyChangePasswordView) {
-                myChangePasswordView.dispose();
-            }
-            if (checkCreateGroupView) {
-                createGroupView.dispose();
-            }
-            for (ChatBox cb : friendChatBoxList) {
-                cb.dispose();
-            }
-            for (GroupChatBox gcb : groupChatBoxList) {
-                gcb.dispose();
-            }
-            for (OtherUserInfoView ouiv : otherUserInfoViewsList) {
-                ouiv.dispose();
-            }
-            status = 4;
-            userController.changeStatus();
-            this.dispose();
         }
     }//GEN-LAST:event_mn_SignOutActionPerformed
 

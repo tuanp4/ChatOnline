@@ -23,32 +23,42 @@ public class MessageController {
     private GroupChatBox groupChatBox;
     private String serverHost = "localhost";
     private int serverPort = 8888;
-
-    public MessageController(ChatBox chatBox) {
+    
+    private ObjectInputStream ois = null;
+    private ObjectOutputStream oos = null;
+    
+    public MessageController(ChatBox chatBox, ObjectInputStream ois, ObjectOutputStream oos) {
         this.chatBox = chatBox;
+        this.oos = oos;
+        this.ois = ois;
+        System.out.println("oos in message controller:" + this.oos);
     }
 
-    public MessageController(GroupChatBox groupChatBox) {
+    public MessageController(GroupChatBox groupChatBox, ObjectInputStream ois, ObjectOutputStream oos) {
         this.groupChatBox = groupChatBox;
+        this.oos = oos;
+        this.ois = ois;
+        System.out.println("oos in message controller:" + this.oos);
     }
 
     public void sendMessage() {
         try {
             Message message = chatBox.getSendingMessage();
             message.setAction("sendMessage");
-            Socket mySocket = new Socket(serverHost, serverPort);
-            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            //Socket mySocket = new Socket(serverHost, serverPort);
+            //ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(message);
             oos.flush();
-            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            System.out.println("send message to server");
+            /*ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             Message result = (Message) o;
             if (result == null) {
                 chatBox.showMessage("Some error occurred. Please try again!");
             } else {
                 chatBox.returnMessage(result);
-            }
-            mySocket.close();
+            }*/
+            //mySocket.close();
         } catch (Exception ex) {
             chatBox.showMessage(ex.getStackTrace().toString());
         }
@@ -76,11 +86,11 @@ public class MessageController {
         try {
             Message message = groupChatBox.getSendingMessage();
             message.setAction("sendGroupMessage");
-            Socket mySocket = new Socket(serverHost, serverPort);
-            ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
+            //Socket mySocket = new Socket(serverHost, serverPort);
+            //ObjectOutputStream oos = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(message);
             oos.flush();
-            ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
+            /*ObjectInputStream ois = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             Message result = (Message) o;
             if (result == null) {
@@ -89,7 +99,7 @@ public class MessageController {
                 groupChatBox.returnMessage(result);
 
             }
-            mySocket.close();
+            mySocket.close();*/
         } catch (Exception ex) {
             groupChatBox.showMessage(ex.getStackTrace().toString());
         }

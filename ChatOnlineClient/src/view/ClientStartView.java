@@ -5,10 +5,15 @@
  */
 package view;
 
+import controller.ListenServer;
 import controller.UserController;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import javax.swing.JOptionPane;
@@ -22,11 +27,12 @@ import model.User;
 public class ClientStartView extends javax.swing.JFrame {
 
     private UserController userController = new UserController(this);
-
+    private ObjectOutputStream oos = null;
+    private ObjectInputStream ois = null;
     /**
      * Creates new form Start
      */
-    public ClientStartView() {
+    public ClientStartView(ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
@@ -36,6 +42,9 @@ public class ClientStartView extends javax.swing.JFrame {
         lbl_SignIn.requestFocusInWindow();
         btnGrp_Gender.add(rd_Male);
         btnGrp_Gender.add(rd_Female);
+        this.oos = oos;
+        this.ois = ois;
+        
     }
 
     private String SHA_1(String input) {
@@ -58,7 +67,7 @@ public class ClientStartView extends javax.swing.JFrame {
     }
 
     public void toMainView(User user) {
-        ClientMainView clientMainView = new ClientMainView(user);
+        ClientMainView clientMainView = new ClientMainView(user,this.ois,this.oos);
         clientMainView.setVisible(true);
         this.dispose();
     }

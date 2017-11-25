@@ -11,6 +11,8 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -26,11 +28,14 @@ public class CreateGroupView extends javax.swing.JFrame {
 
     private final String file_path = "file/icon/";
 
-    private ConversationController conversationController = new ConversationController(this);
+    private ConversationController conversationController = null;
     private ClientMainView clientMainView;
     private User user;
     private ArrayList<User> users = new ArrayList<User>();
-
+    
+    private ObjectInputStream ois = null;
+    private ObjectOutputStream oos = null;
+    
     public User getUserID() {
         return clientMainView.getUserID();
     }
@@ -38,7 +43,10 @@ public class CreateGroupView extends javax.swing.JFrame {
     /**
      * Creates new form CreateGroupView
      */
-    public CreateGroupView(User user, ClientMainView clientMainView) {
+    public CreateGroupView(User user, ClientMainView clientMainView, ObjectInputStream ois, ObjectOutputStream oos) {
+        this.oos = oos;
+        this.ois = ois;
+        conversationController = new ConversationController(this,ois,oos);
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {

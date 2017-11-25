@@ -15,6 +15,8 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,9 +36,12 @@ public class ChatBox extends javax.swing.JFrame {
 
     private final String upload_domain = "http://uploads.chatonline.com";
 
-    private MessageController messageController = new MessageController(this);
+    private MessageController messageController = null;
     private ClientMainView clientMainView;
     private Conversation conversation;
+
+    private ObjectInputStream ois = null;
+    private ObjectOutputStream oos = null;
 
     public void setConversation(Conversation conversation) {
         this.conversation = conversation;
@@ -44,6 +49,14 @@ public class ChatBox extends javax.swing.JFrame {
 
     public Conversation getConversation() {
         return conversation;
+    }
+
+    public void setOis(ObjectInputStream ois) {
+        this.ois = ois;
+    }
+
+    public void setOos(ObjectOutputStream oos) {
+        this.oos = oos;
     }
 
     public Message getConversationID() {
@@ -55,7 +68,14 @@ public class ChatBox extends javax.swing.JFrame {
     /**
      * Creates new form ChatBox
      */
-    public ChatBox(Conversation conversation, ClientMainView clientMainView) {
+    public ChatBox(Conversation conversation, ClientMainView clientMainView, ObjectInputStream ois, ObjectOutputStream oos) {
+
+        System.out.println("start ois oos");
+        this.oos = oos;
+        this.ois = ois;
+        System.out.println("end ois oos");
+        this.messageController = new MessageController(this, this.ois, this.oos);
+        System.out.println("end ChatBox Contrustor");
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
@@ -66,6 +86,7 @@ public class ChatBox extends javax.swing.JFrame {
         initComponents();
         messageController.getHistoryMessages();
         displayAvatars(conversation);
+
     }
 
     public void returnMessage(Message message) {
@@ -120,6 +141,7 @@ public class ChatBox extends javax.swing.JFrame {
         StringReader reader = new StringReader(data);
         try {
             editor.read(reader, JEditorPaneChatHistory.getDocument(), JEditorPaneChatHistory.getDocument().getLength());
+            JScrollPaneChatHistory.getVerticalScrollBar().setValue(JScrollPaneChatHistory.getVerticalScrollBar().getMaximum());
         } catch (Exception ex) {
         }
     }
